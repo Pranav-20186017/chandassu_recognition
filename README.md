@@ -141,4 +141,29 @@ and RL are deferred until the real Model A baseline is established.
 The root [Dockerfile](Dockerfile) starts JupyterLab with CUDA-enabled PyTorch.
 See [docs/gx10.md](docs/gx10.md) for build/run commands, GPU verification,
 persistent notebooks, and Jupyter over an SSH tunnel.
+
+From the cloned repository on GX10, start Jupyter in detached mode:
+
+```bash
+docker run --rm -d --name chandassu-jupyter \
+  --gpus all --shm-size=8g \
+  -p 127.0.0.1:8888:8888 \
+  -v "$PWD:/workspace" \
+  -v chandassu-hf-cache:/home/jupyter/.cache/huggingface \
+  chandassu-gx10
+```
+
+Get the Jupyter token with `docker logs chandassu-jupyter`. The container keeps
+running after you disconnect SSH. On your Mac, start the tunnel:
+
+```bash
+ssh -i ~/.ssh/pranav_ed -N -L 8888:127.0.0.1:8888 pranav@100.98.23.103
+```
+
+Open `http://localhost:8888/lab`, enter the token, and select the
+**Chandassu (GX10 CUDA)** kernel. Open
+`notebooks/01_preliminary_model_a.ipynb` and run its cells in order, including
+the Hugging Face login and gated-model access check before model loading.
+Stop Jupyter with `docker stop chandassu-jupyter`; the mounted files remain.
+
 The [project brief](docs/project_brief.md) records the research roadmap.
