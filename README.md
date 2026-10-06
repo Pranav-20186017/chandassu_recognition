@@ -164,6 +164,21 @@ Open `http://localhost:8888/lab`, enter the token, and select the
 **Chandassu (GX10 CUDA)** kernel. Open
 `notebooks/01_preliminary_model_a.ipynb` and run its cells in order, including
 the Hugging Face login and gated-model access check before model loading.
+For full training, restart the kernel, open
+[`notebooks/02_full_model_a.ipynb`](notebooks/02_full_model_a.ipynb), and run its
+cells in order. It uses all training lines for five epochs, with batch size 8,
+BF16 where supported, class weights from the full training split, and a warmup
+followed by linear learning-rate decay. Login is reused from the cache.
+No image rebuild is needed; `git pull` updates the mounted notebook.
+
+Progress includes batch loss, throughput, ETA, and GPU memory. Each epoch plots
+comparable training/validation loss and line/poem Macro-F1, with validation
+confusion matrices and per-class scores. Reports, the best inference checkpoint,
+and the latest optimizer snapshot persist under `runs/full-model-a-*/`.
+Checkpoint selection uses validation **line Macro-F1**. The optional final-test
+cell is disabled until model/settings selection is finished. The notebook does
+not automatically resume interrupted training.
+
 Stop Jupyter with `docker stop chandassu-jupyter`; the mounted files remain.
 
 The [project brief](docs/project_brief.md) records the research roadmap.
