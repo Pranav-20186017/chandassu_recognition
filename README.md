@@ -7,15 +7,18 @@ pādams with one shared label. Poem predictions average the four probability vec
 ## Layout
 
 ```text
-data/                       # local corpus and prepared splits (ignored)
+data/                       # tracked scraped corpus; other local data ignored
 notebooks/                  # exploratory notebooks
+scrape/                     # source adapters and scraping instructions
 src/chandassu/
   data/                     # normalization, validation, leakage-safe splitting
   models/                   # Transformer classifier and tokenized dataset
-  prosody/                  # reserved for future Model B
+  prosody/                  # syllable-count screening; future Model B
   training/                 # weighted CE, checkpointing, prediction
   evaluation/               # line/poem metrics and confusion matrices
 configs/model_a.json
+.python-version             # Python 3.12.10
+uv.lock                     # exact dependency resolution
 examples/toy_corpus.jsonl    # fabricated pipeline fixture, NOT valid metrical poetry
 tests/
 docs/
@@ -23,18 +26,22 @@ docs/
 
 ## Install
 
-Python 3.10+; create an isolated environment. On GX10, install a PyTorch build
+Python 3.12 (pinned to 3.12.10); use uv and the committed `uv.lock`. On GX10, install a PyTorch build
 compatible with GB10/Blackwell and its CUDA environment **before** installing the
 training extra. A CPU/MPS environment is sufficient for development.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -e '.[train,dev]'
-pytest -q
+uv sync --locked --extra train --group dev
+uv run --locked --extra train pytest -q
 ```
 
-Preparation uses only the Python standard library; `pip install -e .` suffices.
+Preparation uses only the Python standard library; `uv sync --locked` suffices.
+
+For the source scraper and complete shatakam directory, syllable-count screening, and CSV exports, see [scrape/README.md](scrape/README.md).
+Use `uv sync --locked --extra scrape` to install scraping dependencies independently
+of training dependencies. `uv.lock` pins transitive packages; `.python-version`
+pins the interpreter. Run commands with `uv run --locked` after syncing.
+When training, include `--extra train` with `uv run` to retain the training extra.
 
 The default encoder is [ai4bharat/indic-bert](https://huggingface.co/ai4bharat/indic-bert),
 a compact ALBERT encoder whose supported languages include Telugu. Its repository
@@ -122,7 +129,8 @@ Outputs:
   support, and 4×4 confusion matrices (rows true, columns predicted).
 - `test_predictions.json`: individual line/poem predictions and probabilities.
 
-No real corpus or pretrained weights are bundled. `examples/toy_corpus.jsonl` has
+Pretrained weights are not bundled. Scraped CSVs, raw pages, audit reports, and snapshots are tracked under
+`data/`; reproduce them with the source scraper. `examples/toy_corpus.jsonl` has
 invented labels and numeric class cues; use it only to exercise preparation, never
 to claim baseline accuracy. Model B, prosodic rules, domain-adaptive pretraining,
 and RL are deferred until the real Model A baseline is established.
