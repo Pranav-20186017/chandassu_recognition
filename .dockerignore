@@ -1,0 +1,6 @@
+# Only container build inputs enter the image context. Mount the repo at runtime.
+**
+!Dockerfile
+!docker/
+!docker/requirements-gx10.txt
+!docker/chandassu

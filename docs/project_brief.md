@@ -4,10 +4,10 @@
 
 Build a Telugu poetic metre recognition system for a restricted four-class problem:
 
-- Utpalamala
-- Champakamala
-- Mattebhamu
-- Shardoolam
+- ఉత్పలమాల
+- చంపకమాల
+- మత్తేభము
+- శార్దూలం
 
 Each poem contains 4 lines/pādams and has one metre label.
 
@@ -275,7 +275,7 @@ Gaṇas:
 ...
 
 Therefore:
-Shardoolam
+శార్దూలం
 ```
 
 ---
@@ -296,7 +296,7 @@ Target:
 Syllables: ...
 Guru/Laghu: G L G ...
 Gaṇas: ...
-Metre: Mattebhamu
+Metre: మత్తేభము
 ```
 
 Once a deterministic verifier exists, reinforcement learning can be added.

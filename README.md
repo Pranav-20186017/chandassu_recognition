@@ -1,7 +1,7 @@
 # Chandassu Recognition
 
 Model A: a PyTorch/Hugging Face Transformer classifies each Telugu pādam as
-**Utpalamala, Champakamala, Mattebhamu, or Shardoolam**. A complete poem has four
+**ఉత్పలమాల, చంపకమాల, మత్తేభము, or శార్దూలం**. A complete poem has four
 pādams with one shared label. Poem predictions average the four probability vectors.
 
 ## Layout
@@ -26,9 +26,10 @@ docs/
 
 ## Install
 
-Python 3.12 (pinned to 3.12.10); use uv and the committed `uv.lock`. On GX10, install a PyTorch build
-compatible with GB10/Blackwell and its CUDA environment **before** installing the
-training extra. A CPU/MPS environment is sufficient for development.
+Python 3.12 (pinned to 3.12.10); use uv and the committed `uv.lock` for local
+development. On GX10, use the [Docker/Jupyter setup](docs/gx10.md), which keeps
+NVIDIA's GB10-compatible PyTorch instead of installing the generic training
+extra. A CPU/MPS environment is sufficient for development.
 
 ```bash
 uv sync --locked --extra train --group dev
@@ -58,7 +59,7 @@ The classification head is initialized for the four labels and must be fine-tune
 CSV (UTF-8, header) or JSONL, one object per line:
 
 ```json
-{"poem_id":"work1:0001","source":"work1","author":"author1","line_no":1,"text":"తెలుగు పాదం","label":"Utpalamala"}
+{"poem_id":"work1:0001","source":"work1","author":"author1","line_no":1,"text":"తెలుగు పాదం","label":"ఉత్పలమాల"}
 ```
 
 All six fields are required. `poem_id` must be globally unique across works;
@@ -137,5 +138,7 @@ and RL are deferred until the real Model A baseline is established.
 
 ## Remote Jupyter on GX10
 
-See [docs/gx10.md](docs/gx10.md) for loopback-only Jupyter over an SSH tunnel.
+The root [Dockerfile](Dockerfile) starts JupyterLab with CUDA-enabled PyTorch.
+See [docs/gx10.md](docs/gx10.md) for build/run commands, GPU verification,
+persistent notebooks, and Jupyter over an SSH tunnel.
 The [project brief](docs/project_brief.md) records the research roadmap.

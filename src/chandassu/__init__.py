@@ -1,4 +1,4 @@
 """Telugu metre recognition; Model A baseline."""
 
-LABELS = ("Utpalamala", "Champakamala", "Mattebhamu", "Shardoolam")
+LABELS = ("ఉత్పలమాల", "చంపకమాల", "మత్తేభము", "శార్దూలం")
 LABEL_TO_ID = {label: i for i, label in enumerate(LABELS)}
