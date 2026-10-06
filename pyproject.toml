@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chandassu-recognition"
+version = "0.1.0"
+description = "Leakage-safe Telugu poetic metre classification"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+train = ["torch>=2.5,<3", "transformers>=4.45,<5", "sentencepiece>=0.2,<1", "protobuf>=4"]
+dev = ["pytest>=8,<10"]
+notebook = ["jupyterlab>=4,<5"]
+
+[project.scripts]
+chandassu = "chandassu.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
