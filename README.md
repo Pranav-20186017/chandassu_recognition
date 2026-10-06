@@ -166,7 +166,7 @@ Open `http://localhost:8888/lab`, enter the token, and select the
 the Hugging Face login and gated-model access check before model loading.
 For full training, restart the kernel, open
 [`notebooks/02_full_model_a.ipynb`](notebooks/02_full_model_a.ipynb), and run its
-cells in order. It uses all training lines for five epochs, with batch size 8,
+cells in order. It uses all training lines for 30 epochs, with batch size 8,
 BF16 where supported, class weights from the full training split, and a warmup
 followed by linear learning-rate decay. Login is reused from the cache.
 No image rebuild is needed; `git pull` updates the mounted notebook.
