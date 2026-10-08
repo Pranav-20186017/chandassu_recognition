@@ -212,3 +212,7 @@ per-work/class metrics, U/M discrimination, progress, and confusion plots.
 
 The [first local development results](docs/character_development_results.md)
 record the observed scores and the limits of count-assisted evaluation.
+
+The [remaining-error review](docs/character_error_review.md) checks all hybrid
+mistakes and the weakest work against cached sources and Chandam, with three
+possible source-label problems flagged for manual review.
