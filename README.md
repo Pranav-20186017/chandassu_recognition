@@ -216,3 +216,32 @@ record the observed scores and the limits of count-assisted evaluation.
 The [remaining-error review](docs/character_error_review.md) checks all hybrid
 mistakes and the weakest work against cached sources and Chandam, with three
 possible source-label problems flagged for manual review.
+
+## Frozen local baseline and final test
+
+In the same local JupyterLab and **Chandassu (local CPU)** kernel, open
+`notebooks/04_final_character_baseline.ipynb`. It verifies the frozen settings,
+fits the original training portion, and saves a reloadable `model.joblib` with
+its vectorizer, classifier, count mapping, configuration, and dependency versions.
+It includes a saved-model prediction example and a separate final-test cell.
+
+**Final-test scoring is enabled by default in notebook 04.** Set
+`RUN_FINAL_TEST = False` to fit/save without opening the test. When enabled, the
+cell scores the saved model once, prints line/poem and per-work metrics plus U/M
+discrimination, and generates confusion and per-class/work plots. It never fits
+on original validation or test examples, and retains the original labels.
+
+The persistent `data/character-final-test-v1.json` ledger prevents repeated
+prediction across notebook runs. Re-running reads the original completed report;
+a newly trained artifact is not evaluated again. Preserve that ledger with its
+model and reports under `runs/character-final-*` when moving machines. A started
+but incomplete evaluation requires inspecting the partial outputs; it is not
+silently retried. Keep subsequent tuning on development folds.
+
+Load a saved baseline for prediction:
+
+```python
+from chandassu.models.character import load_character, predict_character
+model = load_character("runs/character-final-YOUR_TIMESTAMP/model.joblib")
+result = predict_character(model, [line1, line2, line3, line4])
+```
