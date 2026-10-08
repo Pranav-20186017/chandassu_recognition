@@ -181,4 +181,8 @@ not automatically resume interrupted training.
 
 Stop Jupyter with `docker stop chandassu-jupyter`; the mounted files remain.
 
+The [full-run investigation](docs/model_a_investigation.md) compares the encoder
+with character and count-assisted baselines, audits source labels, and records
+the limitations of the single-work validation split.
+
 The [project brief](docs/project_brief.md) records the research roadmap.
