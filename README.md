@@ -245,3 +245,39 @@ from chandassu.models.character import load_character, predict_character
 model = load_character("runs/character-final-YOUR_TIMESTAMP/model.joblib")
 result = predict_character(model, [line1, line2, line3, line4])
 ```
+
+## Local sequence-model A/B notebook
+
+Open `notebooks/05_sequence_ab_tests.ipynb` in the same JupyterLab and
+**Chandassu (local CPU)** kernel. Install the pinned local sequence dependencies
+first, then restart the kernel:
+
+```bash
+UV_PROJECT_ENVIRONMENT=.venv-local uv sync --locked --extra analysis --extra notebook --extra sequence
+.venv-local/bin/python -m ipykernel install --sys-prefix --name chandassu-local --display-name "Chandassu (local CPU)"
+UV_PROJECT_ENVIRONMENT=.venv-local uv run --locked --extra analysis --extra notebook --extra sequence jupyter lab --ip=127.0.0.1 --port=8889
+```
+
+The notebook compares character TF–IDF with a small character transformer using
+sinusoidal positions, an ordered character CNN, a transformer without positions,
+and a grapheme transformer. IndicBERT/ALBERT already includes position embeddings;
+this experiment tests representation and architecture. No Hugging Face login or
+download is needed. It uses Apple MPS automatically when available, otherwise
+CPU; set `DEVICE = 'cpu'` to force CPU.
+
+Run cells in order. The original training split must already exist (prepare it
+using notebook 03 if needed). Three outer source/duplicate-held-out folds compare
+raw and count-assisted line/poem Macro-F1, U/M discrimination, and per-work scores.
+Each neural fit selects its epoch using a separate inner source holdout, then
+refits on all outer training data before scoring the outer fold. The cap is 30
+epochs, with early stopping after at least 8 selection epochs. One seed is the
+default; change `SEEDS` to `[42, 123, 2026]` to check initialization sensitivity.
+This is a longer local experiment: four arms each perform selection and refitting
+on three folds. Progress, curves, token coverage, confusion matrices, reports,
+and reloadable fold checkpoints persist in a new `runs/sequence-ab-*` directory.
+
+Notebook 05 never opens the original validation or consumed final test. These
+are exploratory development comparisons; keep the notebook 04 artifact and its
+benchmark. Optional cells accept fresh unfiltered four-line poems and report
+unsupported counts explicitly. They do not silently exclude difficult inputs
+or claim a fresh benchmark when no independently labelled new poems are supplied.

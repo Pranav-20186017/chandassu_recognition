@@ -15,6 +15,7 @@ scrape = ["httpx==0.28.1", "beautifulsoup4==4.14.3"]
 notebook = ["jupyterlab==4.4.9", "ipykernel==7.4.0", "matplotlib==3.10.8"]
 plots = ["matplotlib==3.10.8"]
 analysis = ["scikit-learn==1.6.1"]
+sequence = ["torch==2.8.0", "regex==2026.9.29"]
 
 [dependency-groups]
 dev = ["pytest==9.0.2"]
