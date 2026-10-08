@@ -178,6 +178,7 @@ analysis = [
     { name = "scikit-learn" },
 ]
 notebook = [
+    { name = "ipykernel" },
     { name = "jupyterlab" },
     { name = "matplotlib" },
 ]
@@ -204,6 +205,7 @@ dev = [
 requires-dist = [
     { name = "beautifulsoup4", marker = "extra == 'scrape'", specifier = "==4.14.3" },
     { name = "httpx", marker = "extra == 'scrape'", specifier = "==0.28.1" },
+    { name = "ipykernel", marker = "extra == 'notebook'", specifier = "==7.4.0" },
     { name = "jupyterlab", marker = "extra == 'notebook'", specifier = "==4.4.9" },
     { name = "matplotlib", marker = "extra == 'notebook'", specifier = "==3.10.8" },
     { name = "matplotlib", marker = "extra == 'plots'", specifier = "==3.10.8" },

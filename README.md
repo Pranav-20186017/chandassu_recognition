@@ -186,3 +186,29 @@ with character and count-assisted baselines, audits source labels, and records
 the limitations of the single-work validation split.
 
 The [project brief](docs/project_brief.md) records the research roadmap.
+
+## Local CPU development notebook
+
+Python 3.12 and uv are enough for the character baselines. The dedicated
+`.venv-local/` environment is explicitly ignored by Git. Dependencies are pinned
+in `pyproject.toml` and `uv.lock`, including JupyterLab and the local kernel.
+
+```bash
+UV_PROJECT_ENVIRONMENT=.venv-local uv sync --locked --extra analysis --extra notebook
+.venv-local/bin/python -m ipykernel install --sys-prefix --name chandassu-local --display-name "Chandassu (local CPU)"
+UV_PROJECT_ENVIRONMENT=.venv-local uv run --locked --extra analysis --extra notebook jupyter lab --ip=127.0.0.1 --port=8889
+```
+
+Open `notebooks/03_character_baselines.ipynb` and select **Chandassu (local CPU)**.
+The notebook already contains the first local run's outputs. Restart the kernel
+and run all cells to repeat it; each run writes to a new `runs/character-dev-*`
+directory. No GPU, Docker, SSH, or Hugging Face token is needed.
+
+The notebook recreates the original source split if missing, verifies the locked
+reference in `configs/model_a_source_split.json`, and evaluates three grouped
+folds using **only the original training portion**. Original validation and test
+examples are excluded from fitting and development scoring. Reports include
+per-work/class metrics, U/M discrimination, progress, and confusion plots.
+
+The [first local development results](docs/character_development_results.md)
+record the observed scores and the limits of count-assisted evaluation.
