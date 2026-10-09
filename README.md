@@ -341,3 +341,45 @@ partial evaluation block reuse. Preserve the ignored ledger with its referenced
 model/report artifacts when moving machines. After inspecting the new set, use
 another untouched set for further model selection. See
 [`scrape/independent/README.md`](scrape/independent/README.md) for input and annotation rules.
+
+## Longer CNN training and full classification reports
+
+Open [`notebooks/07_longer_cnn_training.ipynb`](notebooks/07_longer_cnn_training.ipynb)
+in the same **Chandassu (local CPU)** kernel, then Restart Kernel → Run All.
+No new dependencies or Hugging Face login are needed. CPU, Apple MPS and CUDA
+are supported. The complete CNN and training loop are in notebook cells.
+
+NB07 fits only the locked original 6,129 training poems, and uses the existing
+1,463-poem validation split (one held-out work, ఉత్తరరామాయణము) for checkpoint
+selection. The separately scraped NB06 collection remains test only; the old
+original final test is never opened. Training, validation and test poems are
+not mixed. Each batch holds complete four-line poems in line order, with no
+shuffling or character permutation. NB06 shuffled line examples between batches,
+which did not change character order; NB07 explicitly preserves whole-poem batches.
+
+The fixed 12-epoch control and the longer arm share their initialization,
+architecture, data, batch order and first 12 epochs. The longer arm runs at least
+24 and at most 60 epochs, with validation-loss learning-rate reduction and
+early stopping. Select by validation poem Macro-F1, breaking ties with lower
+validation line cross-entropy. The saved selected checkpoint is evaluated,
+even if it comes from an earlier epoch. Configuration and checkpoint hashes
+protect reuse under `runs/cnn-long-v1/`; incomplete or changed runs require
+inspection rather than silent retraining. This notebook does not overwrite
+NB06's model, reports, dataset or ledger.
+
+Reports include weighted optimization loss, comparable unweighted training and
+validation losses, learning curves, accuracy, balanced accuracy, precision/recall/F1
+(macro/micro/weighted), per-class specificity, MCC, kappa, confusion matrices,
+log loss, multiclass Brier, reliability/ECE, ROC-AUC and average precision.
+Both line and poem metrics, per-work metrics, U/M diagnostics, rejection coverage,
+other-metre false acceptance and paired comparisons are exported. Probability
+metrics explicitly identify covered inputs; all-target classification reports
+still count unavailable predictions as errors. No test-based calibration is fitted.
+
+Once checkpoint selection is frozen, NB07 scores the NB06 collection and saves
+its own ledger. A verified local NB06 prediction snapshot, when present, adds
+the historical baseline without re-running it. This is an **exploratory follow-up
+on an already inspected benchmark**, not another blind independent test.
+A work-cluster bootstrap uses the same paired poems; only four test works limit
+its uncertainty resolution. Do not use these test results for another round of
+hyperparameter selection. See the metric-definition references in the notebook.
