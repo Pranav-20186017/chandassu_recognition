@@ -281,3 +281,11 @@ are exploratory development comparisons; keep the notebook 04 artifact and its
 benchmark. Optional cells accept fresh unfiltered four-line poems and report
 unsupported counts explicitly. They do not silently exclude difficult inputs
 or claim a fresh benchmark when no independently labelled new poems are supplied.
+
+The [first sequence comparison and padding audit](docs/sequence_development_results.md)
+records the completed local run. Its CNN scores require a corrected rerun:
+the original MPS run learned a nonzero padding embedding, making some predictions
+depend on batch padding. Notebook 05 now masks padding explicitly, records
+implementation version 2, and checks padding weights during training. Restart
+the kernel and run the clean notebook with the same settings first. The original
+executed notebook is preserved under `notebooks/results/`.
