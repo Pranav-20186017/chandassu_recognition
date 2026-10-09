@@ -453,3 +453,43 @@ validation losses, learning curves, per-class and per-work reports, and line/poe
 metrics on train/validation/test. Exports cover accuracy, balanced accuracy,
 precision/recall/F1, specificity, MCC/kappa, confusion matrices, ROC/PR, log loss,
 Brier and reliability/ECE. No scores are fabricated before running the notebook.
+
+## NB09: audited direct-model comparison
+
+Run [NB09](notebooks/09_audited_direct_comparison.ipynb) with **Run All**. It is a
+standalone experiment: model definitions and training loops are visible in cells,
+with no dependency on previous notebooks/checkpoints. It compares the established
+raw-character CNN with a pinned public ByT5 encoder, using three seeds and three
+work/component folds, inner validation checkpoint selection, calibration and
+other-metre rejection, learning curves, complete line/poem metrics and graphs.
+All four lines stay together; no poems, lines or characters are shuffled. Rule
+scores never become neural input features or new automatic labels.
+
+```bash
+UV_PROJECT_ENVIRONMENT=.venv-local uv sync --locked \
+  --extra train --extra sequence --extra scrape --extra analysis --extra notebook --group dev
+.venv-local/bin/python -m jupyterlab
+```
+
+Default budget is **46 fits**: 18 matched comparison fits, 27 additional CNN
+learning-curve fits and one final fit. Allow substantial runtime and disk space,
+especially on a laptop. Completed fits are reused, interruptions resume from the
+last completed epoch, and changing code/settings/data requires a new run directory.
+Reports, checkpoints, predictions and figures go to `runs/nb09-direct-v1/`.
+First run downloads ByT5; it is public and does not require gated IndicBERT access.
+Optional Hugging Face authentication is provided without saving tokens in reports.
+
+The [frozen audit](docs/analysis/nb09_corpus_audit/README.md) covers 16,453 poems;
+16,428 complete inputs received strict and metre-only scans (32,856 requests),
+with full responses and input hashes retained. Twelve high-scoring conflicts
+remain review candidates. Existing supervised allocation stays at **7,425 train,
+1,859 validation and 2,234 historical test poems**. One duplicate quotation in a
+development other-metre poem is excluded from threshold calibration, with its
+original record retained separately. See the [NB09 guide](docs/nb09.md).
+
+These are grouped development comparisons and historical diagnostics. No new
+expert-labelled blind holdout exists yet; NB09 completes normally and reports
+that limitation. It keeps the established CNN pending expert-gold confirmation
+rather than claiming verified superiority from source annotations alone. A
+header-only [fresh-holdout template](data/independent_poetry/nb09_fresh_test_template.csv)
+is supplied for genuinely new, independently verified works/authors.

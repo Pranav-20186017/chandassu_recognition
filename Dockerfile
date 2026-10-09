@@ -23,7 +23,7 @@ RUN python -c "import torch; from pathlib import Path; Path('/opt/torch-version.
 WORKDIR /workspace
 # Project code and data are supplied entirely by the runtime bind mount.
 COPY --chmod=755 docker/chandassu /usr/local/bin/chandassu
-RUN python -c "from transformers import AutoModelForSequenceClassification, AutoTokenizer; import jupyterlab"
+RUN python -c "from transformers import AutoModelForSequenceClassification, AutoTokenizer, T5EncoderModel; import jupyterlab, sklearn, regex"
 
 # Match the GX10 account so notebooks/checkpoints on the bind mount stay owned by it.
 ARG USER_UID=1000
