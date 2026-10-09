@@ -411,3 +411,38 @@ on an already inspected benchmark**, not another blind independent test.
 A work-cluster bootstrap uses the same paired poems; only four test works limit
 its uncertainty resolution. Do not use these test results for another round of
 hyperparameter selection. See the metric-definition references in the notebook.
+
+### NB08: expanded corpus with a new work-level split
+
+Open [`notebooks/08_expanded_corpus_training.ipynb`](notebooks/08_expanded_corpus_training.ipynb)
+in the existing local kernel, then **Restart Kernel → Run All**. No new dependencies
+or Hugging Face login are needed. The dataset is committed and ready to use.
+
+| Split | Poems | Lines | Works |
+|---|---:|---:|---:|
+| Training | 7,433 | 29,732 | 26 |
+| Validation | 1,859 | 7,436 | 4 |
+| Test | 2,235 | 8,940 | 6 |
+
+NB08 intentionally adds two works from NB06 and three from the latest v2 batch
+to the original training allocation. Three v2 works join validation. Two NB06
+works and four v2 works remain testing only. The two రాధికాసాంత్వనము editions
+share individual lines and are kept together in validation. No poem, work or
+layout-equivalent line crosses splits; all four lines remain intact and batches
+are not shuffled. The original 1,314-poem final test remains reserved.
+
+This supersedes the earlier “v2 has not been added to training” statement **for
+NB08 only**. NB06/07 and the source collections retain their historical allocations.
+The retained NB06 test cohort was already evaluated; the retained v2 cohort was
+fresh at allocation. Report these separately as well as combined. See the
+[complete allocation and rebuild notes](data/expanded_poetry/v1/README.md).
+
+The same character CNN trains from scratch for 24–60 epochs, using validation
+poem Macro-F1 for selection, validation CE for ties, LR reduction and early
+stopping. Atomic last-epoch checkpoints support interrupted training; complete
+runs and test predictions are reused under `runs/cnn-expanded-v1/`. The notebook
+contains the neural architecture, batch/epoch progress, comparable training and
+validation losses, learning curves, per-class and per-work reports, and line/poem
+metrics on train/validation/test. Exports cover accuracy, balanced accuracy,
+precision/recall/F1, specificity, MCC/kappa, confusion matrices, ROC/PR, log loss,
+Brier and reliability/ECE. No scores are fabricated before running the notebook.

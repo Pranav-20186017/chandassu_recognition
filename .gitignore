@@ -7,6 +7,7 @@ __pycache__/
 !/data/.gitkeep
 !/data/andhrabharati/
 !/data/independent_poetry/
+!/data/expanded_poetry/
 /data/independent_poetry/**/evaluation_ledger.json
 runs/
 .ipynb_checkpoints/
