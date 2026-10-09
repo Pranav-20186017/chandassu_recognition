@@ -309,12 +309,22 @@ The complete fit persists under `runs/cnn-independent-v1/` and is reused on
 reruns. Notebook 06 has its own saved model and requires no notebook 05 fold
 checkpoints. Original validation and final-test examples are not fitted or scored.
 
-**The independent test set is not collected yet.** Its input template is
-`data/independent_poetry/v1/poems.csv`; JSONL is also supported. Run All now fits
-and saves the model, then clearly reports that scoring is waiting for new poems.
-We will choose the supplied sources and write a separate adapter under
-`scrape/independent/`, preserving its cache and complete extraction/review exports
-under `data/independent_poetry/v1/`. These records are never merged into training.
+**The separate independent collection is available** at
+`data/independent_poetry/v1/poems.csv`: 2,061 target poems, 2,045 other-metre
+poems and 23 unlabelled poems from ఆముక్తమాల్యద, పాండురంగమాహాత్మ్యము,
+కళాపూర్ణోదయము and ఆంధ్ర పురాణము. All 30 declared chapter/section pages were
+collected. Each work also has its own CSV under `v1/works/`. These records are
+never merged into training. Notebook 06 already reads this path; restart the
+kernel and run its cells in order to fit/reuse the frozen model and evaluate.
+
+Labels are **source annotations**, not independently verified ground truth.
+The collection keeps 193 target poems with diagnostic count mismatches,
+including 161 from the noisier కళాపూర్ణోదయము transcription. See
+`v1/annotation_review.jsonl` before interpreting errors as model failures.
+Malformed boundaries, compound stanzas, four existing-corpus overlaps and one
+duplicate are quarantined in `v1/review.jsonl`. Neither count agreement nor model
+predictions selected the exported poems. The original HTML/rendered DOM,
+revision URLs, extraction evidence and novelty report are saved in this directory.
 
 The notebook audits novelty against the full existing corpus solely for overlap
 detection, retains count mismatches and unsupported inputs, and distinguishes

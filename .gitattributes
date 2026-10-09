@@ -1,0 +1,3 @@
+# Preserve exact cached source bytes; raw editions are reviewed via extraction
+# evidence rather than multi-megabyte HTML diffs.
+data/independent_poetry/**/raw/*.html -diff -text
