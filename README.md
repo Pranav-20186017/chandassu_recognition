@@ -4,6 +4,13 @@ Model A: a PyTorch/Hugging Face Transformer classifies each Telugu pādam as
 **ఉత్పలమాల, చంపకమాల, మత్తేభము, or శార్దూలం**. A complete poem has four
 pādams with one shared label. Poem predictions average the four probability vectors.
 
+After the completed NB08 run, see the [results audit](docs/nb08_results_review.md)
+and [research-backed next-step blueprint](docs/next_steps_blueprint.md). A separate
+[reviewed corpus](data/expanded_poetry/v2_reviewed/README.md) records 11 rule-supported
+label corrections, nine whole-poem quarantines and restored inference provenance
+for 143 training annotations. NB08's original inputs/results
+remain frozen; the reviewed historical test is not a new blind benchmark.
+
 ## Layout
 
 ```text
