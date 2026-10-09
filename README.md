@@ -344,6 +344,24 @@ another untouched set for further model selection. See
 
 ## Longer CNN training and full classification reports
 
+**A fresh ten-work test collection (v2) is now available**, separately from the
+NB06/NB07 test batch: **1,874 four-class poems** across 47 original-text pages.
+Use `data/independent_poetry/v2/target_poems.csv` for the four target classes,
+or `v2/poems.csv` for targets plus 1,501 annotated other-metre poems and 43
+unlabelled poems. All four lines remain together and ordered. Source labels are
+provisional; 117 diagnostic count disagreements remain included and flagged.
+No exact/layout overlap was found with training or v1. Some authors recur, so
+this is a new-work holdout rather than an entirely unseen-author benchmark.
+**It has not been scored or added to training**, and the notebooks still use v1.
+See [`v2 collection notes`](data/independent_poetry/v2/README.md) for the ten works,
+per-work CSVs, saved source HTML, revisions, extraction issues and novelty checks.
+
+Rebuild v2 from its committed cache with both required overlap checks:
+
+```bash
+uv run --locked --extra scrape python -m scrape.independent.collect_v2
+```
+
 Open [`notebooks/07_longer_cnn_training.ipynb`](notebooks/07_longer_cnn_training.ipynb)
 in the same **Chandassu (local CPU)** kernel, then Restart Kernel → Run All.
 No new dependencies or Hugging Face login are needed. CPU, Apple MPS and CUDA
