@@ -289,3 +289,45 @@ depend on batch padding. Notebook 05 now masks padding explicitly, records
 implementation version 2, and checks padding weights during training. Restart
 the kernel and run the clean notebook with the same settings first. The original
 executed notebook is preserved under `notebooks/results/`.
+
+## Standalone CNN and independent poetry notebook
+
+Open `notebooks/06_independent_cnn_poetry.ipynb` in the same local JupyterLab
+and **Chandassu (local CPU)** kernel. Restart the kernel and run its cells in
+order; notebook 05 does not need to be open or run first. It uses the same pinned
+`analysis`, `notebook`, and `sequence` extras. No Hugging Face download is needed.
+
+The full CNN architecture is defined in notebook cells, with an exported diagram
+and parameter summary: character embeddings, explicit padding masks, parallel
+3/5/7-character convolutions, ReLU, masked max pooling, concatenation, dropout,
+and a four-class head. It trains all 24,516 original training lines for 12 fixed
+epochs, chosen as the median of notebook 05's inner-selection epochs [12, 9, 17].
+Fresh poetry does not select epochs or hyperparameters. Training progress,
+loss/F1 plots, reload checks, and a frozen character reference are included.
+
+The complete fit persists under `runs/cnn-independent-v1/` and is reused on
+reruns. Notebook 06 has its own saved model and requires no notebook 05 fold
+checkpoints. Original validation and final-test examples are not fitted or scored.
+
+**The independent test set is not collected yet.** Its input template is
+`data/independent_poetry/v1/poems.csv`; JSONL is also supported. Run All now fits
+and saves the model, then clearly reports that scoring is waiting for new poems.
+We will choose the supplied sources and write a separate adapter under
+`scrape/independent/`, preserving its cache and complete extraction/review exports
+under `data/independent_poetry/v1/`. These records are never merged into training.
+
+The notebook audits novelty against the full existing corpus solely for overlap
+detection, retains count mismatches and unsupported inputs, and distinguishes
+source annotations from independently verified labels. Known other metres and
+unlabelled poems remain visible. Reported raw/count-assisted line and poem F1,
+U/M scores, per-work results, coverage, confusion matrices, and a separately
+assessed heuristic rejection rule avoid hiding difficult examples. Unavailable
+predictions count as errors in all-target metrics. The rejection threshold is
+fixed before test collection and is not calibrated.
+
+When a ready novel batch is supplied, a local ledger freezes dataset/model/config
+hashes before scoring. Repeated runs read the completed report; changes or a
+partial evaluation block reuse. Preserve the ignored ledger with its referenced
+model/report artifacts when moving machines. After inspecting the new set, use
+another untouched set for further model selection. See
+[`scrape/independent/README.md`](scrape/independent/README.md) for input and annotation rules.
