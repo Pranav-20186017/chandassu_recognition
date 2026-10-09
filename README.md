@@ -357,15 +357,25 @@ not mixed. Each batch holds complete four-line poems in line order, with no
 shuffling or character permutation. NB06 shuffled line examples between batches,
 which did not change character order; NB07 explicitly preserves whole-poem batches.
 
-The fixed 12-epoch control and the longer arm share their initialization,
-architecture, data, batch order and first 12 epochs. The longer arm runs at least
+The fixed 12-epoch control is one shared prefix. The longer arm restores its exact
+epoch-12 weights, AdamW moments, RNG states and loader generators, then continues
+at epoch 13. It does not independently replay the first 12 epochs and compare
+GPU weight hashes. The longer arm runs at least
 24 and at most 60 epochs, with validation-loss learning-rate reduction and
 early stopping. Select by validation poem Macro-F1, breaking ties with lower
 validation line cross-entropy. The saved selected checkpoint is evaluated,
 even if it comes from an earlier epoch. Configuration and checkpoint hashes
-protect reuse under `runs/cnn-long-v1/`; incomplete or changed runs require
+protect reuse under `runs/cnn-long-v2/`; incomplete or changed runs require
 inspection rather than silent retraining. This notebook does not overwrite
 NB06's model, reports, dataset or ledger.
+
+The first version's separately trained MPS arms differed numerically despite the
+same seed, triggering a strict bitwise comparison before any test evaluation.
+Those completed artifacts remain in `runs/cnn-long-v1/`; its executed notebook
+is archived under `notebooks/results/07_longer_cnn_mps_20261009_before_shared_prefix.ipynb`.
+Restart Kernel → Run All once with the updated notebook/configuration to create
+the optimizer/RNG snapshot that version 1 did not save. Version 2 still verifies
+that the longer arm restores the actual saved control checkpoint exactly.
 
 Reports include weighted optimization loss, comparable unweighted training and
 validation losses, learning curves, accuracy, balanced accuracy, precision/recall/F1
