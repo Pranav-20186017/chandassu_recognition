@@ -73,7 +73,8 @@ UV_PROJECT_ENVIRONMENT=.venv-local uv sync --locked \
 
 Open `taining.ipynb`.
 Select the project kernel.
-Keep `STAGE = 'cnn'` for the next run.
+The notebook is prepared for the longer ByT5 learning check with `STAGE = 'byt5-check'`.
+Set `STAGE = 'cnn'` when you need to run the CNN baseline.
 Run all cells.
 The workflow selects MPS when CUDA is unavailable.
 It prints progress and saves losses, metrics, predictions, and charts.
@@ -81,6 +82,8 @@ It prints progress and saves losses, metrics, predictions, and charts.
 The other stages are `byt5-check` and `nb09-full`.
 The full NB09 study has 46 fits.
 Run the small ByT5 learning check before the full study.
+The check uses 200 updates on the same 16 training poems and saves restart state every five updates.
+Its outputs use `runs/training-byt5-check-v2/`; the previous 60-update reports remain in `v1/`.
 See [the run guide](docs/training.md) for restart rules and stage details.
 
 For command-line execution:
