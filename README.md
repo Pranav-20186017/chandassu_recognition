@@ -15,7 +15,8 @@ Historical test scores do not select model settings.
 ```text
 chandassu_recognition/
 ├── taining.ipynb                 # The single active notebook
-├── configs/training.json         # Current training and NB09 settings
+├── configs/experiment.json       # Complete bounded CNN/ByT5 comparison
+├── configs/training.json         # Standalone and historical stage settings
 ├── data/corpus/v1/
 │   ├── train/                    # Target lines and poems; other and unknown files
 │   ├── validation/
@@ -42,7 +43,8 @@ chandassu_recognition/
 The training workflow does not read HTML or require a scraping service.
 The archive preserves source evidence and notebook outputs.
 Historical configuration files remain under `configs/` for regression tests.
-The active workflow reads only `configs/training.json`.
+The default workflow reads `configs/experiment.json` and the canonical corpus.
+See [the research protocol](docs/experiment.md) for its peer-reviewed sources and decision rules.
 
 ## Canonical dataset
 
@@ -73,23 +75,25 @@ UV_PROJECT_ENVIRONMENT=.venv-local uv sync --locked \
 
 Open `taining.ipynb`.
 Select the project kernel.
-The notebook is prepared for the longer ByT5 learning check with `STAGE = 'byt5-check'`.
+The notebook is prepared for the complete comparison with `STAGE = 'end-to-end'`.
 Set `STAGE = 'cnn'` when you need to run the CNN baseline.
 Run all cells.
 The workflow selects MPS when CUDA is unavailable.
 It prints progress and saves losses, metrics, predictions, and charts.
 
-The other stages are `byt5-check` and `nb09-full`.
-The full NB09 study has 46 fits.
-Run the small ByT5 learning check before the full study.
-The check uses 200 updates on the same 16 training poems and saves restart state every five updates.
-Its outputs use `runs/training-byt5-check-v2/`; the previous 60-update reports remain in `v1/`.
+The complete study has at most 46 fits, with a fixed candidate search and three matched seeds.
+It reuses the measured passing ByT5 check when its identity matches.
+It fits final models from both families and evaluates seed and hybrid ensembles.
+Outputs use `runs/cnn-byt5-experiment-v1/`.
+The report can favour either family, show practical equivalence, or remain inconclusive.
+The `cnn` and `byt5-check` stages remain available for standalone runs.
+The `nb09-full` stage preserves the previous protocol for historical compatibility.
 See [the run guide](docs/training.md) for restart rules and stage details.
 
 For command-line execution:
 
 ```bash
-.venv-local/bin/python -m chandassu.training --stage cnn
+.venv-local/bin/python -m chandassu.training --stage end-to-end
 ```
 
 ## Run on GX10
