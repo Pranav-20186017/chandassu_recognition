@@ -84,7 +84,7 @@ It prints progress and saves losses, metrics, predictions, and charts.
 The complete study has at most 46 fits, with a fixed candidate search and three matched seeds.
 It reuses the measured passing ByT5 check when its identity matches.
 It fits final models from both families and evaluates seed and hybrid ensembles.
-Outputs use `runs/cnn-byt5-experiment-v1/`.
+Outputs use `runs/cnn-byt5-experiment-v2/`.
 The report can favour either family, show practical equivalence, or remain inconclusive.
 The `cnn` and `byt5-check` stages remain available for standalone runs.
 The `nb09-full` stage preserves the previous protocol for historical compatibility.
@@ -142,6 +142,26 @@ docker logs chandassu-jupyter
 Open `http://127.0.0.1:8888` on the Mac.
 Select the installed GX10 kernel if Jupyter requests a kernel.
 See [the GX10 guide](docs/gx10.md) for GPU setup and memory diagnostics.
+
+## Run on RunPod or tune CUDA execution
+
+Use [the RunPod guide](docs/runpod.md) for H100, RTX 4090, and other CUDA Pods.
+It covers installation, pinned-model preflight, timing charts, and the notebook or detached CLI run.
+The setup preserves the template's CUDA PyTorch instead of installing the Mac build.
+
+```bash
+bash docker/setup-runpod.sh
+```
+
+Measure microbatch size and checkpointing before the full 46-fit study.
+The exported CUDA configuration preserves 16 poems per optimizer update and all study data roles.
+It selects execution settings from training-text throughput, not validation or test scores.
+No cloud completion time or cost is guaranteed before measurement.
+
+On GX10, use its existing container and run the same benchmark and profile-export commands with `python`.
+Do not run the RunPod environment installer in the GX10 container.
+Open a new output directory after code, configuration, GPU, or backend changes.
+Saved notebook outputs and existing `runs/` directories remain intact.
 
 ## Verification and evidence
 
