@@ -5,9 +5,8 @@ __pycache__/
 *.egg-info/
 /data/*
 !/data/.gitkeep
-!/data/andhrabharati/
-!/data/independent_poetry/
-!/data/expanded_poetry/
-/data/independent_poetry/**/evaluation_ledger.json
+!/data/corpus/
+/archive/data/**/evaluation_ledger.json
 runs/
 .ipynb_checkpoints/
+archive/local-run-inputs/
