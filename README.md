@@ -9,6 +9,8 @@ Use the CNN when you need a smaller model.
 You can train several models with different seeds and hyperparameters.
 You can then use those models together as an ensemble.
 
+Download the final model packages from [Hugging Face](https://huggingface.co/sprx7767/chandassu-recognition).
+
 Each poem has four lines and one meter label.
 The model calculates class probabilities for each line.
 It then calculates the mean of those probabilities to identify the poem's meter.
@@ -266,7 +268,32 @@ It displays the predicted meter, class probabilities, and line predictions.
 You can select a single model or an ensemble.
 You can also switch between light and dark themes.
 
-### Load one model
+### Download trained models
+
+Download the final CNN or ByT5 package from [Hugging Face](https://huggingface.co/sprx7767/chandassu-recognition).
+Run these commands from the project directory with its Python environment active.
+
+For CNN:
+
+```bash
+hf download sprx7767/chandassu-recognition \
+  --include 'cnn/*' --local-dir models/hf
+
+python inference.py --model_dir=models/hf/cnn --strategy=single --port=8765
+```
+
+For ByT5:
+
+```bash
+hf download sprx7767/chandassu-recognition \
+  --include 'byt5/*' --local-dir models/hf
+
+python inference.py --model_dir=models/hf/byt5 --strategy=single --port=8765
+```
+
+Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
+
+### Export a local checkpoint
 
 Replace `/path/to/stored/models` with the directory that contains your saved training bundle.
 Export the required model:
