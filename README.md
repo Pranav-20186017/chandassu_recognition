@@ -268,6 +268,60 @@ It displays the predicted meter, class probabilities, and line predictions.
 You can select a single model or an ensemble.
 You can also switch between light and dark themes.
 
+### Load in Python without cloning this project
+
+Install the tested dependencies in your Python environment:
+
+```bash
+pip install "torch==2.8.0" "transformers==4.57.6" "safetensors==0.8.0"
+```
+
+Use the Transformers Auto interfaces to load the tokenizer and classifier.
+The tokenizer applies the same text normalization and input encoding used in training.
+The model returns four raw logits for each line.
+Apply the saved calibration temperature, then average line probabilities to classify a poem.
+
+```python
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+
+repo = "sprx7767/chandassu-recognition"
+options = {"subfolder": "cnn", "trust_remote_code": True}
+# Change "cnn" to "byt5" to load the ByT5 encoder classifier.
+tokenizer = AutoTokenizer.from_pretrained(repo, **options)
+model = AutoModelForSequenceClassification.from_pretrained(repo, **options).eval()
+
+poem = """శ్రీ కైవల్య పదంబుఁ జేరుటకునై చింతించెదన్ లోక ర
+క్షైకారంభకు, భక్త పాలన కళా సంరంభకున్, దానవో
+ద్రేకస్తంభకుఁ, గేళి లోల విలసద్దృగ్జాల సంభూత నా
+నా కంజాత భవాండ కుంభకు, మహానందాంగనాడింభకున్."""
+lines = [line.strip() for line in poem.splitlines() if line.strip()]
+if len(lines) not in (1, 4):
+    raise ValueError("Supply one line or a four-line poem")
+inputs = tokenizer(lines, padding=True, return_tensors="pt")
+with torch.inference_mode():
+    logits = model(**inputs).logits
+    line_scores = (logits.double() / model.config.calibration_temperature).softmax(dim=-1)
+    scores = line_scores.mean(dim=0)
+
+winner = scores.argmax().item()
+print(model.config.id2label[winner], f"{scores[winner].item():.2%}")
+for index, score in enumerate(scores):
+    print(model.config.id2label[index], f"{score.item():.2%}")
+```
+
+`AutoModel.from_pretrained(repo, **options)` also loads this classifier.
+`trust_remote_code=True` loads the Python classes supplied in the model repository.
+For a fixed model version, add `"revision": "<full commit ID>"` to `options`.
+The example was tested with Python 3.12 and the dependency versions listed above.
+Input limits are 256 characters per line for CNN and 1,024 byte tokens, including the end token, for ByT5.
+The tokenizer rejects overlong input and does not truncate lines.
+
+Class probabilities are calibrated scores, not statistical confidence intervals.
+A standard text-classification pipeline applies its own softmax to line logits.
+Use the calculation above for calibrated poem scores.
+Clone this project when you need the web interface, ensembles, or training.
+
 ### Download trained models
 
 Download the final CNN or ByT5 package from [Hugging Face](https://huggingface.co/sprx7767/chandassu-recognition).
@@ -308,6 +362,17 @@ python scripts/export_model.py --bundle /path/to/stored/models \
 
 These export commands expect the completed training bundle format.
 For a new training run, use its `model/` directory directly.
+To add Transformers Auto loaders to a local package, run:
+
+```bash
+python scripts/export_hf.py --model_dir=/path/to/model/package \
+  --output_dir=/path/to/transformers/package
+```
+
+This command preserves the weights and adds the tokenizer, classifier code, and Auto mappings.
+Use a separate, empty output directory.
+The exported package also works with `inference.py`.
+For a Hub repository with model subdirectories, use `--hub_dir=/path/to/hub/root` to stage the shared code and model card.
 
 Start the server with a model package:
 
