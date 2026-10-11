@@ -2,7 +2,8 @@ cff-version: 1.2.0
 message: "Cite this project when you use its code or dataset. See LICENSE for the citation requirement."
 title: "Chandassu Recognition: Telugu Poetic Meter Classification"
 authors:
-  - family-names: "Pranav"
+  - family-names: "Surampudi"
+    given-names: "Pranav"
 type: software
 version: "1.0.0"
 date-released: "2026-10-11"

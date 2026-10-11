@@ -1,8 +1,6 @@
 """Single-seed selection and equal calibrated-probability ensembles."""
 
-import json
 import time
-from pathlib import Path
 
 import numpy as np
 
@@ -27,11 +25,12 @@ class ModelCollection:
         if strategy not in {"single", "ensemble"} or strategy == "ensemble" and len(self.members) < 2:
             raise ValueError("Ensemble strategy requires at least two distinct model packages")
         self.default_strategy = "ensemble" if strategy == "ensemble" else self.ids[0]
-        self.example = ""
-        example_path = Path(__file__).parents[3] / "data/v1/train.jsonl"
-        if example_path.exists():
-            with example_path.open() as handle:
-                self.example = "\n".join(json.loads(next(handle))["lines"])
+        self.example = (
+            "శ్రీ కైవల్య పదంబుఁ జేరుటకునై చింతించెదన్ లోక ర\n"
+            "క్షైకారంభకు, భక్త పాలన కళా సంరంభకున్, దానవో\n"
+            "ద్రేకస్తంభకుఁ, గేళి లోల విలసద్దృగ్జాల సంభూత నా\n"
+            "నా కంజాత భవాండ కుంభకు, మహానందాంగనాడింభకున్."
+        )
 
     def info(self):
         info = self.members[0].info()

@@ -6,6 +6,8 @@ Chandassu Recognition identifies four Telugu poetic meters:
 The project provides a character CNN and a ByT5 encoder classifier.
 Both models were trained on an **NVIDIA H100 NVL**.
 Use the CNN when you need a smaller model.
+You can train several models with different seeds and hyperparameters.
+You can then use those models together as an ensemble.
 
 Each poem has four lines and one meter label.
 The model calculates class probabilities for each line.
@@ -40,8 +42,8 @@ python train.py --model_type=cnn
 python train.py --model_type=byt5
 ```
 
-Each command trains one model with the recorded H100 settings.
-It uses the same training, validation, and calibration poems as the final H100 run.
+Each command trains one model with the final model hyperparameters.
+It uses the same training, validation, and calibration poems as the final models.
 The script prints the settings before training starts.
 
 ### Change the settings
@@ -67,6 +69,27 @@ Each poem supplies four lines.
 The microbatch size is the number of poems processed at one time.
 The effective batch size is the number of poems used for one weight update.
 The effective batch size must be a multiple of the microbatch size.
+
+### Train an ensemble
+
+Train each model separately with its own seed and output directory.
+You can also change the hyperparameters for each model:
+
+```bash
+python train.py --model_type=cnn --seed=17 --learning_rate=0.0001 \
+  --output_dir=runs/cnn-seed-17
+
+python train.py --model_type=cnn --seed=42 --learning_rate=0.0002 \
+  --output_dir=runs/cnn-seed-42
+```
+
+Use distinct seeds and the same model type for all ensemble members.
+Load the completed model packages together:
+
+```bash
+python inference.py --model_dirs runs/cnn-seed-17/model runs/cnn-seed-42/model \
+  --strategy=ensemble --port=8765
+```
 
 ### Save and resume training
 
@@ -116,12 +139,13 @@ python train.py --model_type=cnn --mode=cross_validate --folds=3 \
 
 Each fold uses the supplied settings.
 The script keeps works together and uses only training and validation data.
-This procedure differs from the original H100 experiment.
+This procedure differs from the original experiment.
 Its scores are validation scores for the selected checkpoints.
 
 ## Data and sources
 
-The four-class dataset contains **11,518 poems** and **46,072 lines** from **36 works**.
+The poems come from [AndhraBharati](https://andhrabharati.com/) and [Telugu Wikisource](https://te.wikisource.org/).
+The four-class dataset contains **11,518 poems** and **46,072 lines** from **36 distinct works**.
 
 | Dataset | Poems | Lines | Works |
 |---|---:|---:|---:|
@@ -130,7 +154,7 @@ The four-class dataset contains **11,518 poems** and **46,072 lines** from **36 
 | Historical test | 2,234 | 8,936 | 6 |
 | **Total** | **11,518** | **46,072** | **36** |
 
-The final H100 runs use **6,517 poems** to update model weights.
+The final models use **6,517 poems** to update model weights.
 These poems contain **26,068 lines**.
 A separate set of **908 poems**, or **3,632 lines**, adjusts the output probabilities through temperature calibration.
 These 908 poems come from the training dataset shown above.
@@ -144,9 +168,8 @@ A work and its related editions stay together.
 Works with duplicate lines also stay together, including duplicates with different spacing.
 Some authors occur in more than one dataset.
 
-The poems come from [AndhraBharati](https://andhrabharati.com/) and [Telugu Wikisource](https://te.wikisource.org/).
-[data/v1/WORKS.md](data/v1/WORKS.md) lists all 46 collected works, authors, source links, and poem counts.
-Of these works, 36 supply poems for the four target classes.
+[data/v1/WORKS.md](data/v1/WORKS.md) describes the larger collection of **46 works**.
+It includes authors, source links, poem counts, and additional data excluded from the four-class dataset.
 Poems from other classes and poems without a known class are excluded from model training.
 
 ## Model architectures
@@ -171,7 +194,7 @@ The encoder produces token features, and the classification layer predicts one o
 The base model is [`google/byt5-small`](https://huggingface.co/google/byt5-small).
 The configuration specifies revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`.
 
-### H100 training settings
+### Training hyperparameters
 
 | Setting | CNN | ByT5 |
 |---|---:|---:|
@@ -211,7 +234,7 @@ All training settings are available as command-line options.
 
 ## Results
 
-[results/v1](results/v1) contains the H100 results for all three folds and all six final models.
+[results/v1](results/v1) contains the final results for all three folds and all six final models.
 It includes training histories, class scores, work scores, tables, and figures.
 
 | Measure | CNN | ByT5 |
@@ -256,7 +279,7 @@ python scripts/export_model.py --bundle /path/to/stored/models \
   --model_type=byt5 --seed=17 --output_dir=models/byt5
 ```
 
-These export commands expect the completed H100 bundle format.
+These export commands expect the completed training bundle format.
 For a new training run, use its `model/` directory directly.
 
 Start the server with a model package:
@@ -386,7 +409,7 @@ Use this BibTeX entry:
 
 ```bibtex
 @misc{pranav2026chandassu,
-  author = {Pranav},
+  author = {Pranav Surampudi},
   title = {Chandassu Recognition: Telugu Poetic Meter Classification},
   year = {2026},
   howpublished = {\url{https://github.com/Pranav-20186017/chandassu_recognition}},
