@@ -180,8 +180,8 @@ Poems from other classes and poems without a known class are excluded from model
 
 ![Character CNN architecture](docs/images/cnn-architecture.svg)
 
-The CNN has **68,420 parameters** with the **92-token vocabulary** built from its training poems.
-The vocabulary includes padding and unknown-character tokens.
+The CNN has **68,420 parameters** with the **92-character vocabulary** built from its training poems.
+The embedding table adds padding and unknown-character tokens, for 94 tokens in total.
 Three convolution branches process each line with different kernel sizes.
 Each branch supplies 64 features to the classification layer.
 
