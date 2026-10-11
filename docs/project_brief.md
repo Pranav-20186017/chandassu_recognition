@@ -18,6 +18,12 @@ Both supported implementations must remain reproducible with explicit seeds, dat
 partitions, hyperparameters, checkpoints and runtime metadata. Default commands run
 one fit. Optional plain work-grouped folds use a fixed supplied configuration and
 explicit fit budget; there is no nested CV or automatic rate search in the supported trainer.
+CNN replicates reuse one fixed recipe across explicit seeds and the same frozen final
+partitions. Rank single models on selected-checkpoint validation poem Macro F1 with
+unweighted validation line CE as the tie-break, then evaluate test. Each model fits
+its temperature on separate calibration works. Keep every replica for local use;
+the validation winner is the CNN-only Hub candidate. A predetermined equal-probability
+ensemble may be reported without using test to choose members or mixture weights.
 See README.md and results/v1 for the completed architectures, settings and evidence.
 
 ## Model B: structured prosody, future work

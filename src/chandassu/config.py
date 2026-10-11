@@ -44,6 +44,7 @@ class TrainConfig:
     split_seed: int = 142
     mode: str = "train"
     folds: int = 3
+    seeds: tuple = (17, 42, 73)
     resume: bool = False
     init_checkpoint: str | None = None
 
@@ -61,10 +62,16 @@ class TrainConfig:
                 raise ValueError(f"{spec.name} must be a string")
         if not isinstance(self.kernel_sizes, (tuple, list)) or any(type(k) is not int for k in self.kernel_sizes):
             raise ValueError("kernel_sizes must be an integer list")
+        if (not isinstance(self.seeds, (tuple, list)) or len(self.seeds) < 2
+                or any(type(seed) is not int or not 0 <= seed < 2**32 for seed in self.seeds)
+                or len(set(self.seeds)) != len(self.seeds)):
+            raise ValueError("seeds must contain at least two distinct integer seeds in [0, 2**32)")
         if self.init_checkpoint is not None and not isinstance(self.init_checkpoint, str):
             raise ValueError("init_checkpoint must be a path string")
-        if self.model_type not in {"cnn", "byt5"} or self.mode not in {"train", "cross_validate"}:
+        if self.model_type not in {"cnn", "byt5"} or self.mode not in {"train", "cross_validate", "replicates"}:
             raise ValueError("Unsupported model type or execution mode")
+        if self.mode == "replicates" and (self.model_type != "cnn" or self.init_checkpoint or not self.split_manifest):
+            raise ValueError("Replicates require CNN, a frozen split_manifest and fresh initialization")
         if not 0 <= self.seed < 2**32 or not 0 <= self.split_seed < 2**32:
             raise ValueError("Seeds must be in [0, 2**32)")
         for name in (
@@ -102,12 +109,13 @@ class TrainConfig:
         if self.device not in {"auto", "cuda", "mps", "cpu"} or self.precision not in {"auto", "bf16", "fp32"}:
             raise ValueError("Unsupported device or precision")
         if not self.output_dir:
-            self.output_dir = f"runs/{self.model_type}-seed-{self.seed}"
+            self.output_dir = ("runs/cnn-replicates" if self.mode == "replicates"
+                               else f"runs/{self.model_type}-seed-{self.seed}")
         return self
 
 
 def parser():
-    result = argparse.ArgumentParser(description="Train one CNN or ByT5 model; optional plain work-grouped CV.")
+    result = argparse.ArgumentParser(description="Train CNN/ByT5; optional fixed-split CNN replicates or plain grouped CV.")
     result.add_argument("--model_type", required=True, choices=("cnn", "byt5"))
     result.add_argument("--config", type=Path, help="Flat JSON preset; explicit CLI flags override it")
     defaults = TrainConfig()
@@ -116,7 +124,7 @@ def parser():
         if name == "model_type":
             continue
         kwargs = {"default": argparse.SUPPRESS}
-        if name == "kernel_sizes":
+        if name in {"kernel_sizes", "seeds"}:
             kwargs.update(type=int, nargs="+")
         elif isinstance(value, bool):
             kwargs.update(action=argparse.BooleanOptionalAction)

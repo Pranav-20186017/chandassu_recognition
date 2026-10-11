@@ -495,7 +495,12 @@ Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
 
 ### CNN training on GX10 / GB10
 
-From a fresh clone, use the existing Dockerfile's GX10 target with Docker and GPU access enabled:
+Reuse the H100-selected CNN recipe: initial LR **0.0001**, seeds **17, 42, 73**.
+H100 searched three rates using seed 17 and repeated the winning rate at the other
+seeds. It did not establish an independently optimal LR per seed. We reuse that fixed
+recipe on v2 without another rate search or the earlier nested-fold study.
+
+From a fresh clone, use the existing Dockerfile's GX10 target with Docker/GPU access enabled:
 
 ```bash
 docker build --platform=linux/arm64 --target=gx10 -t chandassu:gx10 .
@@ -504,30 +509,66 @@ docker run --rm --gpus all --ipc=host --user "$(id -u):$(id -g)" \
   -v "$PWD:/app" -w /app chandassu:gx10
 ```
 
-The default command trains a fresh CNN with `configs/cnn.json` on the combined `data/v2`
-partitions and writes `runs/cnn-v2-combined`. It prints all partition counts before fitting.
-The target retains NVIDIA PyTorch/CUDA from `nvcr.io/nvidia/pytorch:25.11-py3`, the base
-used in the successful GX10 trial. Application dependencies use the pyproject pins in
-an isolated environment. USER/LOGNAME and a writable cache address the previous UID error.
-This ARM64 target replaces the x86 CUDA wheel installation on GX10. It has not been
-built locally because the local Docker daemon is stopped; the original GPU base was
-verified by the completed GX10 trial. Runtime versions are recorded with the run.
+This runs `train.py --model_type=cnn --config=configs/cnn.json --mode=replicates`
+with output `runs/cnn-v2-replicates`, CUDA/BF16, and three fresh CNNs. All reuse the
+same 7,575 fitting, 1,859 validation, 908 calibration, and 2,953 test poems. Each CNN
+fits its own temperature on the separate calibration works after checkpoint selection.
+The 908 calibration poems are inside canonical train but never update CNN weights.
+The scheduler can reduce the initial LR; the fixed recipe is not a rate search.
+A normal `--mode=train` command still trains one model.
 
-After training, evaluate the frozen test set:
+The run writes `seed-17/`, `seed-42/`, and `seed-73/`, each with all checkpoints,
+history, a native inference package and `test.json`. `replicate_plan.json` fixes the
+settings/partitions before fitting. After all three finish, `selection.json` records
+the single winner using selected-checkpoint validation poem Macro F1, unweighted
+validation line CE as a tie-break, and seed as a deterministic final tie-break.
+Test scores never choose that winner. All three are then evaluated on the combined
+test and its two cohorts. `ensemble-test.json` evaluates a predetermined equal-probability
+ensemble of all three separately calibrated packages; it does not optimize membership
+or weights on test. The top single model is the Hugging Face candidate. The other
+models remain available for backups or optional local ensemble inference.
+
+A complete `runs/cnn-v2-replicates.tar.gz` is created automatically after test evaluation.
+It includes every model/checkpoint/report and the exact prepared corpus. On your Mac,
+copy it from the fresh clone (adjust the remote repository directory if needed):
+
+```bash
+scp -i ~/.ssh/pranav_ed \
+  pranav@100.98.23.103:~/chandassu-clean/runs/cnn-v2-replicates.tar.gz \
+  /Users/pranav/code/chandassu_recognition/runs/
+```
+
+For an interrupted batch of runs, repeat the Docker command with this explicit command:
 
 ```bash
 docker run --rm --gpus all --ipc=host --user "$(id -u):$(id -g)" \
   -e USER="$(id -un)" -e LOGNAME="$(id -un)" \
   -v "$PWD:/app" -w /app chandassu:gx10 \
-  python scripts/evaluate.py --model_dir=runs/cnn-v2-combined/model \
-  --data_dir=data/v2 --output=runs/cnn-v2-combined/test.json
-tar -czf runs/gx10-cnn-v2-combined.tar.gz runs/cnn-v2-combined
+  python train.py --model_type=cnn --config=configs/cnn.json --mode=replicates \
+  --output_dir=runs/cnn-v2-replicates --device=cuda --precision=bf16 --resume
 ```
 
-Resume an interrupted run by repeating the Docker command with an explicit command:
-`python train.py --model_type=cnn --config=configs/cnn.json --output_dir=runs/cnn-v2-combined --device=cuda --precision=bf16 --resume`.
-Use validation poem Macro F1 for checkpoint selection; test scores never choose settings.
-The new model and CNN-only model card update remain pending until the returned run is reviewed.
+Resume verifies completed models, continues an interrupted seed, and starts any seed
+not reached yet. Data, code, settings and runtime must match. Test reports are recomputed
+after all models are complete, without changing the frozen validation-selected winner.
+
+The target retains NVIDIA PyTorch/CUDA from `nvcr.io/nvidia/pytorch:25.11-py3`, the base
+used in the successful GX10 trial. Application dependencies use the pyproject pins in
+an isolated environment. USER/LOGNAME and a writable cache address the previous UID error.
+The new image has not been built locally because the local Docker daemon is stopped;
+the original GPU base was verified by the completed trial. Runtime versions are recorded.
+
+After the returned models are reviewed, use the package listed in `selection.json`
+for a CNN-only Hugging Face export and model card update. ByT5 stays unchanged.
+For local ensemble inference after extracting the archive on your Mac:
+
+```bash
+python inference.py \
+  --model_dirs runs/cnn-v2-replicates/seed-17/model \
+               runs/cnn-v2-replicates/seed-42/model \
+               runs/cnn-v2-replicates/seed-73/model \
+  --strategy=ensemble --port=8765
+```
 
 ### Training on a CUDA GPU
 

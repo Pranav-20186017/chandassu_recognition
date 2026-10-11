@@ -75,6 +75,6 @@ COPY data/v2 ./data/v2
 ENV PATH="/opt/chandassu-env/bin:$PATH" PYTHONPATH=/app/src \
     PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     HF_HOME=/tmp/chandassu-huggingface TORCHINDUCTOR_CACHE_DIR=/tmp/chandassu-inductor
-CMD ["python", "train.py", "--model_type=cnn", "--config=configs/cnn.json", "--output_dir=runs/cnn-v2-combined", "--device=cuda", "--precision=bf16"]
+CMD ["python", "train.py", "--model_type=cnn", "--config=configs/cnn.json", "--mode=replicates", "--output_dir=runs/cnn-v2-replicates", "--device=cuda", "--precision=bf16"]
 
 FROM cpu AS release

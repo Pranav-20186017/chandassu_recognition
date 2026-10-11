@@ -3,16 +3,20 @@
 import argparse
 from pathlib import Path
 
+import numpy as np
+
 from chandassu import LABEL_TO_ID
 from chandassu.data import Corpus, assert_isolated, read_poems
-from chandassu.evaluation.metrics import line_poem_metrics
+from chandassu.evaluation.metrics import line_poem_metrics, softmax
 from chandassu.inference.predictor import Predictor
 from chandassu.io import atomic_json
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model_dir", required=True)
+    models = parser.add_mutually_exclusive_group(required=True)
+    models.add_argument("--model_dir")
+    models.add_argument("--model_dirs", nargs="+", help="Equal calibrated-probability ensemble of distinct CNN seeds")
     parser.add_argument("--data_dir", default="data/v1")
     parser.add_argument("--input", help="Optional independent four-line poem JSONL")
     parser.add_argument("--output", required=True)
@@ -22,13 +26,30 @@ def main(argv=None):
     development = corpus.poems("train") + corpus.poems("validation")
     poems = read_poems(args.input) if args.input else corpus.poems("test")
     assert_isolated({"development": development, "diagnostic": poems}, require_all_classes=False)
-    predictor = Predictor(args.model_dir)
+    predictors = [Predictor(folder) for folder in (args.model_dirs or [args.model_dir])]
+    if args.model_dirs:
+        seeds = [p.metadata.get("seed") for p in predictors]
+        if (len(predictors) < 2 or any(p.config["model_type"] != "cnn" for p in predictors)
+                or None in seeds or len(set(seeds)) != len(seeds)):
+            raise ValueError("Ensemble requires at least two CNN packages with distinct seeds")
     evaluation_ids = {p.poem_id for p in poems}
-    for partition in predictor.metadata.get("partitions", {}).values():
-        if evaluation_ids.intersection(partition["poem_ids"]):
-            raise ValueError("Evaluation IDs overlap model development partitions")
-    print(f"Evaluating {len(poems):,} complete poems on {predictor.device}", flush=True)
-    logits = predictor.logits([t for p in poems for t in p.lines], args.batch_size)
+    for predictor in predictors:
+        for partition in predictor.metadata.get("partitions", {}).values():
+            if evaluation_ids.intersection(partition["poem_ids"]):
+                raise ValueError("Evaluation IDs overlap model development partitions")
+    print(f"Evaluating {len(poems):,} complete poems with {len(predictors)} model(s) on CPU", flush=True)
+    lines = [t for p in poems for t in p.lines]
+    if len(predictors) == 1:
+        logits = predictors[0].logits(lines, args.batch_size)
+        temperature = predictors[0].config["temperature"]
+        model_info = predictors[0].info()
+    else:
+        probabilities = np.mean([
+            softmax(p.logits(lines, args.batch_size), p.config["temperature"]) for p in predictors
+        ], axis=0)
+        logits, temperature = np.log(np.maximum(probabilities, 1e-300)), 1.0
+        model_info = {"strategy": "ensemble", "mixture": "Equal calibrated line probabilities",
+                      "members": [p.info() for p in predictors]}
     targets = [LABEL_TO_ID[p.label] for p in poems for _ in p.lines]
     grouped_logits = logits.reshape(-1, 4, 4)
     work_metrics = {}
@@ -36,7 +57,7 @@ def main(argv=None):
         indices = [i for i, poem in enumerate(poems) if poem.source == work]
         work_targets = [LABEL_TO_ID[poems[i].label] for i in indices for _ in range(4)]
         work_metrics[work] = line_poem_metrics(
-            grouped_logits[indices].reshape(-1, 4), work_targets, predictor.config["temperature"]
+            grouped_logits[indices].reshape(-1, 4), work_targets, temperature
         )
     cohort_metrics = {}
     cohorts = corpus.manifest.get("test_cohorts", {}) if not args.input else {}
@@ -49,13 +70,13 @@ def main(argv=None):
             indices = [i for i, poem in enumerate(poems) if poem.poem_id in ids]
             ys = [LABEL_TO_ID[poems[i].label] for i in indices for _ in range(4)]
             cohort_metrics[name] = line_poem_metrics(
-                grouped_logits[indices].reshape(-1, 4), ys, predictor.config["temperature"]
+                grouped_logits[indices].reshape(-1, 4), ys, temperature
             )
-    metrics = line_poem_metrics(logits, targets, predictor.config["temperature"])
+    metrics = line_poem_metrics(logits, targets, temperature)
     atomic_json(
         Path(args.output),
         {
-            "model": predictor.info(),
+            "model": model_info,
             "role": "Independent input" if args.input else "Held-out benchmark; already inspected on earlier models",
             "metrics": metrics,
             "work_metrics": work_metrics,

@@ -1,4 +1,5 @@
 import json
+import tarfile
 from dataclasses import replace
 
 import numpy as np
@@ -10,9 +11,10 @@ from transformers import T5Config
 from chandassu import LABELS
 from chandassu.artifacts import load_package
 from chandassu.config import TrainConfig, resolve
-from chandassu.data import Corpus, Poem, assert_isolated, normalize_text, plain_folds, work_groups
+from chandassu.data import Corpus, Poem, assert_isolated, normalize_text, plain_folds, poem_dict, work_groups
 from chandassu.evaluation.metrics import fit_temperature, line_poem_metrics, softmax
 from chandassu.inference.server import create_app
+from chandassu.io import atomic_json, sha256
 from chandassu.models.encoding import vocabulary_for
 from chandassu.models.factory import build_model
 from chandassu.training.engine import train_fit
@@ -153,6 +155,92 @@ def test_evaluation_reports_both_fixed_test_cohorts(tmp_path, monkeypatch):
     Model.metadata = {"partitions": {"fit": {"poem_ids": [test[0].poem_id]}}}
     with pytest.raises(ValueError, match="overlap model development"):
         evaluate.main(["--model_dir", str(tmp_path), "--data_dir=data/v2", "--output", str(output)])
+
+
+def test_fixed_cnn_replicates_select_before_test_resume_and_package_all(tmp_path, monkeypatch):
+    import train
+    from chandassu.evaluation.metrics import classification
+    from chandassu.inference.collection import ModelCollection
+    from scripts import evaluate
+
+    data = tmp_path / "data"
+    data.mkdir()
+    parts = {"fit": poems("fit", 2), "selection": poems("selection"), "calibration": poems("calibration")}
+    test = poems("test")
+    for role, rows in {"train": parts["fit"] + parts["calibration"],
+                       "validation": parts["selection"], "test": test}.items():
+        (data / f"{role}.jsonl").write_text("".join(json.dumps(poem_dict(p)) + "\n" for p in rows))
+    atomic_json(data / "manifest.json", {"schema_version": 2, "labels": list(LABELS),
+                                        "files": {name: sha256(data / name) for name in (
+                                            "train.jsonl", "validation.jsonl", "test.jsonl")}})
+    corpus = Corpus(data)
+    output = tmp_path / "replicates"
+    settings = replace(config("cnn"), mode="replicates", split_manifest="fixed.json", data_dir=str(data))
+    actual_fit = train.train_fit
+    actual_evaluate = evaluate.main
+    fitted = []
+
+    def checked_fit(child, rows, folder):
+        assert rows == parts
+        assert child.learning_rate == settings.learning_rate and child.init_checkpoint is None
+        fitted.append(child.seed)
+        return actual_fit(child, rows, folder)
+
+    def checked_evaluate(args):
+        assert fitted[-3:] == [17, 42, 73]
+        selection = json.loads((output / "selection.json").read_text())
+        assert selection["test_used_for_selection"] is False
+        assert len(selection["members"]) == 3
+        return actual_evaluate(args)
+
+    monkeypatch.setattr(train, "train_fit", checked_fit)
+    monkeypatch.setattr(evaluate, "main", checked_evaluate)
+    selection = train.train_replicates(settings, corpus, parts, output)
+    assert fitted == [17, 42, 73]
+    assert selection["best_single"] == min(selection["members"], key=lambda m: (
+        -m["validation_poem_macro_f1"], m["validation_line_ce"], m["seed"]))
+    assert selection["huggingface_candidate"] == selection["best_single"]["model_dir"]
+    folders = [output / f"seed-{seed}/model" for seed in (17, 42, 73)]
+    before = [sha256(folder / "model.safetensors") for folder in folders]
+    for seed in (17, 42, 73):
+        result = json.loads((output / f"seed-{seed}/result.json").read_text())
+        assert result["calibration"]["poems"] == len(parts["calibration"])
+        assert (output / f"seed-{seed}/test.json").is_file()
+    # The evaluation ensemble must match the existing local inference ensemble.
+    collection = ModelCollection(folders, strategy="ensemble")
+    predicted = [collection.predict("\n".join(p.lines)) for p in test]
+    probabilities = np.array([[c["probability"] for c in p["classes"]] for p in predicted])
+    expected = classification(np.array([LABELS.index(p.label) for p in test]), probabilities)
+    report = json.loads((output / "ensemble-test.json").read_text())
+    assert report["metrics"]["poem"]["confusion_matrix"] == expected["confusion_matrix"]
+    assert report["metrics"]["poem"]["cross_entropy"] == pytest.approx(expected["cross_entropy"])
+    with tarfile.open(tmp_path / "replicates.tar.gz") as archive:
+        names = archive.getnames()
+        assert "runs/replicates/selection.json" in names and "data/data/manifest.json" in names
+        for seed in (17, 42, 73):
+            assert f"runs/replicates/seed-{seed}/model/model.safetensors" in names
+            assert f"runs/replicates/seed-{seed}/best.pt" in names
+            assert f"runs/replicates/seed-{seed}/last.pt" in names
+    # Completed seeds are verified on resume without further optimizer updates.
+    import chandassu.training.engine as engine
+
+    monkeypatch.setattr(engine, "backward_window", lambda *_a, **_k: pytest.fail("Completed replica retrained"))
+    assert train.train_replicates(replace(settings, resume=True), corpus, parts, output) == selection
+    assert [sha256(folder / "model.safetensors") for folder in folders] == before
+    with pytest.raises(ValueError, match="plan changed"):
+        train.train_replicates(replace(settings, resume=True, learning_rate=0.0003), corpus, parts, output)
+
+
+def test_replicate_arguments_reject_repeated_seeds_byt5_and_initialization():
+    args = ["--model_type=cnn", "--config=configs/cnn.json", "--mode=replicates"]
+    assert resolve(args).seeds == (17, 42, 73)
+    assert resolve(args + ["--seeds", "42", "73"]).seeds == [42, 73]
+    with pytest.raises(ValueError, match="distinct integer seeds"):
+        resolve(args + ["--seeds", "17", "17"])
+    with pytest.raises(ValueError, match="fresh initialization"):
+        resolve(args + ["--init_checkpoint=old-model"])
+    with pytest.raises(ValueError, match="require CNN"):
+        resolve(["--model_type=byt5", "--mode=replicates"])
 
 
 @pytest.mark.parametrize("arm", ["cnn", "byt5"])
