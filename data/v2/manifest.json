@@ -1,0 +1,105 @@
+{
+  "counts": {
+    "test": {
+      "authors": 5,
+      "classes": {
+        "ఉత్పలమాల": 749,
+        "చంపకమాల": 583,
+        "మత్తేభము": 579,
+        "శార్దూలం": 323
+      },
+      "lines": 8936,
+      "poems": 2234,
+      "works": 6
+    },
+    "train": {
+      "authors": 50,
+      "classes": {
+        "ఉత్పలమాల": 2786,
+        "చంపకమాల": 2953,
+        "మత్తేభము": 2137,
+        "శార్దూలం": 1326
+      },
+      "lines": 36808,
+      "poems": 9202,
+      "works": 60
+    },
+    "validation": {
+      "authors": 4,
+      "classes": {
+        "ఉత్పలమాల": 585,
+        "చంపకమాల": 648,
+        "మత్తేభము": 423,
+        "శార్దూలం": 203
+      },
+      "lines": 7436,
+      "poems": 1859,
+      "works": 4
+    }
+  },
+  "files": {
+    "EXPANSION.json": "e19fb90f253490d72227ee8de10338c34cf3e4218b29ea28db5e497dc530d454",
+    "README.md": "a3027fb4b629ee230b2c0339c4db781f4c1f8f3320c7dafa543f7213d474707d",
+    "WORKS.md": "3993799113f0a700be5825d79387a77c50c77a9a0990d0ba592cf4cee7e1b4d9",
+    "splits/train_expansion.json": "d33d2b58a20a374be08ffbdb533eb3301000e06238d598ae943a8c90ac33baf4",
+    "test.jsonl": "362e4de7679f7d481731223e335b696e00f05df4f9475ed968b9e1e70f713c6b",
+    "train.jsonl": "dfee867a3facfab1530dd883334855aef352aa0a119a58c65db0d4077b3a3273",
+    "validation.jsonl": "304089a12a1ba111962b1cf1a9a6a06933e8c78f6eddaccc5a8f89c50bdb4485",
+    "works.json": "ebf05029e267279be59ba591bb35e225f86d477ad1d6409c60f21630f2add61d"
+  },
+  "labels": [
+    "ఉత్పలమాల",
+    "చంపకమాల",
+    "మత్తేభము",
+    "శార్దూలం"
+  ],
+  "parent_manifest_sha256": "5bdf0670dcfb1ab8ca14e10af9e88ea3fd8bee2f65004912d26af654069056d1",
+  "parent_version": "v1",
+  "partition_counts": {
+    "calibration": {
+      "authors": 4,
+      "classes": {
+        "ఉత్పలమాల": 324,
+        "చంపకమాల": 276,
+        "మత్తేభము": 194,
+        "శార్దూలం": 114
+      },
+      "lines": 3632,
+      "poems": 908,
+      "works": 4
+    },
+    "fit": {
+      "authors": 46,
+      "classes": {
+        "ఉత్పలమాల": 2462,
+        "చంపకమాల": 2677,
+        "మత్తేభము": 1943,
+        "శార్దూలం": 1212
+      },
+      "lines": 33176,
+      "poems": 8294,
+      "works": 56
+    },
+    "selection": {
+      "authors": 4,
+      "classes": {
+        "ఉత్పలమాల": 585,
+        "చంపకమాల": 648,
+        "మత్తేభము": 423,
+        "శార్దూలం": 203
+      },
+      "lines": 7436,
+      "poems": 1859,
+      "works": 4
+    }
+  },
+  "policy": {
+    "authors_disjoint": false,
+    "expert_gold_available": false,
+    "new_data_role": "fit only",
+    "split_unit": "Work and edition, entire poem",
+    "text_changes": "V1 unchanged; new text from explicit HTML verse boundaries with footnote removal and whitespace cleanup",
+    "v1_partitions": "All original roles preserved; validation/test files byte-identical"
+  },
+  "schema_version": 2
+}
