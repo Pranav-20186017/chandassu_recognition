@@ -4,7 +4,8 @@ Chandassu Recognition identifies four Telugu poetic meters:
 **ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం**.
 
 The project provides a character CNN and a ByT5 encoder classifier.
-Both models were trained on an **NVIDIA H100 NVL**.
+The published v1 models were trained on an **NVIDIA H100 NVL**.
+The expanded CNN corpus is ready for GX10 training; ByT5 remains unchanged.
 Use the CNN when you need a smaller model.
 You can train several models with different seeds and hyperparameters.
 You can then use those models together as an ensemble.
@@ -40,12 +41,13 @@ CNN training does not require a model download.
 Run one of these commands:
 
 ```bash
-python train.py --model_type=cnn
+python train.py --model_type=cnn --config=configs/cnn.json --output_dir=runs/cnn-v2-combined
 python train.py --model_type=byt5
 ```
 
 Each command trains one model with the final model hyperparameters.
-It uses the same training, validation, and calibration poems as the final models.
+The CNN preset uses v1 plus the new v2 fitting works and retains the original validation/calibration.
+ByT5 uses the original v1 partitions. Both keep all test works out of training and selection.
 The script prints the settings before training starts.
 
 ### Change the settings
@@ -147,23 +149,33 @@ Its scores are validation scores for the selected checkpoints.
 ## Data and sources
 
 The poems come from [AndhraBharati](https://andhrabharati.com/) and [Telugu Wikisource](https://te.wikisource.org/).
-The four-class dataset contains **11,518 poems** and **46,072 lines** from **36 distinct works**.
+The combined four-class dataset in `data/v2` contains **13,295 poems** and **53,180 lines** from **70 distinct works**.
+V2 already includes v1; do not concatenate them.
 
 | Dataset | Poems | Lines | Works |
 |---|---:|---:|---:|
-| Training | 7,425 | 29,700 | 26 |
+| Training, including calibration | 8,483 | 33,932 | 53 |
 | Validation | 1,859 | 7,436 | 4 |
-| Historical test | 2,234 | 8,936 | 6 |
-| **Total** | **11,518** | **46,072** | **36** |
+| Holdout test | 2,953 | 11,812 | 13 |
+| **Total** | **13,295** | **53,180** | **70** |
 
-The final models use **6,517 poems** to update model weights.
-These poems contain **26,068 lines**.
+The expanded CNN uses **7,575 poems** (**30,300 lines**) to update model weights: all
+6,517 original fitting poems plus 1,058 new poems from 27 works. Validation is unchanged.
 A separate set of **908 poems**, or **3,632 lines**, adjusts the output probabilities through temperature calibration.
 These 908 poems come from the training dataset shown above.
 
 Validation scores determine which checkpoint to save.
 Calibration adjusts the probabilities after checkpoint selection.
-The training script does not use the historical test data.
+The single test file contains the original 2,234 test poems plus 719 poems from seven
+new works frozen before the GX10 trial. None enter training, vocabulary fitting,
+validation or calibration. Both cohorts were previously evaluated on earlier models;
+this is a fixed benchmark, not a fresh blind study. The evaluation script reports
+the combined score and each cohort separately.
+
+The completed GX10 trial already used this exact fitting/validation/calibration set.
+Retraining is a fresh run on the same examples; growth is relative to the v1 baseline.
+The published CNN/ByT5 results below remain v1 results until the new CNN is reviewed.
+See [data/v2/WORKS.md](data/v2/WORKS.md) for the new work assignments.
 
 All four lines of a poem stay in the same dataset.
 A work and its related editions stay together.
@@ -174,13 +186,36 @@ Some authors occur in more than one dataset.
 It includes authors, source links, poem counts, and additional data excluded from the four-class dataset.
 Poems from other classes and poems without a known class are excluded from model training.
 
+### Expanded trial compared with the released baseline
+
+CPU inference evaluated both native CNN packages on exactly the same poems.
+Validation remains checkpoint-selected; the test cohorts were already inspected on earlier models.
+
+| Poem Macro F1 | Released v1 CNN | Returned GX10 expanded trial |
+|---|---:|---:|
+| Validation (1,859 poems) | 0.998596 | 0.998596 |
+| Original test (2,234 poems) | 1.000000 | 1.000000 |
+| New-work test (719 poems) | 0.996042 | 0.996042 |
+| Combined test (2,953 poems) | 0.999084 | 0.999084 |
+
+Both models make the same three validation errors and the same three test errors.
+This trial shows no poem-level improvement over the released baseline. New-work line
+Macro F1 improves from 0.987509 to 0.988885; combined-test line Macro F1 decreases from
+0.992608 to 0.992291. The larger corpus does not establish an overall accuracy gain. Hardware/runtime
+and vocabulary differ, so this is an artifact comparison rather than a controlled causal study.
+The reviewed trial is not the published CNN; the fresh combined run is still pending.
+Its fit, validation and calibration assignments equal this trial's assignments.
+Baseline native weights SHA-256: `6d8d642f8b83343e6e98c90365b1449acf0fcedf430f4b4e727a01979aa4e95e`.
+Trial native weights SHA-256: `e2f0d7a084fe16dfda6dd95a6edd845fff99d1d105aef89056ce5d66b5ffffa0`.
+The detailed local comparison is preserved in ignored `runs/review-gx10-v2/baseline-comparison.json`.
+
 ## Model architectures
 
 ### Character CNN
 
 ![Character CNN architecture](docs/images/cnn-architecture.svg)
 
-The CNN has **68,420 parameters** with the **92-character vocabulary** built from its training poems.
+The published v1 CNN has **68,420 parameters** with the **92-character vocabulary** built from its training poems.
 The embedding table adds padding and unknown-character tokens, for 94 tokens in total.
 Three convolution branches process each line with different kernel sizes.
 Each branch supplies 64 features to the classification layer.
@@ -457,6 +492,42 @@ docker run --rm -p 127.0.0.1:8765:8765 \
 ```
 
 Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
+
+### CNN training on GX10 / GB10
+
+From a fresh clone, use the existing Dockerfile's GX10 target with Docker and GPU access enabled:
+
+```bash
+docker build --platform=linux/arm64 --target=gx10 -t chandassu:gx10 .
+docker run --rm --gpus all --ipc=host --user "$(id -u):$(id -g)" \
+  -e USER="$(id -un)" -e LOGNAME="$(id -un)" \
+  -v "$PWD:/app" -w /app chandassu:gx10
+```
+
+The default command trains a fresh CNN with `configs/cnn.json` on the combined `data/v2`
+partitions and writes `runs/cnn-v2-combined`. It prints all partition counts before fitting.
+The target retains NVIDIA PyTorch/CUDA from `nvcr.io/nvidia/pytorch:25.11-py3`, the base
+used in the successful GX10 trial. Application dependencies use the pyproject pins in
+an isolated environment. USER/LOGNAME and a writable cache address the previous UID error.
+This ARM64 target replaces the x86 CUDA wheel installation on GX10. It has not been
+built locally because the local Docker daemon is stopped; the original GPU base was
+verified by the completed GX10 trial. Runtime versions are recorded with the run.
+
+After training, evaluate the frozen test set:
+
+```bash
+docker run --rm --gpus all --ipc=host --user "$(id -u):$(id -g)" \
+  -e USER="$(id -un)" -e LOGNAME="$(id -un)" \
+  -v "$PWD:/app" -w /app chandassu:gx10 \
+  python scripts/evaluate.py --model_dir=runs/cnn-v2-combined/model \
+  --data_dir=data/v2 --output=runs/cnn-v2-combined/test.json
+tar -czf runs/gx10-cnn-v2-combined.tar.gz runs/cnn-v2-combined
+```
+
+Resume an interrupted run by repeating the Docker command with an explicit command:
+`python train.py --model_type=cnn --config=configs/cnn.json --output_dir=runs/cnn-v2-combined --device=cuda --precision=bf16 --resume`.
+Use validation poem Macro F1 for checkpoint selection; test scores never choose settings.
+The new model and CNN-only model card update remain pending until the returned run is reviewed.
 
 ### Training on a CUDA GPU
 

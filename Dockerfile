@@ -46,4 +46,35 @@ USER app
 EXPOSE 8765
 CMD ["python", "train.py", "--model_type=cnn", "--device=cuda", "--precision=bf16"]
 
+# The GX10/GB10 requires NVIDIA's ARM64 GPU framework build.
+FROM nvcr.io/nvidia/pytorch:25.11-py3 AS gx10
+WORKDIR /app
+COPY pyproject.toml README.md LICENSE NOTICE CITATION.cff ./
+RUN python -m venv --system-site-packages /opt/chandassu-env
+RUN /opt/chandassu-env/bin/python - <<'PY'
+import os
+import subprocess
+import sys
+import tomllib
+
+assert sys.version_info[:2] == (3, 12), "The project requires Python 3.12"
+with open("pyproject.toml", "rb") as handle:
+    dependencies = tomllib.load(handle)["project"]["dependencies"]
+dependencies = [requirement for requirement in dependencies if not requirement.startswith("torch==")]
+environment = os.environ.copy()
+environment.pop("PIP_CONSTRAINT", None)
+subprocess.check_call([sys.executable, "-m", "pip", "install", "--no-cache-dir", *dependencies], env=environment)
+import torch
+assert "nv25.11" in torch.__version__, "Retain NVIDIA's GPU-enabled PyTorch"
+PY
+COPY src ./src
+COPY train.py inference.py ./
+COPY scripts ./scripts
+COPY configs ./configs
+COPY data/v2 ./data/v2
+ENV PATH="/opt/chandassu-env/bin:$PATH" PYTHONPATH=/app/src \
+    PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
+    HF_HOME=/tmp/chandassu-huggingface TORCHINDUCTOR_CACHE_DIR=/tmp/chandassu-inductor
+CMD ["python", "train.py", "--model_type=cnn", "--config=configs/cnn.json", "--output_dir=runs/cnn-v2-combined", "--device=cuda", "--precision=bf16"]
+
 FROM cpu AS release

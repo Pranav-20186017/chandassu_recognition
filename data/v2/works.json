@@ -13,6 +13,9 @@
     "label_status": {
       "source_annotation": 104
     },
+    "partitions": {
+      "fit": 104
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 104
@@ -46,6 +49,9 @@
     "label_status": {
       "source_annotation": 228
     },
+    "partitions": {
+      "fit": 228
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 228
@@ -78,9 +84,12 @@
     "label_status": {
       "source_annotation": 186
     },
+    "partitions": {
+      "test": 186
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 186
+      "test": 186
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -112,6 +121,9 @@
     "label_status": {
       "rule_verified": 5,
       "source_annotation": 1021
+    },
+    "partitions": {
+      "test": 1026
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -149,6 +161,9 @@
     "label_status": {
       "source_annotation": 301
     },
+    "partitions": {
+      "fit": 301
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 301
@@ -179,6 +194,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 1463
+    },
+    "partitions": {
+      "selection": 1463
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -421,9 +439,12 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "test": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 2
+      "test": 2
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -450,6 +471,7 @@
     },
     "excluded_target_poems": 117,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -476,6 +498,9 @@
     "excluded_target_poems": 8,
     "label_status": {
       "source_annotation": 339
+    },
+    "partitions": {
+      "calibration": 339
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -511,6 +536,9 @@
     "label_status": {
       "source_annotation": 330
     },
+    "partitions": {
+      "calibration": 330
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 330
@@ -544,6 +572,9 @@
     "label_status": {
       "source_annotation": 104
     },
+    "partitions": {
+      "fit": 104
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 104
@@ -575,6 +606,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 3
+    },
+    "partitions": {
+      "fit": 3
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -608,6 +642,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -640,6 +677,9 @@
     "label_status": {
       "source_annotation": 81
     },
+    "partitions": {
+      "test": 81
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "test": 81
@@ -667,6 +707,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 3
+    },
+    "partitions": {
+      "fit": 3
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -699,6 +742,9 @@
     "label_status": {
       "source_annotation": 98
     },
+    "partitions": {
+      "fit": 98
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 98
@@ -730,6 +776,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -759,6 +808,9 @@
     "label_status": {
       "source_annotation": 93
     },
+    "partitions": {
+      "fit": 93
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 93
@@ -786,6 +838,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 3
+    },
+    "partitions": {
+      "fit": 3
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -816,6 +871,9 @@
     "label_status": {
       "source_annotation": 116
     },
+    "partitions": {
+      "fit": 116
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 116
@@ -840,6 +898,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 92
+    },
+    "partitions": {
+      "fit": 92
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -876,6 +937,9 @@
     "label_status": {
       "source_annotation": 98
     },
+    "partitions": {
+      "fit": 98
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 98
@@ -910,6 +974,9 @@
     "label_status": {
       "rule_inferred": 34
     },
+    "partitions": {
+      "fit": 34
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 34
@@ -937,6 +1004,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 101
+    },
+    "partitions": {
+      "fit": 101
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -973,6 +1043,9 @@
     "label_status": {
       "rule_inferred": 1
     },
+    "partitions": {
+      "fit": 1
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 1
@@ -1000,6 +1073,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 4
+    },
+    "partitions": {
+      "fit": 4
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1031,6 +1107,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 252
+    },
+    "partitions": {
+      "selection": 252
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1064,9 +1143,12 @@
     "label_status": {
       "source_annotation": 6
     },
+    "partitions": {
+      "test": 6
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 6
+      "test": 6
     },
     "source_coverage": "Six selected poems; not the complete play",
     "source_revision_urls": [],
@@ -1099,6 +1181,9 @@
       "rule_verified": 4,
       "source_annotation": 383
     },
+    "partitions": {
+      "test": 387
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "test": 387
@@ -1128,6 +1213,7 @@
     },
     "excluded_target_poems": 253,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -1236,9 +1322,12 @@
     "label_status": {
       "source_annotation": 1
     },
+    "partitions": {
+      "test": 1
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 1
+      "test": 1
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -1266,6 +1355,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 197
+    },
+    "partitions": {
+      "test": 197
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1299,6 +1391,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -1331,6 +1426,9 @@
     "label_status": {
       "source_annotation": 7
     },
+    "partitions": {
+      "fit": 7
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 7
@@ -1360,6 +1458,9 @@
     "label_status": {
       "source_annotation": 87
     },
+    "partitions": {
+      "fit": 87
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 87
@@ -1385,6 +1486,7 @@
     },
     "excluded_target_poems": 97,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -1407,6 +1509,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 99
+    },
+    "partitions": {
+      "fit": 99
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1443,6 +1548,7 @@
     },
     "excluded_target_poems": 210,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -1535,6 +1641,9 @@
     "label_status": {
       "source_annotation": 4
     },
+    "partitions": {
+      "fit": 4
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 4
@@ -1567,6 +1676,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -1596,6 +1708,7 @@
     },
     "excluded_target_poems": 100,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -1621,6 +1734,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 101
+    },
+    "partitions": {
+      "fit": 101
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1654,6 +1770,9 @@
     "label_status": {
       "source_annotation": 3
     },
+    "partitions": {
+      "fit": 3
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 3
@@ -1682,6 +1801,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 94
+    },
+    "partitions": {
+      "fit": 94
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1722,6 +1844,9 @@
     "label_status": {
       "source_annotation": 99
     },
+    "partitions": {
+      "fit": 99
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 99
@@ -1754,6 +1879,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -1783,6 +1911,7 @@
     },
     "excluded_target_poems": 22,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -1805,6 +1934,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "rule_inferred": 105
+    },
+    "partitions": {
+      "fit": 105
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1833,6 +1965,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 4
+    },
+    "partitions": {
+      "fit": 4
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1866,6 +2001,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -1897,6 +2035,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 39
+    },
+    "partitions": {
+      "fit": 39
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -1930,6 +2071,9 @@
     "label_status": {
       "source_annotation": 105
     },
+    "partitions": {
+      "fit": 105
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 105
@@ -1962,9 +2106,12 @@
     "label_status": {
       "source_annotation": 97
     },
+    "partitions": {
+      "test": 97
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 97
+      "test": 97
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -1992,6 +2139,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 128
+    },
+    "partitions": {
+      "selection": 128
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2023,6 +2173,9 @@
     "label_status": {
       "source_annotation": 16
     },
+    "partitions": {
+      "selection": 16
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "validation": 16
@@ -2050,6 +2203,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 108
+    },
+    "partitions": {
+      "fit": 108
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2083,6 +2239,9 @@
     "label_status": {
       "source_annotation": 2
     },
+    "partitions": {
+      "fit": 2
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 2
@@ -2112,6 +2271,7 @@
     },
     "excluded_target_poems": 148,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -2217,6 +2377,9 @@
     "label_status": {
       "source_annotation": 97
     },
+    "partitions": {
+      "fit": 97
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 97
@@ -2249,6 +2412,9 @@
     "label_status": {
       "source_annotation": 1
     },
+    "partitions": {
+      "fit": 1
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 1
@@ -2278,6 +2444,7 @@
     },
     "excluded_target_poems": 256,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -2367,6 +2534,9 @@
       "rule_inferred": 1,
       "source_annotation": 103
     },
+    "partitions": {
+      "fit": 104
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 104
@@ -2402,6 +2572,7 @@
     },
     "excluded_target_poems": 5,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -2427,6 +2598,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "rule_inferred": 2
+    },
+    "partitions": {
+      "fit": 2
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2455,6 +2629,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 350
+    },
+    "partitions": {
+      "fit": 350
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2495,6 +2672,9 @@
     "label_status": {
       "source_annotation": 98
     },
+    "partitions": {
+      "calibration": 98
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 98
@@ -2525,6 +2705,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 376
+    },
+    "partitions": {
+      "test": 376
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2557,6 +2740,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 81
+    },
+    "partitions": {
+      "fit": 81
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2591,6 +2777,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 114
+    },
+    "partitions": {
+      "fit": 114
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -2631,9 +2820,12 @@
     "label_status": {
       "source_annotation": 321
     },
+    "partitions": {
+      "test": 321
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 321
+      "test": 321
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -2665,6 +2857,9 @@
     "excluded_target_poems": 0,
     "label_status": {
       "source_annotation": 2723
+    },
+    "partitions": {
+      "fit": 2723
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -3654,6 +3849,9 @@
     "label_status": {
       "source_annotation": 1759
     },
+    "partitions": {
+      "fit": 1759
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 1759
@@ -3953,6 +4151,9 @@
     "label_status": {
       "source_annotation": 4
     },
+    "partitions": {
+      "fit": 4
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 4
@@ -3985,6 +4186,9 @@
     "label_status": {
       "source_annotation": 4
     },
+    "partitions": {
+      "fit": 4
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 4
@@ -4014,6 +4218,9 @@
     "label_status": {
       "source_annotation": 141
     },
+    "partitions": {
+      "calibration": 141
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 141
@@ -4042,9 +4249,12 @@
     "label_status": {
       "source_annotation": 106
     },
+    "partitions": {
+      "test": 106
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
-      "train": 106
+      "test": 106
     },
     "source_coverage": "Complete available source transcription archived; only complete, explicitly annotated, novel four-line poems retained",
     "source_revision_urls": [
@@ -4071,6 +4281,9 @@
     "label_status": {
       "source_annotation": 83
     },
+    "partitions": {
+      "fit": 83
+    },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
       "train": 83
@@ -4096,6 +4309,7 @@
     },
     "excluded_target_poems": 106,
     "label_status": {},
+    "partitions": {},
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {},
     "source_urls": [
@@ -4121,6 +4335,9 @@
     "fit_role": "fit",
     "label_status": {
       "source_annotation": 1
+    },
+    "partitions": {
+      "fit": 1
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {
@@ -4153,6 +4370,9 @@
     "label_status": {
       "rule_verified": 2,
       "source_annotation": 165
+    },
+    "partitions": {
+      "test": 167
     },
     "rights_status": "Source edition and transcription rights not independently cleared",
     "roles": {

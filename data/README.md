@@ -27,22 +27,22 @@ Source titles in a shared `edition_family`, and works connected by layout-equiva
 lines, must remain together. Author overlap is permitted and recorded; do not claim
 unseen-author evaluation.
 
-To train on more data, create a new prepared directory rather than overwrite v1:
+The current expansion is `v2/`, which already includes v1. It has 8,483 train poems
+(including 908 calibration), 1,859 unchanged validation poems, and 2,953 test poems.
+The fitting partition has 7,575 poems: all original fitting poems plus 1,058 new ones.
+The seven new held-out works (719 poems) were frozen before the GX10 trial and join
+all 2,234 original test poems. No original fitting poem was removed. See v2/WORKS.md.
 
 ```bash
-python scripts/prepare_data.py --input=all-new-poems.jsonl \
-  --output_dir=data/v2 --split_seed=142
-python train.py --model_type=cnn --data_dir=data/v2 \
-  --split_manifest=none --calibration_fraction=0.15 --output_dir=runs/cnn-v2
+python train.py --model_type=cnn --config=configs/cnn.json --output_dir=runs/cnn-v2-combined
 ```
 
-The preparation helper allocates whole work/edition/duplicate components in one fixed
-seeded allocation. Fractions are fractions of groups, so poem proportions can differ.
-It reports class coverage failures without trying seeds repeatedly. Inspect and freeze
-work assignments before training; do not optimize split choices using test metrics.
-For curated assignments, supply train/validation/test JSONL directly and a schema-2
-manifest with file hashes and the exact label order, matching v1. `--calibration_fraction=0`
-uses all canonical train poems and reports uncalibrated probabilities. A supplied
-`--split_manifest` takes precedence over calibration fraction/seed; omit it for a new split.
+Use `v2/splits/train_expansion.json` to preserve the original calibration and validation.
+The default CNN preset selects it; ByT5 still uses v1. New data allocations preserve
+existing roles and assign only new whole work/edition/duplicate groups. Freeze these
+assignments before training, without choosing them using test metrics. Never randomly
+split lines or move existing fitting works into validation to grow validation.
+Fresh CNN training on the accumulated fitting data is the default; resume applies to
+an interrupted run with identical data/settings. V1 stays frozen for reproducibility.
 
 Source URLs describe provenance, not blanket redistribution permission. See LICENSE.md.

@@ -1,11 +1,15 @@
 """Train CNN or ByT5 with flat, validated arguments."""
 
 import json
+import sys
 from dataclasses import asdict, replace
 from pathlib import Path
 
+# Support the existing source layout directly from a fresh checkout.
+sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
+
 from chandassu.config import resolve
-from chandassu.data import Corpus, plain_folds
+from chandassu.data import Corpus, assert_isolated, plain_folds, summary
 from chandassu.io import atomic_json
 from chandassu.training.engine import train_fit
 
@@ -17,6 +21,10 @@ def main(argv=None):
     output = Path(config.output_dir)
     if config.mode == "train":
         parts = corpus.final_parts(config.split_manifest, config.calibration_fraction, config.split_seed)
+        test = corpus.poems("test")
+        assert_isolated({**parts, "test": test})
+        print(json.dumps({role: summary(rows) for role, rows in {**parts, "test": test}.items()},
+                         ensure_ascii=False, indent=2), flush=True)
         print("Fit budget: 1 model; no automatic hyperparameter search", flush=True)
         train_fit(config, parts, output)
     else:

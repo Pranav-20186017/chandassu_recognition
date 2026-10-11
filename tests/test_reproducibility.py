@@ -57,6 +57,104 @@ def config(arm):
     )
 
 
+def test_expanded_corpus_preserves_baseline_roles_and_frozen_tests():
+    old, expanded = Corpus("data/v1"), Corpus("data/v2")
+    original = old.final_parts("splits/final_h100.json", 0.15, 142)
+    parts = expanded.final_parts("splits/train_expansion.json", 0.15, 142)
+    def ids(rows):
+        return {p.poem_id for p in rows}
+
+    assert ids(original["fit"]) <= ids(parts["fit"])
+    for role in ("selection", "calibration"):
+        assert parts[role] == original[role]
+    assert (expanded.folder / "validation.jsonl").read_bytes() == (old.folder / "validation.jsonl").read_bytes()
+    frozen = json.loads((expanded.folder / "EXPANSION.json").read_text())["allocation"]["frozen_new_work_holdout"]
+    held = set(frozen["holdout_poem_ids"])
+    test = expanded.poems("test")
+    assert ids(test) == ids(old.poems("test")) | held
+    assert {p.source for p in test if p.poem_id in held} == set(frozen["holdout_works"])
+    assert len(parts["fit"]) == 7575 and len(test) == 2953
+    assert_isolated({**parts, "test": test})
+    rows = [p for role in ("train", "validation", "test") for p in expanded.poems(role)]
+    assert len(rows) == len(ids(rows)) == 13295
+    new = [p for p in rows if p.metadata.get("collection") == "expansion_20261011"]
+    assert len(new) == 1777 and len({p.source for p in new}) == 34
+    assert len(ids(parts["fit"]) - ids(original["fit"])) == 1058
+    lookup = {p.poem_id: p for p in rows}
+    for role in ("train", "validation", "test"):
+        for poem in old.poems(role):
+            retained = lookup[poem.poem_id]
+            assert (retained.lines, retained.label, retained.source, retained.author) == (
+                poem.lines, poem.label, poem.source, poem.author
+            )
+    cohorts = expanded.manifest["test_cohorts"]
+    assert set(cohorts["v1_test"]["ids"]) == ids(old.poems("test"))
+    assert set(cohorts["v2_new_work_holdout"]["ids"]) == held
+    preset = resolve(["--model_type=cnn", "--config=configs/cnn.json"])
+    assert preset.data_dir == "data/v2" and preset.init_checkpoint is None
+    assert preset.split_manifest == "splits/train_expansion.json"
+    assert resolve(["--model_type=byt5", "--config=configs/byt5.json"]).data_dir == "data/v1"
+
+
+def test_entrypoint_checks_test_isolation_before_training(tmp_path, monkeypatch):
+    import train
+
+    class Dataset:
+        def __init__(self, _folder):
+            pass
+
+        def final_parts(self, *_args):
+            return {"fit": poems("fit"), "selection": poems("selection"), "calibration": poems("calibration")}
+
+        def poems(self, _role):
+            return poems("fit")
+
+    monkeypatch.setattr(train, "Corpus", Dataset)
+
+    def forbidden_training(*_args):
+        pytest.fail("Training must not start with a leaked test work")
+
+    monkeypatch.setattr(train, "train_fit", forbidden_training)
+    with pytest.raises(ValueError, match="leakage/duplicate"):
+        train.main(["--model_type=cnn", "--output_dir", str(tmp_path)])
+
+
+def test_evaluation_reports_both_fixed_test_cohorts(tmp_path, monkeypatch):
+    from scripts import evaluate
+
+    corpus = Corpus("data/v2")
+    test = corpus.poems("test")
+
+    class Model:
+        device = "cpu"
+        config = {"temperature": 1.0}
+        metadata = {"partitions": {"fit": {"poem_ids": []}}}
+
+        def __init__(self, _folder):
+            pass
+
+        def info(self):
+            return {"device": self.device}
+
+        def logits(self, lines, _batch_size):
+            assert len(lines) == 4 * len(test)
+            result = np.zeros((len(lines), 4))
+            for i, poem in enumerate(test):
+                result[4 * i:4 * i + 4, LABELS.index(poem.label)] = 10
+            return result
+
+    monkeypatch.setattr(evaluate, "Predictor", Model)
+    output = tmp_path / "test.json"
+    evaluate.main(["--model_dir", str(tmp_path), "--data_dir=data/v2", "--output", str(output)])
+    report = json.loads(output.read_text())
+    assert report["metrics"]["poem"]["observations"] == 2953
+    assert report["cohort_metrics"]["v1_test"]["poem"]["observations"] == 2234
+    assert report["cohort_metrics"]["v2_new_work_holdout"]["poem"]["observations"] == 719
+    Model.metadata = {"partitions": {"fit": {"poem_ids": [test[0].poem_id]}}}
+    with pytest.raises(ValueError, match="overlap model development"):
+        evaluate.main(["--model_dir", str(tmp_path), "--data_dir=data/v2", "--output", str(output)])
+
+
 @pytest.mark.parametrize("arm", ["cnn", "byt5"])
 def test_interrupted_resume_matches_uninterrupted(arm, tmp_path, monkeypatch):
     import chandassu.training.engine as engine

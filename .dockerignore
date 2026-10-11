@@ -21,4 +21,6 @@
 !data/
 !data/v1/
 !data/v1/**
+!data/v2/
+!data/v2/**
 **/__pycache__/

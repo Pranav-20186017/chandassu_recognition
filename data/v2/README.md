@@ -1,21 +1,29 @@
-# Expanded prepared training data (v2)
+# Expanded prepared corpus (v2)
 
-Adds 1,777 poems (7,108 lines) from 34 distinct new works to v1 training.
-The new poems are entirely in fit. V1 validation and historical test files are byte-for-byte unchanged;
-the 908 calibration poems and all existing fit/selection IDs retain their original roles.
-The original frozen H100 dataset remains in `../v1`; existing model results describe v1.
+V2 includes all v1 poems plus 1,777 poems (7,108 lines) from 34 new works, without duplication.
+Of the new poems, 1,058 from 27 works join fitting and 719 from seven works remain held out.
+This is the allocation frozen before the completed GX10 trial. All original v1 fitting,
+calibration, validation and test poems retain their roles. The validation file is unchanged.
+V1 and the published CNN/ByT5 packages remain unchanged.
 
-| Partition | Poems | Lines |
-|---|---:|---:|
-| Canonical train | 9,202 | 36,808 |
-| Fit (optimization) | 8,294 | 33,176 |
-| Calibration (inside canonical train) | 908 | 3,632 |
-| Validation / selection | 1,859 | 7,436 |
-| Historical test | 2,234 | 8,936 |
+| Partition | Poems | Lines | Works |
+|---|---:|---:|---:|
+| Train including calibration | 8,483 | 33,932 | 53 |
+| Fit (optimization) | 7,575 | 30,300 | 49 |
+| Calibration (inside train) | 908 | 3,632 | 4 |
+| Validation / selection | 1,859 | 7,436 | 4 |
+| Holdout test | 2,953 | 11,812 | 13 |
+| Total | 13,295 | 53,180 | 70 |
+
+The single test file contains all 2,234 original test poems plus 719 new-work poems.
+Both cohorts remain excluded from fitting, vocabulary construction, selection and calibration.
+They have already been evaluated on earlier models; they are a fixed benchmark, not a fresh blind study.
+Fit grows by 1,058 poems relative to v1 and is identical to the completed GX10 trial.
+A fresh CNN rerun uses the same fitting examples as that trial; it adds no further poems.
 
 ```bash
-python train.py --model_type=cnn --data_dir=data/v2 \
-  --split_manifest=splits/train_expansion.json --output_dir=runs/cnn-v2
+python train.py --model_type=cnn --config=configs/cnn.json \
+  --output_dir=runs/cnn-v2-combined
 ```
 
 Use the supplied split manifest to preserve calibration roles. Every row is one complete ordered
