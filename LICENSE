@@ -1,3 +1,58 @@
+Chandassu Recognition Citation License, Version 1.0
+SPDX-License-Identifier: LicenseRef-Chandassu-Citation
+Copyright 2026 Pranav
+
+1. Scope
+
+These terms apply to project-owned code, documentation, dataset organization,
+project-created annotations, and new project contributions in this revision.
+They apply only to rights that the project copyright holder can grant.
+Third-party poems, editions, transcriptions, annotations, software, and base
+model weights retain their respective rights and licenses. No permission for
+those materials is granted by this license. See data/LICENSE.md and NOTICE.
+
+2. Permission
+
+You may use, reproduce, modify, and distribute the covered project material,
+including for commercial purposes, subject to the citation requirements below
+and the Apache License, Version 2.0, reproduced below. For covered material,
+the citation requirements are additional conditions of this custom license.
+This license is not the unmodified Apache License, Version 2.0.
+
+3. Required citation
+
+Every use of covered project code or covered dataset material must retain this
+credit in the user's project documentation:
+
+Pranav (2026). Chandassu Recognition: Telugu Poetic Meter Classification.
+https://github.com/Pranav-20186017/chandassu_recognition
+
+If the use produces a publication, report, application, model, or dataset,
+include that citation in its references, credits, or accompanying documentation.
+Private use must retain the citation in internal project documentation.
+The citation must identify the version or commit used when available.
+CITATION.cff and the README BibTeX entry provide the citation details.
+Do not represent this requirement as optional or remove it from redistributed
+covered material. A citation does not imply endorsement by the project author.
+
+4. Redistribution and source attribution
+
+Include this license and the applicable NOTICE with distributed covered
+material and derivative works. Preserve third-party copyright notices,
+licenses, poem authors, work titles, and source links. Project citation does
+not replace attribution or permission required by a third-party source.
+
+5. Earlier releases and third-party rights
+
+Material previously received under Apache-2.0 remains usable under that
+license. This revision does not revoke permissions already granted for earlier
+releases. Reused material that independently remains available under an earlier
+license retains those permissions. These additional terms govern the new
+project contributions and rights granted under this custom revision.
+
+The underlying Apache terms, including their patent provisions, warranty
+disclaimer, and limitation of liability, follow.
+
                                  Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/

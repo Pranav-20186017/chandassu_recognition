@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import shutil
 from dataclasses import asdict
 from pathlib import Path
 
@@ -121,10 +122,14 @@ def main(argv=None):
         "selection_policy": "Seed chosen in advance; family rate selected on validation. Historical test diagnostic only.",
     }
     save_package(args.output_dir, model, settings, vocabulary, recipe["temperature"], metadata)
-    (args.output_dir / "LICENSE").write_text(Path("LICENSE").read_text())
-    (args.output_dir / "NOTICE").write_text(Path("NOTICE").read_text())
+    project = Path(__file__).resolve().parents[1]
+    for name in ("LICENSE", "NOTICE", "CITATION.cff"):
+        shutil.copyfile(project / name, args.output_dir / name)
+    shutil.copytree(project / "LICENSES", args.output_dir / "LICENSES")
     card = f"""---
-license: apache-2.0
+license: other
+license_name: chandassu-citation
+license_link: LICENSE
 language: te
 tags: [telugu, poetry, metre, {args.model_type}]
 library_name: pytorch
@@ -148,7 +153,9 @@ See metadata.json and the repository results/v1 for full metrics and provenance.
 This is a restricted classifier: it cannot reliably reject other metres or provide
 prosodic explanations. Scores are calibrated probabilities, not confidence intervals.
 Source edition/transcription rights are not independently cleared; dataset terms
-are separate from the Apache-2.0 code/weight license. See the repository data/LICENSE.md.
+retain their source terms. See the repository data/LICENSE.md.
+Project-owned material uses the citation license in LICENSE. Cite this project when using it.
+Citation details are in CITATION.cff. Earlier Apache-2.0 permissions remain in effect.
 """
     if args.model_type == "byt5":
         card += f"\nBase encoder: google/byt5-small (Apache-2.0), revision {config.model_revision}.\n"

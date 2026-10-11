@@ -7,7 +7,8 @@ name = "chandassu-recognition"
 version = "1.0.0"
 description = "Reproducible character CNN and ByT5 encoder classification of four Telugu poetic metres"
 requires-python = ">=3.12,<3.13"
-license = "Apache-2.0"
+license = "LicenseRef-Chandassu-Citation"
+license-files = ["LICENSE", "NOTICE", "LICENSES/*.txt", "CITATION.cff"]
 readme = "README.md"
 authors = [{name = "Pranav"}]
 dependencies = [

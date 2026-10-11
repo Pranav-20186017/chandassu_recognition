@@ -5,6 +5,9 @@
 !README.md
 !LICENSE
 !NOTICE
+!CITATION.cff
+!LICENSES/
+!LICENSES/**
 !train.py
 !inference.py
 !src/

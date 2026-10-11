@@ -5,7 +5,8 @@ FROM python:3.12.10-slim-bookworm AS cpu-base
 COPY --from=uv /uv /uvx /usr/local/bin/
 ENV UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 WORKDIR /app
-COPY pyproject.toml uv.lock README.md LICENSE NOTICE ./
+COPY pyproject.toml uv.lock README.md LICENSE NOTICE CITATION.cff ./
+COPY LICENSES ./LICENSES
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cpu --no-dev
 COPY train.py inference.py ./
@@ -31,7 +32,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 ENV UV_LINK_MODE=copy UV_PYTHON_INSTALL_DIR=/opt/python PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 RUN uv python install 3.12.10
 WORKDIR /app
-COPY pyproject.toml uv.lock README.md LICENSE NOTICE ./
+COPY pyproject.toml uv.lock README.md LICENSE NOTICE CITATION.cff ./
+COPY LICENSES ./LICENSES
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cuda --no-dev --python 3.12.10
 COPY train.py inference.py ./

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="900" viewBox="0 0 1120 900" role="img" aria-labelledby="title desc">
+<title id="title">Character CNN</title><desc id="desc">Four poem lines are normalized and converted to character IDs. A 64-dimensional embedding feeds three parallel convolution branches with kernel sizes 3, 5, and 7. ReLU and masked max pooling produce 64 features per branch. Concatenation gives 192 features. Dropout and a linear layer produce four logits per line. Temperature calibration and softmax produce line probabilities. Their mean gives the poem probabilities.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b"/></marker></defs>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#172b43}.title{font-size:28px;font-weight:700}.subtitle{font-size:16px;fill:#52647b}.label{font-size:18px;font-weight:700}.detail{font-size:15px;fill:#41546a}.small{font-size:14px;fill:#52647b}.arrow{fill:none;stroke:#64748b;stroke-width:2;marker-end:url(#arrow)}</style>
+<rect width="1120" height="900" rx="16" fill="#f8fafc"/>
+<text x="48" y="48" class="title">Character CNN</text>
+<text x="48" y="76" class="subtitle">One poem → four line predictions → one poem prediction</text>
+<rect x="48" y="112" width="280" height="94" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="188.0" y="142" text-anchor="middle" class="label">Four poem lines</text>
+<text x="188.0" y="169" text-anchor="middle" class="detail">Process each line separately</text>
+<rect x="420" y="112" width="280" height="94" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="560.0" y="142" text-anchor="middle" class="label">Normalize text</text>
+<text x="560.0" y="169" text-anchor="middle" class="detail">Unicode NFC and whitespace</text>
+<rect x="792" y="112" width="280" height="94" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="932.0" y="142" text-anchor="middle" class="label">Character IDs</text>
+<text x="932.0" y="169" text-anchor="middle" class="detail">92 tokens; PAD 0; UNK 1</text>
+<path d="M 328 159 H 416" class="arrow"/>
+<path d="M 700 159 H 788" class="arrow"/>
+<rect x="792" y="242" width="280" height="118" rx="12" fill="#eaf2ff" stroke="#a8bfe3" stroke-width="1.5"/>
+<text x="932.0" y="272" text-anchor="middle" class="label">Character embedding</text>
+<text x="932.0" y="299" text-anchor="middle" class="detail">64 features per token</text>
+<text x="932.0" y="322" text-anchor="middle" class="detail">Dropout: 0.2</text>
+<path d="M 932 206 V 238" class="arrow"/>
+<text x="48" y="294" class="small">PARALLEL CONVOLUTION BRANCHES</text>
+<text x="48" y="322" class="small">Each branch receives the same token features.</text>
+<rect x="48" y="414" width="280" height="132" rx="12" fill="#eaf2ff" stroke="#a8bfe3" stroke-width="1.5"/>
+<text x="188.0" y="444" text-anchor="middle" class="label">Conv1D · kernel 3</text>
+<text x="188.0" y="471" text-anchor="middle" class="detail">64 channels → ReLU</text>
+<text x="188.0" y="494" text-anchor="middle" class="detail">Masked max over tokens</text>
+<text x="188.0" y="517" text-anchor="middle" class="detail">Output: 64 features</text>
+<rect x="420" y="414" width="280" height="132" rx="12" fill="#eaf2ff" stroke="#a8bfe3" stroke-width="1.5"/>
+<text x="560.0" y="444" text-anchor="middle" class="label">Conv1D · kernel 5</text>
+<text x="560.0" y="471" text-anchor="middle" class="detail">64 channels → ReLU</text>
+<text x="560.0" y="494" text-anchor="middle" class="detail">Masked max over tokens</text>
+<text x="560.0" y="517" text-anchor="middle" class="detail">Output: 64 features</text>
+<rect x="792" y="414" width="280" height="132" rx="12" fill="#eaf2ff" stroke="#a8bfe3" stroke-width="1.5"/>
+<text x="932.0" y="444" text-anchor="middle" class="label">Conv1D · kernel 7</text>
+<text x="932.0" y="471" text-anchor="middle" class="detail">64 channels → ReLU</text>
+<text x="932.0" y="494" text-anchor="middle" class="detail">Masked max over tokens</text>
+<text x="932.0" y="517" text-anchor="middle" class="detail">Output: 64 features</text>
+<path d="M 932 360 V 390 H 188 V 410" class="arrow"/>
+<path d="M 932 360 V 390 H 560 V 410" class="arrow"/>
+<path d="M 932 360 V 410" class="arrow"/>
+<rect x="350" y="606" width="420" height="90" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+<text x="560.0" y="636" text-anchor="middle" class="label">Concatenate branch features</text>
+<text x="560.0" y="663" text-anchor="middle" class="detail">64 + 64 + 64 = 192 features</text>
+<path d="M 188 546 V 577 H 560 V 602" class="arrow"/>
+<path d="M 560 546 V 602" class="arrow"/>
+<path d="M 932 546 V 577 H 560 V 602" class="arrow"/>
+<rect x="48" y="754" width="280" height="106" rx="12" fill="#eaf2ff" stroke="#a8bfe3" stroke-width="1.5"/>
+<text x="188.0" y="784" text-anchor="middle" class="label">Classification layer</text>
+<text x="188.0" y="811" text-anchor="middle" class="detail">Dropout: 0.2; linear: 192 → 4</text>
+<text x="188.0" y="834" text-anchor="middle" class="detail">Output: four logits per line</text>
+<rect x="420" y="754" width="280" height="106" rx="12" fill="#e8f5ef" stroke="#a6d4bf" stroke-width="1.5"/>
+<text x="560.0" y="784" text-anchor="middle" class="label">Line probabilities</text>
+<text x="560.0" y="811" text-anchor="middle" class="detail">Softmax(logits / temperature)</text>
+<text x="560.0" y="834" text-anchor="middle" class="detail">Four classes per line</text>
+<rect x="792" y="754" width="280" height="106" rx="12" fill="#e8f5ef" stroke="#a6d4bf" stroke-width="1.5"/>
+<text x="932.0" y="784" text-anchor="middle" class="label">Poem prediction</text>
+<text x="932.0" y="811" text-anchor="middle" class="detail">Mean of four line probabilities</text>
+<text x="932.0" y="834" text-anchor="middle" class="detail">Class with highest probability</text>
+<path d="M 560 696 V 724 H 188 V 750" class="arrow"/>
+<path d="M 328 807 H 416" class="arrow"/>
+<path d="M 700 807 H 788" class="arrow"/>
+<text x="48" y="888" class="small">68,420 parameters · Maximum: 256 characters per line · Pooling excludes padding tokens</text>
+</svg>

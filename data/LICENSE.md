@@ -1,22 +1,30 @@
-# Dataset rights and attribution
+# Dataset license and citation
 
-The repository's Apache-2.0 license applies to project code. It does **not** grant
-rights in third-party poems, source editions, digital transcriptions or annotations.
-No single dataset license is asserted for this mixed-source corpus.
+## Project-owned material
 
-Source URLs, authors and work titles are recorded in `v1/works.json` and `v1/WORKS.md`.
-Records come from AndhraBharati and Telugu Wikisource editions. Classical authorship
-alone does not establish the status of a particular digital edition or transcription.
-Source edition/transcription rights have not been independently cleared per work;
-the catalogue explicitly records that status.
+You may use, modify, and share the project's dataset organization and project-created annotations under [LICENSE](../LICENSE).
+Cite Chandassu Recognition whenever you use this material.
+Use the BibTeX entry in [README.md](../README.md) or the details in [CITATION.cff](../CITATION.cff).
+Keep the citation in publications, reports, and accompanying dataset or application documentation.
 
-Preserve poem-level attribution and source links. Before publishing a dataset package
-or redistributing source text beyond this research repository, establish the applicable
-terms for each edition and obtain permission where required. In particular, do not
-label the entire corpus Apache-2.0, CC0 or public domain based solely on the age of poems.
-Wikisource pages and their attribution/history should be checked for the applicable
-text terms; AndhraBharati permissions should be verified with that source.
+## Source texts and annotations
 
-This document records the current rights status rather than claiming a completed
-legal clearance. Model cards must state this provenance limitation. ByT5's upstream
-model license is Apache-2.0; it does not determine the corpus's licensing.
+Poems, source editions, digital transcriptions, and source-supplied annotations retain their original rights and terms.
+The project license grants permission only for project-owned material.
+It does not grant permission for third-party source material.
+There is no single license for every source text in this collection.
+
+[WORKS.md](v1/WORKS.md) and [works.json](v1/works.json) identify the authors, works, editions, and source links.
+The sources are AndhraBharati and Telugu Wikisource.
+Source rights have not been independently verified for each edition.
+The age of a poem does not establish the rights in its digital transcription.
+
+Retain poem authors, work titles, and source links when you share records.
+Follow each source's terms in addition to the project citation requirement.
+Establish the applicable permissions before you redistribute third-party text.
+Project citation does not replace source attribution or permission.
+
+## Earlier releases
+
+The current citation license does not cancel permissions granted under earlier licenses.
+See [LICENSE](../LICENSE) for the complete terms.
