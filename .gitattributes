@@ -1,3 +1,10 @@
-# Preserve exact cached source bytes; raw editions are reviewed via extraction
-# evidence rather than multi-megabyte HTML diffs.
-data/independent_poetry/**/raw/*.html -diff -text
+* text=auto
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.md text eol=lf
+*.csv text eol=lf
+*.png binary
+*.npz binary
+# Preserve imported evidence bytes so manifest hashes survive fresh checkouts.
+results/v1/** -text whitespace=cr-at-eol

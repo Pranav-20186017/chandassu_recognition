@@ -17,8 +17,10 @@ def backward_window(model, batches, weights, weights_cpu, device, autocast):
     for ids, y in batches:
         with autocast():
             loss = F.cross_entropy(
-                model(ids.to(device)).float(), y.to(device),
-                weight=weights, reduction="sum",
+                model(ids.to(device)).float(),
+                y.to(device),
+                weight=weights,
+                reduction="sum",
             )
         (loss / denominator).backward()
         total += loss.detach()

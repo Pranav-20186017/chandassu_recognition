@@ -1,67 +1,36 @@
-"""Explicit runtime state and atomic output writes for training."""
+"""Backend, precision, and restartable random state."""
 
-from dataclasses import dataclass, field
-from pathlib import Path
 import contextlib
-import gc
+import os
+import platform
 import random
+from importlib.metadata import version
+
 import numpy as np
 import torch
-from ..evaluation.corpus_audit import json_bytes
 
 
-def atomic_json(path, value):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_bytes(json_bytes(value))
-    temporary.replace(path)
+def select_device(requested):
+    available = {"cuda": torch.cuda.is_available(), "mps": torch.backends.mps.is_available(), "cpu": True}
+    if requested == "auto":
+        return next(k for k, exists in available.items() if exists)
+    if not available.get(requested):
+        raise ValueError(f"Requested device unavailable: {requested}")
+    return requested
 
 
-def atomic_torch(path, value):
-    path = Path(path)
-    temporary = Path(str(path) + ".tmp")
-    torch.save(value, temporary)
-    temporary.replace(path)
+class Runtime:
+    def __init__(self, config):
+        os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
+        torch.set_num_threads(config.cpu_threads)
+        self.device = select_device(config.device)
+        supports_bf16 = self.device == "cuda" and torch.cuda.is_bf16_supported()
+        if config.precision == "bf16" and not supports_bf16:
+            raise ValueError("BF16 requires a supported CUDA device; use fp32 on CPU/MPS")
+        self.precision = "bf16" if supports_bf16 and config.precision != "fp32" else "fp32"
 
-
-def select_device(override=None):
-    available = {
-        "cuda": torch.cuda.is_available(),
-        "mps": torch.backends.mps.is_available(),
-        "cpu": True,
-    }
-    if override is not None:
-        if override not in available or not available[override]:
-            raise ValueError(f"Device is unavailable: {override}")
-        return override
-    return next(device for device in ("cuda", "mps", "cpu") if available[device])
-
-
-@dataclass
-class TrainingSession:
-    config: dict
-    run_sha: str
-    device: str
-    records: dict = field(default_factory=dict)
-    token: str | bool = False
-    progress_every: int = 50
-    model_factory: object = None
-
-    @property
-    def amp(self):
-        return (
-            self.device == "cuda"
-            and self.config["bf16_cuda"]
-            and torch.cuda.is_bf16_supported()
-        )
-
-    def amp_context(self):
-        return (
-            torch.autocast("cuda", dtype=torch.bfloat16)
-            if self.amp
-            else contextlib.nullcontext()
-        )
+    def autocast(self):
+        return torch.autocast("cuda", dtype=torch.bfloat16) if self.precision == "bf16" else contextlib.nullcontext()
 
     def seed_all(self, seed):
         random.seed(seed)
@@ -69,21 +38,23 @@ class TrainingSession:
         torch.manual_seed(seed)
         if self.device == "cuda":
             torch.cuda.manual_seed_all(seed)
-        if self.device == "mps":
+        elif self.device == "mps":
             torch.mps.manual_seed(seed)
 
     def rng_state(self):
-        accelerator = None
-        if self.device == "cuda":
-            accelerator = torch.cuda.get_rng_state_all()
-        if self.device == "mps":
-            accelerator = torch.mps.get_rng_state()
-        return dict(
-            python=random.getstate(),
-            numpy=np.random.get_state(),
-            cpu=torch.get_rng_state(),
-            accelerator=accelerator,
+        accelerator = (
+            torch.cuda.get_rng_state_all()
+            if self.device == "cuda"
+            else torch.mps.get_rng_state()
+            if self.device == "mps"
+            else None
         )
+        return {
+            "python": random.getstate(),
+            "numpy": np.random.get_state(),
+            "cpu": torch.get_rng_state(),
+            "accelerator": accelerator,
+        }
 
     def restore_rng(self, state):
         random.setstate(state["python"])
@@ -91,18 +62,17 @@ class TrainingSession:
         torch.set_rng_state(state["cpu"])
         if self.device == "cuda":
             torch.cuda.set_rng_state_all(state["accelerator"])
-        if self.device == "mps":
+        elif self.device == "mps":
             torch.mps.set_rng_state(state["accelerator"])
 
-    def synchronize_device(self):
-        if self.device == "cuda":
-            torch.cuda.synchronize()
-        if self.device == "mps":
-            torch.mps.synchronize()
-
-    def clean_memory(self):
-        gc.collect()
-        if self.device == "cuda":
-            torch.cuda.empty_cache()
-        if self.device == "mps":
-            torch.mps.empty_cache()
+    def metadata(self):
+        return {
+            "device": self.device,
+            "precision": self.precision,
+            "python": platform.python_version(),
+            "torch": torch.__version__,
+            "cuda": torch.version.cuda,
+            "gpu": torch.cuda.get_device_name() if self.device == "cuda" else None,
+            "versions": {p: version(p) for p in ("transformers", "numpy", "scipy", "scikit-learn")},
+            "cross_backend_bitwise_identity": False,
+        }

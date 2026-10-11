@@ -1,0 +1,17 @@
+name: checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.12.10"
+          enable-cache: true
+      - run: uv sync --locked --extra cpu --python 3.12.10
+      - run: uv run --locked --extra cpu ruff check src tests scripts train.py inference.py
+      - run: uv run --locked --extra cpu ruff format --check src tests scripts train.py inference.py
+      - run: uv run --locked --extra cpu pytest -q

@@ -1,0 +1,18 @@
+{
+  "byt5": {
+    "all_weight_tensors_equal": true,
+    "artifact_weights_sha256": "dfa203bbd89dac22379bb70ae867e4be70c24fee07882bb3564cafddbd815acc",
+    "checkpoint_sha256": "db888cd436e39e4ac062f1833dfd8548046fabacf31c1e6df528466b6f6dedba",
+    "max_logit_difference": 0.0,
+    "poems": 4,
+    "test": "Direct FP32 forward: original checkpoint versus SafeTensors package, same runtime"
+  },
+  "cnn": {
+    "all_weight_tensors_equal": true,
+    "artifact_weights_sha256": "6d8d642f8b83343e6e98c90365b1449acf0fcedf430f4b4e727a01979aa4e95e",
+    "checkpoint_sha256": "d5ad04eef793f73cd75d7301b921603deae0ac671b2f0620a2d5cfc8ad4c27cb",
+    "max_logit_difference": 0.0,
+    "poems": 4,
+    "test": "Direct FP32 forward: original checkpoint versus SafeTensors package, same runtime"
+  }
+}

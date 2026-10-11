@@ -1,0 +1,8 @@
+Chandassu Recognition
+Copyright 2026 Pranav
+
+Project code is licensed under the Apache License, Version 2.0.
+ByT5 encoder weights originate from google/byt5-small, released under Apache-2.0.
+Prepared poetry, source annotations and source editions are governed separately;
+see data/LICENSE.md and data/v1/works.json. This code license does not grant rights
+in third-party source texts, transcriptions or editions.

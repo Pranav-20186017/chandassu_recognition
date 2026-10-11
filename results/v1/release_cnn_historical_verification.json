@@ -1,0 +1,1113 @@
+{
+  "metrics": {
+    "line": {
+      "accuracy": 0.9944046553267681,
+      "class_order": [
+        "ఉత్పలమాల",
+        "చంపకమాల",
+        "మత్తేభము",
+        "శార్దూలం"
+      ],
+      "confusion_matrix": [
+        [
+          2983,
+          10,
+          0,
+          3
+        ],
+        [
+          7,
+          2314,
+          11,
+          0
+        ],
+        [
+          1,
+          4,
+          2301,
+          10
+        ],
+        [
+          3,
+          0,
+          1,
+          1288
+        ]
+      ],
+      "cross_entropy": 0.03127808269072208,
+      "macro_f1": 0.9941843658858035,
+      "observations": 8936,
+      "per_class": {
+        "accuracy": 0.9944046553267681,
+        "macro avg": {
+          "f1-score": 0.9941843658858035,
+          "precision": 0.9937829646374194,
+          "recall": 0.994592381401734,
+          "support": 8936.0
+        },
+        "weighted avg": {
+          "f1-score": 0.9944049924724131,
+          "precision": 0.9944094632506602,
+          "recall": 0.9944046553267681,
+          "support": 8936.0
+        },
+        "ఉత్పలమాల": {
+          "f1-score": 0.9959933222036728,
+          "precision": 0.9963259853039412,
+          "recall": 0.9956608811748998,
+          "support": 2996.0
+        },
+        "చంపకమాల": {
+          "f1-score": 0.9931330472103004,
+          "precision": 0.9939862542955327,
+          "recall": 0.9922813036020584,
+          "support": 2332.0
+        },
+        "మత్తేభము": {
+          "f1-score": 0.9941672067401166,
+          "precision": 0.9948119325551232,
+          "recall": 0.9935233160621761,
+          "support": 2316.0
+        },
+        "శార్దూలం": {
+          "f1-score": 0.9934438873891246,
+          "precision": 0.9900076863950807,
+          "recall": 0.9969040247678018,
+          "support": 1292.0
+        }
+      }
+    },
+    "poem": {
+      "accuracy": 1.0,
+      "class_order": [
+        "ఉత్పలమాల",
+        "చంపకమాల",
+        "మత్తేభము",
+        "శార్దూలం"
+      ],
+      "confusion_matrix": [
+        [
+          749,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          583,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          579,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          323
+        ]
+      ],
+      "cross_entropy": 0.017579756983913557,
+      "macro_f1": 1.0,
+      "observations": 2234,
+      "per_class": {
+        "accuracy": 1.0,
+        "macro avg": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 2234.0
+        },
+        "weighted avg": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 2234.0
+        },
+        "ఉత్పలమాల": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 749.0
+        },
+        "చంపకమాల": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 583.0
+        },
+        "మత్తేభము": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 579.0
+        },
+        "శార్దూలం": {
+          "f1-score": 1.0,
+          "precision": 1.0,
+          "recall": 1.0,
+          "support": 323.0
+        }
+      }
+    }
+  },
+  "model": {
+    "confidence_note": "Calibrated probabilities; no statistical confidence interval is available.",
+    "device": "cpu",
+    "labels": [
+      "ఉత్పలమాల",
+      "చంపకమాల",
+      "మత్తేభము",
+      "శార్దూలం"
+    ],
+    "max_tokens": 256,
+    "model_type": "cnn",
+    "parameters": 68420,
+    "rejection_note": "Restricted four-class model; cannot reliably reject other metres.",
+    "seed": 17,
+    "temperature": 1.34592281013039
+  },
+  "role": "Historical diagnostic; already inspected",
+  "work_metrics": {
+    "ఆంధ్ర పురాణము": {
+      "line": {
+        "accuracy": 0.996588693957115,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            1053,
+            3,
+            0,
+            0
+          ],
+          [
+            1,
+            1145,
+            6,
+            0
+          ],
+          [
+            0,
+            2,
+            1452,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            440
+          ]
+        ],
+        "cross_entropy": 0.023444855420177282,
+        "macro_f1": 0.9967980310829018,
+        "observations": 4104,
+        "per_class": {
+          "accuracy": 0.996588693957115,
+          "macro avg": {
+            "f1-score": 0.9967980310829018,
+            "precision": 0.9965158235235878,
+            "recall": 0.9970838623182373,
+            "support": 4104.0
+          },
+          "weighted avg": {
+            "f1-score": 0.9965883505579206,
+            "precision": 0.9965903233530824,
+            "recall": 0.996588693957115,
+            "support": 4104.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 0.9981042654028436,
+            "precision": 0.9990512333965844,
+            "recall": 0.9971590909090909,
+            "support": 1056.0
+          },
+          "చంపకమాల": {
+            "f1-score": 0.9947871416159861,
+            "precision": 0.9956521739130435,
+            "recall": 0.9939236111111112,
+            "support": 1152.0
+          },
+          "మత్తేభము": {
+            "f1-score": 0.9965682910089224,
+            "precision": 0.9958847736625515,
+            "recall": 0.9972527472527473,
+            "support": 1456.0
+          },
+          "శార్దూలం": {
+            "f1-score": 0.9977324263038548,
+            "precision": 0.995475113122172,
+            "recall": 1.0,
+            "support": 440.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            264,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            288,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            364,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            110
+          ]
+        ],
+        "cross_entropy": 0.01632599373131868,
+        "macro_f1": 1.0,
+        "observations": 1026,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 1026.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 1026.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 264.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 288.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 364.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 110.0
+          }
+        }
+      }
+    },
+    "క్రీడాభిరామము": {
+      "line": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            124,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            48,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            80,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            72
+          ]
+        ],
+        "cross_entropy": 0.010248911182692751,
+        "macro_f1": 1.0,
+        "observations": 324,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 324.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 324.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 124.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 48.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 80.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 72.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            31,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            12,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            20,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            18
+          ]
+        ],
+        "cross_entropy": 0.009947194099384327,
+        "macro_f1": 1.0,
+        "observations": 81,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 81.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 81.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 31.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 12.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 20.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 18.0
+          }
+        }
+      }
+    },
+    "పాండురంగమాహాత్మ్యము": {
+      "line": {
+        "accuracy": 0.9941860465116279,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            640,
+            4,
+            0,
+            0
+          ],
+          [
+            1,
+            373,
+            2,
+            0
+          ],
+          [
+            0,
+            1,
+            231,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            295
+          ]
+        ],
+        "cross_entropy": 0.032312212896960124,
+        "macro_f1": 0.994145157570955,
+        "observations": 1548,
+        "per_class": {
+          "accuracy": 0.9941860465116279,
+          "macro avg": {
+            "f1-score": 0.994145157570955,
+            "precision": 0.9937683827469637,
+            "recall": 0.9945303433163891,
+            "support": 1548.0
+          },
+          "weighted avg": {
+            "f1-score": 0.9941914239227898,
+            "precision": 0.9942046564520975,
+            "recall": 0.9941860465116279,
+            "support": 1548.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 0.995334370139969,
+            "precision": 0.9968847352024922,
+            "recall": 0.9937888198757764,
+            "support": 644.0
+          },
+          "చంపకమాల": {
+            "f1-score": 0.9893899204244032,
+            "precision": 0.9867724867724867,
+            "recall": 0.9920212765957447,
+            "support": 376.0
+          },
+          "మత్తేభము": {
+            "f1-score": 0.9935483870967742,
+            "precision": 0.9914163090128756,
+            "recall": 0.9956896551724138,
+            "support": 232.0
+          },
+          "శార్దూలం": {
+            "f1-score": 0.9983079526226735,
+            "precision": 1.0,
+            "recall": 0.9966216216216216,
+            "support": 296.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            161,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            94,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            58,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            74
+          ]
+        ],
+        "cross_entropy": 0.01953129274065786,
+        "macro_f1": 1.0,
+        "observations": 387,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 387.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 387.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 161.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 94.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 58.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 74.0
+          }
+        }
+      }
+    },
+    "ప్రభావతీప్రద్యుమ్నము": {
+      "line": {
+        "accuracy": 0.9860406091370558,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            307,
+            1,
+            0,
+            0
+          ],
+          [
+            4,
+            306,
+            2,
+            0
+          ],
+          [
+            0,
+            1,
+            85,
+            2
+          ],
+          [
+            1,
+            0,
+            0,
+            79
+          ]
+        ],
+        "cross_entropy": 0.06758629996050601,
+        "macro_f1": 0.9825535964736526,
+        "observations": 788,
+        "per_class": {
+          "accuracy": 0.9860406091370558,
+          "macro avg": {
+            "f1-score": 0.9825535964736526,
+            "precision": 0.9824502471772587,
+            "recall": 0.9827328921078922,
+            "support": 788.0
+          },
+          "weighted avg": {
+            "f1-score": 0.986026116044413,
+            "precision": 0.9860911565868099,
+            "recall": 0.9860406091370558,
+            "support": 788.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 0.9903225806451613,
+            "precision": 0.9839743589743589,
+            "recall": 0.9967532467532467,
+            "support": 308.0
+          },
+          "చంపకమాల": {
+            "f1-score": 0.9870967741935484,
+            "precision": 0.9935064935064936,
+            "recall": 0.9807692307692307,
+            "support": 312.0
+          },
+          "మత్తేభము": {
+            "f1-score": 0.9714285714285714,
+            "precision": 0.9770114942528736,
+            "recall": 0.9659090909090909,
+            "support": 88.0
+          },
+          "శార్దూలం": {
+            "f1-score": 0.9813664596273292,
+            "precision": 0.9753086419753086,
+            "recall": 0.9875,
+            "support": 80.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            77,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            78,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            22,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            20
+          ]
+        ],
+        "cross_entropy": 0.0262752238189596,
+        "macro_f1": 1.0,
+        "observations": 197,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 197.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 197.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 77.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 78.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 22.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 20.0
+          }
+        }
+      }
+    },
+    "శృంగారనైషధము": {
+      "line": {
+        "accuracy": 0.9913563829787234,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            612,
+            2,
+            0,
+            2
+          ],
+          [
+            1,
+            322,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            326,
+            5
+          ],
+          [
+            0,
+            0,
+            1,
+            231
+          ]
+        ],
+        "cross_entropy": 0.041869119143458186,
+        "macro_f1": 0.9899516557490956,
+        "observations": 1504,
+        "per_class": {
+          "accuracy": 0.9913563829787234,
+          "macro avg": {
+            "f1-score": 0.9899516557490956,
+            "precision": 0.9887651264555268,
+            "recall": 0.991237755004027,
+            "support": 1504.0
+          },
+          "weighted avg": {
+            "f1-score": 0.991370972976572,
+            "precision": 0.9914531686744364,
+            "recall": 0.9913563829787234,
+            "support": 1504.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 0.9951219512195122,
+            "precision": 0.996742671009772,
+            "recall": 0.9935064935064936,
+            "support": 616.0
+          },
+          "చంపకమాల": {
+            "f1-score": 0.9938271604938271,
+            "precision": 0.9938271604938271,
+            "recall": 0.9938271604938271,
+            "support": 324.0
+          },
+          "మత్తేభము": {
+            "f1-score": 0.9878787878787879,
+            "precision": 0.9939024390243902,
+            "recall": 0.9819277108433735,
+            "support": 332.0
+          },
+          "శార్దూలం": {
+            "f1-score": 0.9829787234042553,
+            "precision": 0.9705882352941176,
+            "recall": 0.9956896551724138,
+            "support": 232.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            154,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            81,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            83,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            58
+          ]
+        ],
+        "cross_entropy": 0.018329470439944952,
+        "macro_f1": 1.0,
+        "observations": 376,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 376.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 376.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 154.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 81.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 83.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 58.0
+          }
+        }
+      }
+    },
+    "హరవిలాసము": {
+      "line": {
+        "accuracy": 0.9955089820359282,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            247,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            120,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            127,
+            1
+          ],
+          [
+            1,
+            0,
+            0,
+            171
+          ]
+        ],
+        "cross_entropy": 0.020530161574189187,
+        "macro_f1": 0.99583763028353,
+        "observations": 668,
+        "per_class": {
+          "accuracy": 0.9955089820359282,
+          "macro avg": {
+            "f1-score": 0.99583763028353,
+            "precision": 0.9961017620734663,
+            "recall": 0.995585322111778,
+            "support": 668.0
+          },
+          "weighted avg": {
+            "f1-score": 0.9955125554517563,
+            "precision": 0.9955262884635354,
+            "recall": 0.9955089820359282,
+            "support": 668.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 0.9959677419354839,
+            "precision": 0.9959677419354839,
+            "recall": 0.9959677419354839,
+            "support": 248.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 120.0
+          },
+          "మత్తేభము": {
+            "f1-score": 0.996078431372549,
+            "precision": 1.0,
+            "recall": 0.9921875,
+            "support": 128.0
+          },
+          "శార్దూలం": {
+            "f1-score": 0.991304347826087,
+            "precision": 0.9884393063583815,
+            "recall": 0.9941860465116279,
+            "support": 172.0
+          }
+        }
+      },
+      "poem": {
+        "accuracy": 1.0,
+        "class_order": [
+          "ఉత్పలమాల",
+          "చంపకమాల",
+          "మత్తేభము",
+          "శార్దూలం"
+        ],
+        "confusion_matrix": [
+          [
+            62,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            30,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            32,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            43
+          ]
+        ],
+        "cross_entropy": 0.01251661403168183,
+        "macro_f1": 1.0,
+        "observations": 167,
+        "per_class": {
+          "accuracy": 1.0,
+          "macro avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 167.0
+          },
+          "weighted avg": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 167.0
+          },
+          "ఉత్పలమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 62.0
+          },
+          "చంపకమాల": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 30.0
+          },
+          "మత్తేభము": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 32.0
+          },
+          "శార్దూలం": {
+            "f1-score": 1.0,
+            "precision": 1.0,
+            "recall": 1.0,
+            "support": 43.0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "selection_policy": "First and third poems of Vasucharitramu as quoted with explicit metre abbreviations in Kavi Jeevitamulu; both selected before inference. No selection based on model scores.",
+  "label_status": "published_source_annotation; not newly expert-verified gold",
+  "source_url": "https://te.wikisource.org/wiki/కవి_జీవితములు/రామరాజభూషణకవి",
+  "work": "వసుచరిత్రము",
+  "author": "రామరాజభూషణుడు",
+  "probes": [
+    {
+      "id": "vasucharitramu-1-1",
+      "location": "ప్రథమాశ్వాసము, పద్యం 1",
+      "source_metre_marker": "శా.",
+      "expected_class": "శార్దూలం",
+      "lines": [
+        "శ్రీభూపుత్రి వివాహవేళ నిజమంజీరాగ్రరత్నస్వలీ",
+        "లాభివ్యక్తి వరాంఘ్రిరేణుభవక న్యాలీల యంచున్ మదిన్",
+        "దా భావింప శుభక్రమాకలనచేఁ దద్రత్నముం గప్పుసీ",
+        "తా భామాపతి బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ]
+    },
+    {
+      "id": "vasucharitramu-1-3",
+      "location": "ప్రథమాశ్వాసము, పద్యం 3",
+      "source_metre_marker": "మ.",
+      "expected_class": "మత్తేభము",
+      "lines": [
+        "సకలామోదకతాళవృత్తగతులన్ సంగీతసాహిత్యనా",
+        "మకవిద్యాయుగళంబు పల్కుఁజెలికిం బాలిండ్ల జో డైసిరుల్",
+        "ప్రకటింపన్ నఖరేఖలందు నలఘుప్రస్తారము ల్సేయుస",
+        "ర్వకళాకాంతుఁడు బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ]
+    }
+  ]
+}

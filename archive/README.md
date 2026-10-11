@@ -1,43 +1,17 @@
-# Research archive
+# Local preservation area
 
-The archive preserves the project evidence before consolidation.
-The active workflow uses `taining.ipynb` and `data/corpus/v1/`.
+This directory's contents, except this README, are intentionally excluded from Git.
+No archived source, cached HTML, model weights or notebooks are distributed with the release.
 
-`notebooks.zip` contains all nineteen saved notebook files.
-This includes NB01 through NB09 and three earlier output snapshots.
-It also retains seven automatic notebook snapshots.
-It also includes the latest locally saved NB09 outputs.
-`notebooks_manifest.json` records each file's original SHA-256.
-Regression tests verify every archived byte.
-The archive does not execute when training starts.
+On the maintainer's machine:
 
-To extract one notebook into a temporary folder:
+- `legacy-20261011/` preserves the original source, scraper/research tools, tests,
+  configuration trees, notebooks, GX10 Docker helpers and development documentation.
+- `local-preservation/pre-release-20261011/` holds a verified Git history bundle,
+  an original tracked/untracked file SHA-256 inventory and copies of files changed
+  by the cleanup. This is the recovery point for the former repository state.
+- Existing `archive/data/`, raw `data/corpus/` and superseded result directories remain
+  locally available; they are ignored rather than deleted.
 
-```bash
-.venv-local/bin/python - <<'PY'
-from pathlib import Path
-from zipfile import ZipFile
-output = Path('/tmp/chandassu-notebook-history')
-with ZipFile('archive/notebooks.zip') as archive:
-    archive.extract('notebooks/09_audited_direct_comparison.ipynb', output)
-print(output)
-PY
-```
-
-`data/` retains the complete original collection tree.
-The CSV files, manifests, cached HTML, and source exports keep their original bytes.
-Older manifests record their original paths under `data/`.
-The historical readers resolve those paths under `archive/data/`.
-The canonical corpus has its own self-contained paths and hashes.
-
-Old notebooks describe the code and paths at their recorded time.
-Treat them as evidence.
-Use the active notebook for new runs.
-The historical test suite reads the notebook archive for regression checks.
-Original local model directories remain under `runs/`.
-The cleanup does not remove or modify those directories.
-
-`local-run-inputs/` preserves locally generated original split files and a test ledger.
-These files were already outside Git.
-They remain outside Git after the move.
-The canonical release contains the supported complete splits.
+The public supported implementation lives in `src/chandassu`, with `train.py` and
+`inference.py` as entry points. Complete final evidence lives in `results/v1`.

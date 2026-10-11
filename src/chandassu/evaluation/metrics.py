@@ -1,54 +1,74 @@
-"""Four-class metrics and probability-averaged poem predictions."""
-from collections import defaultdict
-from .. import LABELS, LABEL_TO_ID
+"""Four fixed classes; poem probabilities average four calibrated line scores."""
+
+import numpy as np
+from scipy.optimize import minimize_scalar
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score
+
+from .. import LABELS
 
 
-def classification_metrics(targets, predictions):
-    if len(targets) != len(predictions) or not targets:
-        raise ValueError("Metrics need equally sized, nonempty targets and predictions")
-    matrix = [[0] * len(LABELS) for _ in LABELS]
-    for true, pred in zip(targets, predictions):
-        if true not in range(len(LABELS)) or pred not in range(len(LABELS)):
-            raise ValueError("Class IDs must be in 0–3")
-        matrix[true][pred] += 1
-    per_class = {}
-    for i, label in enumerate(LABELS):
-        tp = matrix[i][i]
-        support = sum(matrix[i])
-        predicted = sum(row[i] for row in matrix)
-        precision = tp / predicted if predicted else 0.0
-        recall = tp / support if support else 0.0
-        f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
-        per_class[label] = dict(precision=precision, recall=recall, f1=f1, support=support)
-    return {"accuracy": sum(matrix[i][i] for i in range(len(LABELS))) / len(targets),
-            "macro_f1": sum(v["f1"] for v in per_class.values()) / len(LABELS),
-            "per_class": per_class, "confusion_matrix": matrix,
-            "confusion_matrix_axes": {"rows": "true", "columns": "predicted", "labels": LABELS}}
+def softmax(logits, temperature=1.0):
+    if not np.isfinite(temperature) or temperature <= 0:
+        raise ValueError("Temperature must be finite and positive")
+    z = np.asarray(logits, dtype=np.float64) / temperature
+    if z.ndim != 2 or z.shape[1] != 4 or not np.isfinite(z).all():
+        raise ValueError("Expected finite four-class logits")
+    z = z - z.max(axis=1, keepdims=True)
+    p = np.exp(z)
+    return p / p.sum(axis=1, keepdims=True)
 
 
-def reports(rows, probabilities):
-    if len(rows) != len(probabilities):
-        raise ValueError("One probability vector required per line")
-    groups = defaultdict(list)
-    line_predictions = []
-    for row, probs in zip(rows, probabilities):
-        if len(probs) != len(LABELS):
-            raise ValueError("Expected four probabilities per line")
-        pred = max(range(len(LABELS)), key=lambda i: probs[i])
-        groups[row.poem_id].append((row, probs))
-        line_predictions.append({"poem_id": row.poem_id, "line_no": row.line_no,
-                                 "true_label": row.label, "predicted_label": LABELS[pred],
-                                 "probabilities": dict(zip(LABELS, probs))})
-    poem_predictions = []
-    for pid, group in groups.items():
-        if len(group) != 4 or len({r.label for r, _ in group}) != 1:
-            raise ValueError("Poem aggregation requires four lines with the same label")
-        means = [sum(p[i] for _, p in group) / 4 for i in range(len(LABELS))]
-        pred = max(range(len(LABELS)), key=lambda i: means[i])
-        poem_predictions.append({"poem_id": pid, "true_label": group[0][0].label,
-                                 "predicted_label": LABELS[pred], "probabilities": dict(zip(LABELS, means))})
-    metrics = {}
-    for name, predictions in (("line", line_predictions), ("poem", poem_predictions)):
-        metrics[name] = classification_metrics([LABEL_TO_ID[r["true_label"]] for r in predictions],
-                                               [LABEL_TO_ID[r["predicted_label"]] for r in predictions])
-    return metrics, {"lines": line_predictions, "poems": poem_predictions}
+def classification(targets, probabilities):
+    predictions = probabilities.argmax(1)
+    return {
+        "observations": len(targets),
+        "accuracy": float(accuracy_score(targets, predictions)),
+        "macro_f1": float(f1_score(targets, predictions, labels=range(4), average="macro", zero_division=0)),
+        "cross_entropy": float(-np.log(np.maximum(probabilities[np.arange(len(targets)), targets], 1e-12)).mean()),
+        "per_class": classification_report(
+            targets, predictions, labels=range(4), target_names=list(LABELS), output_dict=True, zero_division=0
+        ),
+        "confusion_matrix": confusion_matrix(targets, predictions, labels=range(4)).tolist(),
+        "class_order": list(LABELS),
+    }
+
+
+def line_poem_metrics(logits, targets, temperature=1.0):
+    if not len(targets) or len(targets) % 4:
+        raise ValueError("Metrics require complete poems")
+    y = np.asarray(targets, dtype=int)
+    grouped = y.reshape(-1, 4)
+    if not np.all(grouped == grouped[:, :1]):
+        raise ValueError("Four-line target mismatch")
+    p = softmax(logits, temperature)
+    return {"line": classification(y, p), "poem": classification(grouped[:, 0], p.reshape(-1, 4, 4).mean(1))}
+
+
+def fit_temperature(logits, targets):
+    targets = np.asarray(targets).reshape(-1, 4)
+    if not np.all(targets == targets[:, :1]):
+        raise ValueError("Calibration requires complete poems")
+
+    def loss(log_temperature):
+        p = softmax(logits, np.exp(log_temperature)).reshape(-1, 4, 4).mean(1)
+        return float(-np.log(np.maximum(p[np.arange(len(targets)), targets[:, 0]], 1e-12)).mean())
+
+    result = minimize_scalar(loss, bounds=(-3, 3), method="bounded")
+    if not result.success:
+        raise RuntimeError("Temperature fitting failed")
+    return {
+        "temperature": float(np.exp(result.x)),
+        "before_nll": loss(0),
+        "after_nll": float(result.fun),
+        "poems": len(targets),
+        "resource": "Separate calibration works; excluded from optimization and selection",
+    }
+
+
+def better_checkpoint(row, best, f1_delta, loss_delta):
+    if best is None:
+        return True
+    improvement = row["validation_poem_f1"] - best["validation_poem_f1"]
+    return improvement > f1_delta or (
+        abs(improvement) <= f1_delta and row["validation_eval_loss"] < best["validation_eval_loss"] - loss_delta
+    )

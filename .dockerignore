@@ -1,6 +1,21 @@
-# Only container build inputs enter the image context. Mount the repo at runtime.
 **
 !Dockerfile
-!docker/
-!docker/requirements-gx10.txt
-!docker/chandassu
+!pyproject.toml
+!uv.lock
+!README.md
+!LICENSE
+!NOTICE
+!train.py
+!inference.py
+!src/
+!src/**
+!scripts/
+!scripts/**
+!configs/
+!configs/**
+!tests/
+!tests/**
+!data/
+!data/v1/
+!data/v1/**
+**/__pycache__/

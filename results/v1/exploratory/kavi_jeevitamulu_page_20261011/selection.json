@@ -1,0 +1,824 @@
+{
+  "source_url": "https://te.wikisource.org/wiki/కవి_జీవితములు/రామరాజభూషణకవి",
+  "source_html_sha256": "c0e6c3bec188598534b51131557c0110ed3630cdb491d8e4090509aed1789b59",
+  "policy": "All explicit ఉ., చ./చం., మ., శా. quotations; frozen before this batch inference. No prediction-dependent edits.",
+  "source_label_caveat": "Published annotations, not independently verified gold. Both sides of source conflict retained.",
+  "overlap_files": [
+    "data/corpus/v1/test/lines.jsonl",
+    "data/corpus/v1/train/lines.jsonl",
+    "data/corpus/v1/validation/lines.jsonl",
+    "data/corpus/v1/test/other.jsonl",
+    "data/corpus/v1/train/other.jsonl",
+    "data/corpus/v1/validation/other.jsonl",
+    "data/corpus/v1/test/unknown.jsonl",
+    "data/corpus/v1/train/unknown.jsonl",
+    "data/corpus/v1/validation/unknown.jsonl",
+    "data/corpus/v1/provenance/poems.jsonl"
+  ],
+  "records": [
+    {
+      "id": "p018-01",
+      "paragraph": 18,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "మ. నను శ్రీరామపదారవిందభజనానందున్ జగత్ప్రాణనం",
+        "దనకారుణ్యకటాక్షలబ్ధకవితాధారాసుధారాశిసం",
+        "జనితైకై కదినప్రబంధఘటికాసద్యశ్శతగ్రంథక",
+        "ల్పను సంగీతకళారహస్యనిధిఁ బిల్వం బంచి పల్కెం గృపన్."
+      ],
+      "lines": [
+        "నను శ్రీరామపదారవిందభజనానందున్ జగత్ప్రాణనం",
+        "దనకారుణ్యకటాక్షలబ్ధకవితాధారాసుధారాశిసం",
+        "జనితైకై కదినప్రబంధఘటికాసద్యశ్శతగ్రంథక",
+        "ల్పను సంగీతకళారహస్యనిధిఁ బిల్వం బంచి పల్కెం గృపన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "18b8b54b2ce5405c49a3afdf14478c53ed61eb6d785d308a92893c47d8a5e0e5",
+      "repeated_quotation_group": "nanu-srirama",
+      "conflicting_source_labels": true,
+      "repeat_similarity": 0.9904761904761905,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "conflicting_source_labels"
+      ]
+    },
+    {
+      "id": "p055-01",
+      "paragraph": 55,
+      "source_line": 1,
+      "expected_class": "శార్దూలం",
+      "source_marker": "శా.",
+      "raw_source_lines": [
+        "శా. శ్రీభూపుత్రి వివాహవేళ నిజమంజీరాగ్రరత్నస్వలీ",
+        "లాభివ్యక్తి వరాంఘ్రిరేణుభవక న్యాలీల యంచున్ మదిన్",
+        "దా భావింప శుభక్రమాకలనచేఁ దద్రత్నముం గప్పుసీ",
+        "తా భామాపతి బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ],
+      "lines": [
+        "శ్రీభూపుత్రి వివాహవేళ నిజమంజీరాగ్రరత్నస్వలీ",
+        "లాభివ్యక్తి వరాంఘ్రిరేణుభవక న్యాలీల యంచున్ మదిన్",
+        "దా భావింప శుభక్రమాకలనచేఁ దద్రత్నముం గప్పుసీ",
+        "తా భామాపతి బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "5ca4149e088077270fcca9d56a8ac918c077abf389b918dacf5eb472ed6903da",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": true,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "previously_probed"
+      ]
+    },
+    {
+      "id": "p059-01",
+      "paragraph": 59,
+      "source_line": 1,
+      "expected_class": "శార్దూలం",
+      "source_marker": "శా.",
+      "raw_source_lines": [
+        "శా. శ్రీవైదేహసుతన్ భృగూద్వహజయశ్రీనబ్జభృచ్చాపలీ",
+        "లావాప్తిన్వరియించిసత్కుశలవత్వామూల్యమాంగల్యదీ",
+        "క్షావాలం బగునాపరిగ్రహయుగం బన్యోన్యహార్దంబునన్",
+        "సేవింపం దగు రామచంద్రుఁడు శుభశ్రీ లిచ్చు మా కెప్పుడున్."
+      ],
+      "lines": [
+        "శ్రీవైదేహసుతన్ భృగూద్వహజయశ్రీనబ్జభృచ్చాపలీ",
+        "లావాప్తిన్వరియించిసత్కుశలవత్వామూల్యమాంగల్యదీ",
+        "క్షావాలం బగునాపరిగ్రహయుగం బన్యోన్యహార్దంబునన్",
+        "సేవింపం దగు రామచంద్రుఁడు శుభశ్రీ లిచ్చు మా కెప్పుడున్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "6f0ccc950a30b7b1125f87d038419028e0cf2b95b25b3cc069f2eda98277fab7",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p066-01",
+      "paragraph": 66,
+      "source_line": 1,
+      "expected_class": "శార్దూలం",
+      "source_marker": "శా.",
+      "raw_source_lines": [
+        "\"శా. శ్రీలీలావతి తా సురోమణిసభాసింహాసనత్కౌస్తుభా",
+        "వేలాభాప్రతిబింబితాంగి యయిన న్వేఱొక్కతం దాల్చినాఁ",
+        "డౌలే యంచుఁ దలంచునో యని యమందానందుఁ డై లక్ష్మి నే",
+        "వేళం గౌఁగిటఁ జేర్చుశౌరి నరసోర్వీనాథునిం బ్రోవుతన్.\""
+      ],
+      "lines": [
+        "శ్రీలీలావతి తా సురోమణిసభాసింహాసనత్కౌస్తుభా",
+        "వేలాభాప్రతిబింబితాంగి యయిన న్వేఱొక్కతం దాల్చినాఁ",
+        "డౌలే యంచుఁ దలంచునో యని యమందానందుఁ డై లక్ష్మి నే",
+        "వేళం గౌఁగిటఁ జేర్చుశౌరి నరసోర్వీనాథునిం బ్రోవుతన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "4e92d30463dd2801888d24d0f387198f202353f5edee0966ffacadb1f19a0c92",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p087-01",
+      "paragraph": 87,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "మ. సకలామోదకతాళవృత్తగతులన్ సంగీతసాహిత్యనా",
+        "మకవిద్యాయుగళంబు పల్కుఁజెలికిం బాలిండ్ల జో డైసిరుల్",
+        "ప్రకటింపన్ నఖరేఖలందు నలఘుప్రస్తారము ల్సేయుస",
+        "ర్వకళాకాంతుఁడు బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ],
+      "lines": [
+        "సకలామోదకతాళవృత్తగతులన్ సంగీతసాహిత్యనా",
+        "మకవిద్యాయుగళంబు పల్కుఁజెలికిం బాలిండ్ల జో డైసిరుల్",
+        "ప్రకటింపన్ నఖరేఖలందు నలఘుప్రస్తారము ల్సేయుస",
+        "ర్వకళాకాంతుఁడు బ్రోవుతన్ దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "9ccfd14b2f0b7f2d3e4b1c3e58bb1375c46f581ce3a7b382754abb02046aa472",
+      "repeated_quotation_group": "sakalamodaka",
+      "conflicting_source_labels": false,
+      "repeat_similarity": 0.9881656804733728,
+      "previously_probed": true,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "previously_probed"
+      ]
+    },
+    {
+      "id": "p088-01",
+      "paragraph": 88,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "మ. అరిగాఁ బంచమ మేవగించి నవలా లవ్వేళ హిందోళవై",
+        "ఖరిఁ జూపన్ పికజాత మాత్మరవభంగవ్యాకులం బై వనీ",
+        "ధర నాలంబిత పల్లవవ్రతవిధుల్ ద్రాల్పన్ తదీయధ్వనిన్",
+        "సరిగాఁ గైకొనియెన్ వసంతము మహాసంపూర్ణభావోన్నతిన్."
+      ],
+      "lines": [
+        "అరిగాఁ బంచమ మేవగించి నవలా లవ్వేళ హిందోళవై",
+        "ఖరిఁ జూపన్ పికజాత మాత్మరవభంగవ్యాకులం బై వనీ",
+        "ధర నాలంబిత పల్లవవ్రతవిధుల్ ద్రాల్పన్ తదీయధ్వనిన్",
+        "సరిగాఁ గైకొనియెన్ వసంతము మహాసంపూర్ణభావోన్నతిన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "13158160399bbbfabe0cb72406727d918c7524c2422d97ce8277f4a802468360",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p119-01",
+      "paragraph": 119,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "\"మ. సకలామోదకతాళవృత్తగతులన్ సంగీతసాహిత్యనా",
+        "మకవిద్యాయుగళంబు పల్కుఁజెలికిం బాలిండ్లజో డై సిరుల్",
+        "ప్రకటింపన్ నఖరేఖలందు నలఘుప్రస్తారము ల్సేయుస",
+        "ర్వకళాకాంతుడు బ్రోవుతం దిరుమలేంద్రశ్రీమహారాయనిన్.\""
+      ],
+      "lines": [
+        "సకలామోదకతాళవృత్తగతులన్ సంగీతసాహిత్యనా",
+        "మకవిద్యాయుగళంబు పల్కుఁజెలికిం బాలిండ్లజో డై సిరుల్",
+        "ప్రకటింపన్ నఖరేఖలందు నలఘుప్రస్తారము ల్సేయుస",
+        "ర్వకళాకాంతుడు బ్రోవుతం దిరుమలేంద్రశ్రీమహారాయనిన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "1ac574b5fbef8d1f6b6d80909307dc5968f5220228f1b47fa102d867482e7270",
+      "repeated_quotation_group": "sakalamodaka",
+      "conflicting_source_labels": false,
+      "repeat_similarity": 0.9881656804733728,
+      "previously_probed": true,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "previously_probed"
+      ]
+    },
+    {
+      "id": "p119-06",
+      "paragraph": 119,
+      "source_line": 6,
+      "expected_class": "చంపకమాల",
+      "source_marker": "చ.",
+      "raw_source_lines": [
+        "\"చ. అన నిని కేళికాసచివుఁ డాస్వన మల్లన నాలకించి యో",
+        "జనవర పల్లకీరవము సంగతిఁ బాడెద రెవ్వరో వినూ",
+        "తనగతి నిమ్మహాద్రిపయిఁ దన్మృదుపంచమ షడ్జ శయ్య కొ",
+        "య్యన నెలుఁ గిచ్చె వింటెప్రమదాకులకోకిలకేకిలోకమున్.\" ఆశ్వా 2 పద్య 17."
+      ],
+      "lines": [
+        "అన నిని కేళికాసచివుఁ డాస్వన మల్లన నాలకించి యో",
+        "జనవర పల్లకీరవము సంగతిఁ బాడెద రెవ్వరో వినూ",
+        "తనగతి నిమ్మహాద్రిపయిఁ దన్మృదుపంచమ షడ్జ శయ్య కొ",
+        "య్యన నెలుఁ గిచ్చె వింటెప్రమదాకులకోకిలకేకిలోకమున్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "b9b73a7b76ee034a970b3107b922ca07a98879a212a922c9b9ab278b601ea71f",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p122-07",
+      "paragraph": 122,
+      "source_line": 7,
+      "expected_class": "శార్దూలం",
+      "source_marker": "శా.",
+      "raw_source_lines": [
+        "\"శా. అజాబిల్లివెలుంగువెల్లికల డాయ న్లేక రాకానిశా",
+        "రాజశ్రీసఖ మైనమోమునఁ బటాగ్రం బొత్తి యెల్గెత్తి యా",
+        "రాజీవానన యేడ్చెఁ గిన్నరవధూరాజత్క రాంభోజకాం",
+        "భోజీమేళవిపంచికారవసుధాపూరంబు తోరంబుగాన్.\" ఆశ్వా 4. పద్యం 5."
+      ],
+      "lines": [
+        "అజాబిల్లివెలుంగువెల్లికల డాయ న్లేక రాకానిశా",
+        "రాజశ్రీసఖ మైనమోమునఁ బటాగ్రం బొత్తి యెల్గెత్తి యా",
+        "రాజీవానన యేడ్చెఁ గిన్నరవధూరాజత్క రాంభోజకాం",
+        "భోజీమేళవిపంచికారవసుధాపూరంబు తోరంబుగాన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "8e90d128525c3557670fcd1b3b6ba8477b9c2ff7d98d65b1aa8c5c7ea1220395",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p124-01",
+      "paragraph": 124,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "\"ఉ. పాటున కింతు లోర్తురె కృపారహితాత్మక నీవు ద్రోయ ని",
+        "చ్చోటభవన్న ఖాంకురము సోఁకెఁ గనుంగొనుమంచుఁ జూపి య",
+        "ప్పాటలగంధి వేదననెపం బిడి యేడ్చెఁ గలస్వనంబుతో",
+        "మీటినవిచ్చుగబ్బిచనుమిట్టల నశ్రులు చిందు నొందగ్గన్.\""
+      ],
+      "lines": [
+        "పాటున కింతు లోర్తురె కృపారహితాత్మక నీవు ద్రోయ ని",
+        "చ్చోటభవన్న ఖాంకురము సోఁకెఁ గనుంగొనుమంచుఁ జూపి య",
+        "ప్పాటలగంధి వేదననెపం బిడి యేడ్చెఁ గలస్వనంబుతో",
+        "మీటినవిచ్చుగబ్బిచనుమిట్టల నశ్రులు చిందు నొందగ్గన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "d390aa8b222b7efad110e1d4c88fde2020372905dcd16386b5b6099aa9e7cd19",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [
+        {
+          "line": 2,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu208:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "ఉత్పలమాల"
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu208:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "ఉత్పలమాల"
+            }
+          ]
+        }
+      ],
+      "corpus_near_poem_matches": [
+        {
+          "file": "data/corpus/v1/provenance/poems.jsonl",
+          "poem_id": "andhrabharati:manu:manu208:row4",
+          "role": "historical_original_test",
+          "source": "మను చరిత్రము",
+          "label": "ఉత్పలమాల",
+          "character_similarity": 0.9644970414201184
+        }
+      ],
+      "benchmark_exclusions": [
+        "corpus_overlap"
+      ]
+    },
+    {
+      "id": "p125-06",
+      "paragraph": 125,
+      "source_line": 6,
+      "expected_class": "చంపకమాల",
+      "source_marker": "చ.",
+      "raw_source_lines": [
+        "\"చ. అకుటిలసౌమ్యమాననిలయస్ఫురణంబును నాతిమాత్రతా",
+        "రక పరివర్తనంబు శుభరాగమిళత్పదపల్లవాంకము",
+        "ద్రికయును పెంపు మీఱ నిజదృష్టులఁ బోలినసింధుకన్యకా",
+        "ప్రకటవివాహగీతికలు పాడిరి పుణ్యపురంధ్రికామణుల్.\" ఆశ్వా 5. ప 7."
+      ],
+      "lines": [
+        "అకుటిలసౌమ్యమాననిలయస్ఫురణంబును నాతిమాత్రతా",
+        "రక పరివర్తనంబు శుభరాగమిళత్పదపల్లవాంకము",
+        "ద్రికయును పెంపు మీఱ నిజదృష్టులఁ బోలినసింధుకన్యకా",
+        "ప్రకటవివాహగీతికలు పాడిరి పుణ్యపురంధ్రికామణుల్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "820a48cc287388f60996e0f00d03b1ba95417b3c5fb4dc23c7b2452fd47ed431",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p133-01",
+      "paragraph": 133,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "\"మ. సకలాశాగతినర్మకోపవిరతిశ్రౌతక్రియారంభణా",
+        "త్మకవర్గత్రయికిన్ మదుచ్చరితశబ్దజ్ఞానమే మూల మిం",
+        "తకుఁ బోలన్ వినుఁ డంచుఁ దెల్పుగతిఁ జెంతం గొండపై పల్లెలం",
+        "గృకవాకు ల్మొరసెన్ గృహోపరిఁ ద్రిభంగిన్ భుగ్నకంఠధ్వనిన్.\""
+      ],
+      "lines": [
+        "సకలాశాగతినర్మకోపవిరతిశ్రౌతక్రియారంభణా",
+        "త్మకవర్గత్రయికిన్ మదుచ్చరితశబ్దజ్ఞానమే మూల మిం",
+        "తకుఁ బోలన్ వినుఁ డంచుఁ దెల్పుగతిఁ జెంతం గొండపై పల్లెలం",
+        "గృకవాకు ల్మొరసెన్ గృహోపరిఁ ద్రిభంగిన్ భుగ్నకంఠధ్వనిన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "e2a6d35f4a7b212c9ef20ea55c631ea0f89eb449cb79cefa7baf5cbe46a110aa",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [
+        {
+          "file": "data/corpus/v1/provenance/poems.jsonl",
+          "poem_id": "andhrabharati:manu:manu308:row4",
+          "role": "historical_original_test",
+          "source": "మను చరిత్రము",
+          "label": "మత్తేభము"
+        }
+      ],
+      "corpus_line_matches": [
+        {
+          "line": 1,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu308:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "మత్తేభము"
+            }
+          ]
+        },
+        {
+          "line": 2,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu308:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "మత్తేభము"
+            }
+          ]
+        },
+        {
+          "line": 3,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu308:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "మత్తేభము"
+            }
+          ]
+        },
+        {
+          "line": 4,
+          "matches": [
+            {
+              "file": "data/corpus/v1/provenance/poems.jsonl",
+              "poem_id": "andhrabharati:manu:manu308:row4",
+              "role": "historical_original_test",
+              "source": "మను చరిత్రము",
+              "label": "మత్తేభము"
+            }
+          ]
+        }
+      ],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "corpus_overlap"
+      ]
+    },
+    {
+      "id": "p133-06",
+      "paragraph": 133,
+      "source_line": 6,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "\"మ. ఒకనాఁ డింద్రునియంతవేలుపు మదీయోక్తిన్ విడంబించి తా",
+        "నొకకాలం బెఱిఁగింప వచ్చి మునిశాపోద్వృత్తిపా లయ్యె మా",
+        "మకశబ్దం బిది యల్పమే త్రిముని సంభావ్యత్రికాలీవిబో",
+        "థక మన్‌రీతిఁ ద్రిభంగిగా మొరసెఁ జెంతన్ దామ్రచూడౌఘముల్.\""
+      ],
+      "lines": [
+        "ఒకనాఁ డింద్రునియంతవేలుపు మదీయోక్తిన్ విడంబించి తా",
+        "నొకకాలం బెఱిఁగింప వచ్చి మునిశాపోద్వృత్తిపా లయ్యె మా",
+        "మకశబ్దం బిది యల్పమే త్రిముని సంభావ్యత్రికాలీవిబో",
+        "థక మన్‌రీతిఁ ద్రిభంగిగా మొరసెఁ జెంతన్ దామ్రచూడౌఘముల్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "0696637f6f9abe4271f50b862baeee827431e0442cbd69dcd85f4c020e72d63d",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p148-01",
+      "paragraph": 148,
+      "source_line": 1,
+      "expected_class": "మత్తేభము",
+      "source_marker": "మ.",
+      "raw_source_lines": [
+        "మ. మహి మున్ వాగనుశాసనుండు సృజయింపం గుండలీంద్రుండు త",
+        "న్మహనీయస్థితిమూల మై నిలువ శ్రీనాథుండు ప్రోవ న్మహా",
+        "మహు లై సోముఁడు భాస్కరుండు వెలయింపన్ సొంపువాటించు నీ",
+        "బహుళాంథ్రోక్తిమయప్రపంచమునఁదత్ప్రాగల్భ్యమూహించెదన్. ఆశ్వా. ప. 1. ప. 10."
+      ],
+      "lines": [
+        "మహి మున్ వాగనుశాసనుండు సృజయింపం గుండలీంద్రుండు త",
+        "న్మహనీయస్థితిమూల మై నిలువ శ్రీనాథుండు ప్రోవ న్మహా",
+        "మహు లై సోముఁడు భాస్కరుండు వెలయింపన్ సొంపువాటించు నీ",
+        "బహుళాంథ్రోక్తిమయప్రపంచమునఁదత్ప్రాగల్భ్యమూహించెదన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "8ff2dd2b442fd7d886b844255301e638e628ccc56e58bdcf12b37ece9324f21a",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p156-01",
+      "paragraph": 156,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "ఉ. నను శ్రీరామపదారవిందభజనానందున్ జగత్ప్రాణనం",
+        "దనకారుణ్యకటాక్షలబ్ధకవితాధా రాసుధా రాశిసం",
+        "జనితైకైకదినప్రబంధఘటికా సద్యశ్శతగ్రంథక",
+        "ల్పను సంగీతకళారహస్యనిధిఁ బిల్వం బంచి పల్కెన్ గృపన్. ఆశ్వా 1. ప 16"
+      ],
+      "lines": [
+        "నను శ్రీరామపదారవిందభజనానందున్ జగత్ప్రాణనం",
+        "దనకారుణ్యకటాక్షలబ్ధకవితాధా రాసుధా రాశిసం",
+        "జనితైకైకదినప్రబంధఘటికా సద్యశ్శతగ్రంథక",
+        "ల్పను సంగీతకళారహస్యనిధిఁ బిల్వం బంచి పల్కెన్ గృపన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "97310004bc5d32b8c29b54aac71e14898fada7bf111f8158e963479d619ff87a",
+      "repeated_quotation_group": "nanu-srirama",
+      "conflicting_source_labels": true,
+      "repeat_similarity": 0.9904761904761905,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "conflicting_source_labels"
+      ]
+    },
+    {
+      "id": "p166-01",
+      "paragraph": 166,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "ఉ. ఆపటుకీర్తి రామవసుధాధిపచంద్రుడు కృష్ణరాయధా",
+        "త్రీపతిసార్వభౌమమహితృప్రియుఁ డై వితతప్రతాపసం",
+        "తాపితశత్రుఁ డై యలసదాశివరాయనిరంతరాయ",
+        "విద్యాపురరాజ్యలక్ష్మికి నిదానము తా నయి మించె నెంతయున్."
+      ],
+      "lines": [
+        "ఆపటుకీర్తి రామవసుధాధిపచంద్రుడు కృష్ణరాయధా",
+        "త్రీపతిసార్వభౌమమహితృప్రియుఁ డై వితతప్రతాపసం",
+        "తాపితశత్రుఁ డై యలసదాశివరాయనిరంతరాయ",
+        "విద్యాపురరాజ్యలక్ష్మికి నిదానము తా నయి మించె నెంతయున్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "10f3bd370a5f072b5fd4790d223a3b3e3bf6391967dc79388474fcdc5ce5b976",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p190-01",
+      "paragraph": 190,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "ఉ. లొట్ట యిదేటిమాట పెనులోభులతో మొగమాట మేల తాఁ",
+        "గుట్టకయున్న వృశ్చికముఁ గుమ్మరపు ర్వని యందురే కదా",
+        "పట్టపురాజుపట్టిసరిపల్లె సరాసరి యియ్యకున్న నేఁ",
+        "దిట్టకమాన నామతము తీవ్రమహోగ్రభయంకరంబుగాఁ",
+        "దిట్టితినా మహాగ్రహమతిన్ మకరగ్రహజర్జరీభటా",
+        "పట్టపుదట్టఫాలఫణిభర్తృజహూకృతపర్జటస్ఫుటా",
+        "ఘట్టనథట్టణాలకవి ఘట్టకనిర్గళ రాజభృత్యకీ",
+        "చట్టచటార్భటీనయనజర్జరకీలలు రాలఁగావలెన్",
+        "జుట్టఱికంబునం, బొగడఁ జూచితినా రజతాద్ర్యధిత్యకా",
+        "పట్టణమధ్యరంగగతభవ్యవధూవద నానుషంగ సం",
+        "ఘట్టశిరస్థ్స గాంగఝరహల్లకజాలసుధాతరంగముల్",
+        "చుట్టుకొన న్వలెన్ భువనచోద్యరుఁగా భయదంబుగా మఱిం",
+        "దిట్టితినా సభాభవనధీంకృతభీమనృసింహరాడ్ధ్వజా",
+        "తాట్టమహాట్టహాసచతురాస్య సముద్భృకుటీతటీవటీ",
+        "కోట్టణరోషజాలహృతకుంఠితకంఠగభీరనాదసం",
+        "ఘట్టవిజృంభమాణగతిఁ గావలె దీవనపద్య మిచ్చి చే",
+        "పట్టితినా మణీకనకభాజనభూషణభాసురాంబరా",
+        "రట్టతురంగగంధగజరాజదమూల్యఘనాతపత్రభూ",
+        "పట్టణభర్మ హర్మ్యభటపంక్తి చిరాయు వనామయంబు వై",
+        "గట్టిగ తోడుతో వెలయఁగావలె నెక్కువఠీవిఁ జూడుఁడీ",
+        "యట్టిటు మందెమేలముల నందఱినింబలెఁ జుల్కఁ జూచి యే",
+        "పట్టుననైన కేరడము పల్కకుఁడీ పయివచ్చు నందులన్",
+        "గొట్టుచు దుష్కవిద్విరదకోటుల బంచముఖోద్భటాకృతిం",
+        "బెట్టుదు దండముల్ సుకవిబృందము కే నతిభక్తి సారెకున్",
+        "గట్టితి ముల్లె లేఁబదియుఁ గాఁగలనూటపదాఱు లెయ్యెడన్",
+        "రట్టడి భట్టుమూర్తికవిరాయనిమార్గ మెఱుంగఁ జెప్పితిన్."
+      ],
+      "lines": [
+        "లొట్ట యిదేటిమాట పెనులోభులతో మొగమాట మేల తాఁ",
+        "గుట్టకయున్న వృశ్చికముఁ గుమ్మరపు ర్వని యందురే కదా",
+        "పట్టపురాజుపట్టిసరిపల్లె సరాసరి యియ్యకున్న నేఁ",
+        "దిట్టకమాన నామతము తీవ్రమహోగ్రభయంకరంబుగాఁ",
+        "దిట్టితినా మహాగ్రహమతిన్ మకరగ్రహజర్జరీభటా",
+        "పట్టపుదట్టఫాలఫణిభర్తృజహూకృతపర్జటస్ఫుటా",
+        "ఘట్టనథట్టణాలకవి ఘట్టకనిర్గళ రాజభృత్యకీ",
+        "చట్టచటార్భటీనయనజర్జరకీలలు రాలఁగావలెన్",
+        "జుట్టఱికంబునం, బొగడఁ జూచితినా రజతాద్ర్యధిత్యకా",
+        "పట్టణమధ్యరంగగతభవ్యవధూవద నానుషంగ సం",
+        "ఘట్టశిరస్థ్స గాంగఝరహల్లకజాలసుధాతరంగముల్",
+        "చుట్టుకొన న్వలెన్ భువనచోద్యరుఁగా భయదంబుగా మఱిం",
+        "దిట్టితినా సభాభవనధీంకృతభీమనృసింహరాడ్ధ్వజా",
+        "తాట్టమహాట్టహాసచతురాస్య సముద్భృకుటీతటీవటీ",
+        "కోట్టణరోషజాలహృతకుంఠితకంఠగభీరనాదసం",
+        "ఘట్టవిజృంభమాణగతిఁ గావలె దీవనపద్య మిచ్చి చే",
+        "పట్టితినా మణీకనకభాజనభూషణభాసురాంబరా",
+        "రట్టతురంగగంధగజరాజదమూల్యఘనాతపత్రభూ",
+        "పట్టణభర్మ హర్మ్యభటపంక్తి చిరాయు వనామయంబు వై",
+        "గట్టిగ తోడుతో వెలయఁగావలె నెక్కువఠీవిఁ జూడుఁడీ",
+        "యట్టిటు మందెమేలముల నందఱినింబలెఁ జుల్కఁ జూచి యే",
+        "పట్టుననైన కేరడము పల్కకుఁడీ పయివచ్చు నందులన్",
+        "గొట్టుచు దుష్కవిద్విరదకోటుల బంచముఖోద్భటాకృతిం",
+        "బెట్టుదు దండముల్ సుకవిబృందము కే నతిభక్తి సారెకున్",
+        "గట్టితి ముల్లె లేఁబదియుఁ గాఁగలనూటపదాఱు లెయ్యెడన్",
+        "రట్టడి భట్టుమూర్తికవిరాయనిమార్గ మెఱుంగఁ జెప్పితిన్."
+      ],
+      "status": "extended_26_line_quotation",
+      "extraction_note": "One continuous quotation; not divided into synthetic four-line poems.",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "75102b11603b8db4de838ec4fe7442820fc32f5c59b7465031ea8b055cb36c5b",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "extended_26_line_quotation"
+      ]
+    },
+    {
+      "id": "p194-01",
+      "paragraph": 194,
+      "source_line": 1,
+      "expected_class": "శార్దూలం",
+      "source_marker": "శా.",
+      "raw_source_lines": [
+        "\"శా. గుత్తిం బుల్లెలు గుట్టి చంద్రగిరిలోఁ గూ డెత్తి పెన్గొండలో",
+        "హత్తిన్ సత్త్రమునందు వెండిబలుదుర్గాధీశుతాంబూలపుం",
+        "దిత్తు ల్మోసి పదస్థు లైనఘనులం దీవించ .....................\"",
+        "దీవించెదన్",
+        "\"మత్తారాతియయాతినాగమనుతున్ మంత్రీశ్వరున్ దిమ్మరుస్.\""
+      ],
+      "lines": [
+        "గుత్తిం బుల్లెలు గుట్టి చంద్రగిరిలోఁ గూ డెత్తి పెన్గొండలో",
+        "హత్తిన్ సత్త్రమునందు వెండిబలుదుర్గాధీశుతాంబూలపుం",
+        "దిత్తు ల్మోసి పదస్థు లైనఘనులం దీవించెదన్",
+        "మత్తారాతియయాతినాగమనుతున్ మంత్రీశ్వరున్ దిమ్మరుస్."
+      ],
+      "status": "four_lines_reassembled_from_source_fragments",
+      "extraction_note": "Paragraph 194 stops mid-line with an ellipsis. Paragraph 196 explicitly supplies దీవించెదన్ and the fourth line. Joined using source alone; excluded from the strict benchmark.",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "cf49150ce6a7fc8cf4503393dc96178616570dd89045e77476c2fb087f49acdb",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": [
+        "four_lines_reassembled_from_source_fragments"
+      ]
+    },
+    {
+      "id": "p209-01",
+      "paragraph": 209,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "1. ఉ. భండనభీమ ని న్నెదిరి పాఱక నిల్చినశాత్రవుల్ బృహ",
+        "న్మండలపుండరీక హరినాకనివాసులు పాఱియున్ బృహ",
+        "న్మండలపుండరీకహరినాకనివాసులు చచ్చియున్ బృహ",
+        "న్మండలపుండరీకహరినాకనివాసులు చిత్ర మెన్నఁగన్."
+      ],
+      "lines": [
+        "భండనభీమ ని న్నెదిరి పాఱక నిల్చినశాత్రవుల్ బృహ",
+        "న్మండలపుండరీక హరినాకనివాసులు పాఱియున్ బృహ",
+        "న్మండలపుండరీకహరినాకనివాసులు చచ్చియున్ బృహ",
+        "న్మండలపుండరీకహరినాకనివాసులు చిత్ర మెన్నఁగన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "5522eff743f730a71aa8f31392537d19ccf1134a3a4dbd1849901e1a3750d7a6",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p215-01",
+      "paragraph": 215,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "2. ఉ. వీరరసాతిరేకరణవిశ్రుత వేమనరేంద్ర నీయశం",
+        "బారభమానతారకహారసమానము నీభుజామహం",
+        "బారభమానతారకరహారసమానము నీనికేతనం",
+        "బారభమానతారకరహారసమానము చిత్ర మిద్ధరన్."
+      ],
+      "lines": [
+        "వీరరసాతిరేకరణవిశ్రుత వేమనరేంద్ర నీయశం",
+        "బారభమానతారకహారసమానము నీభుజామహం",
+        "బారభమానతారకరహారసమానము నీనికేతనం",
+        "బారభమానతారకరహారసమానము చిత్ర మిద్ధరన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "dac4cfb47c9868cd80d02c6aa813f8fed2e81835dfaab58724b058f623ad3cd2",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    },
+    {
+      "id": "p221-01",
+      "paragraph": 221,
+      "source_line": 1,
+      "expected_class": "ఉత్పలమాల",
+      "source_marker": "ఉ.",
+      "raw_source_lines": [
+        "3. ఉ. అబ్జముఖీమనోజ నరసాధిపనందన కృష్ణ నీయశం",
+        "బబ్జక రాబ్జజాబ్జనయనాబ్జవిలాసము నీపరాక్రమం",
+        "బబ్జక రాబ్జజాబ్జనయనాబ్జవిలాసము నీ విహాపితం",
+        "జబ్జకరాబ్జజాబ్జనయనాబ్జవిలాసము చిత్ర మిద్ధరన్."
+      ],
+      "lines": [
+        "అబ్జముఖీమనోజ నరసాధిపనందన కృష్ణ నీయశం",
+        "బబ్జక రాబ్జజాబ్జనయనాబ్జవిలాసము నీపరాక్రమం",
+        "బబ్జక రాబ్జజాబ్జనయనాబ్జవిలాసము నీ విహాపితం",
+        "జబ్జకరాబ్జజాబ్జనయనాబ్జవిలాసము చిత్ర మిద్ధరన్."
+      ],
+      "status": "complete_four_line_quotation",
+      "extraction_note": "",
+      "label_status": "published_source_annotation_not_expert_verified",
+      "poem_layout_hash": "d87e4ad66db0f0f82216b505ba2042d605c845d67b2a7b03a3c0393110d7a113",
+      "repeated_quotation_group": null,
+      "conflicting_source_labels": false,
+      "previously_probed": false,
+      "corpus_poem_matches": [],
+      "corpus_line_matches": [],
+      "corpus_near_poem_matches": [],
+      "benchmark_exclusions": []
+    }
+  ],
+  "unlabelled": [
+    {
+      "id": "p193-unlabelled",
+      "paragraph": 193,
+      "expected_class": null,
+      "source_marker": "ప.",
+      "lines": [
+        "ఆబ్జముఖీమనోజ నరపాధిపనందన కృష్ణ నీయశం",
+        "బబ్జకరాబ్జజాబ్జనయనాబ్జవిలాసము నీపరాక్రమం",
+        "బబ్జకరాబ్జజాబ్జనయనాబ్జవిలాసము నీవితీర్ణిమం",
+        "బబ్జకరాబ్జజాబ్జనయనాబ్జవిలాసము చిత్ర మిద్ధరన్."
+      ],
+      "status": "unlabelled_quotation",
+      "extraction_note": "ప. does not identify one of the four classes; excluded from labelled metrics."
+    }
+  ]
+}

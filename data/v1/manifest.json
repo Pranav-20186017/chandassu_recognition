@@ -1,0 +1,62 @@
+{
+  "counts": {
+    "test": {
+      "classes": {
+        "ఉత్పలమాల": 749,
+        "చంపకమాల": 583,
+        "మత్తేభము": 579,
+        "శార్దూలం": 323
+      },
+      "lines": 8936,
+      "poems": 2234,
+      "works": 6
+    },
+    "train": {
+      "classes": {
+        "ఉత్పలమాల": 2262,
+        "చంపకమాల": 2620,
+        "మత్తేభము": 1664,
+        "శార్దూలం": 879
+      },
+      "lines": 29700,
+      "poems": 7425,
+      "works": 26
+    },
+    "validation": {
+      "classes": {
+        "ఉత్పలమాల": 585,
+        "చంపకమాల": 648,
+        "మత్తేభము": 423,
+        "శార్దూలం": 203
+      },
+      "lines": 7436,
+      "poems": 1859,
+      "works": 4
+    }
+  },
+  "files": {
+    "WORKS.md": "14f614a6644255ce884776d304ff9dcbf6ddeaaf8904ac88dbc06101048f9b84",
+    "other.jsonl": "0f75ed73075a7bdbf2e96321ded48e87a27aa8bfd63b603199adf00b16db281a",
+    "splits/final_h100.json": "296a777d044b29e909cc50694e8fa5e4abf974def8803fd40933a453a6a0956b",
+    "test.jsonl": "362e4de7679f7d481731223e335b696e00f05df4f9475ed968b9e1e70f713c6b",
+    "train.jsonl": "39fce399da80845af757cbf9b12cdb4e03e0bbb4d74fe5d18f90cfd8e66749e0",
+    "unknown.jsonl": "4d68bf5a9f9314d14668439d18cb7984415668f51b4ee229e80dddbac546db38",
+    "validation.jsonl": "304089a12a1ba111962b1cf1a9a6a06933e8c78f6eddaccc5a8f89c50bdb4485",
+    "works.json": "61b114d25a5d934c8c9793b982786364be0bee1ec80a04dbb9c3dab079272ca6"
+  },
+  "labels": [
+    "ఉత్పలమాల",
+    "చంపకమాల",
+    "మత్తేభము",
+    "శార్దూలం"
+  ],
+  "original_manifest_sha256": "d80a0fdfc6a4b96ce4862cbe835a16ce9f8999054a973003db8c989c77795180",
+  "policy": {
+    "authors_disjoint": false,
+    "expert_gold_available": false,
+    "historical_test": "Diagnostic; already inspected in earlier development",
+    "split_unit": "Work component, entire poem",
+    "text_changes": "None in stored records; normalization at runtime matches H100"
+  },
+  "schema_version": 2
+}

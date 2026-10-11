@@ -1,37 +1,47 @@
-# NVIDIA's Spark fine-tuning playbook uses this ARM64/GB10-capable release.
-ARG PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:25.11-py3
-FROM ${PYTORCH_IMAGE}
+# syntax=docker/dockerfile:1
+FROM ghcr.io/astral-sh/uv:0.12.10 AS uv
 
-# Inherit NVIDIA's compiled CUDA PyTorch, but isolate project Python packages.
-RUN python -c "import sys; assert sys.version_info[:2] == (3, 12)" \
-    && python -m venv --system-site-packages /opt/chandassu-venv
-ENV PATH="/opt/chandassu-venv/bin:${PATH}" \
-    PIP_CONSTRAINT="/dev/null" \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    HOME=/home/jupyter \
-    USER=jupyter \
-    PYTHONPATH=/workspace/src:/workspace \
-    HF_HOME=/home/jupyter/.cache/huggingface
+FROM python:3.12.10-slim-bookworm AS cpu-base
+COPY --from=uv /uv /uvx /usr/local/bin/
+ENV UV_LINK_MODE=copy UV_PYTHON_DOWNLOADS=never PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+WORKDIR /app
+COPY pyproject.toml uv.lock README.md LICENSE NOTICE ./
+COPY src ./src
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cpu --no-dev
+COPY train.py inference.py ./
+COPY scripts ./scripts
+COPY configs ./configs
+COPY data/v1 ./data/v1
+ENV PATH="/app/.venv/bin:$PATH"
 
-COPY docker/requirements-gx10.txt /opt/requirements-gx10.txt
-RUN python -c "import torch; from pathlib import Path; Path('/opt/torch-version.txt').write_text(torch.__version__); Path('/opt/torch-constraint.txt').write_text('torch==' + torch.__version__ + '\n')" \
-    && python -m pip install --no-cache-dir -c /opt/torch-constraint.txt -r /opt/requirements-gx10.txt \
-    && python -c "import torch; from pathlib import Path; assert torch.__version__ == Path('/opt/torch-version.txt').read_text(); assert torch.version.cuda is not None"
+FROM cpu-base AS test
+COPY tests ./tests
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cpu
+RUN ruff check src tests scripts train.py inference.py && pytest -q
 
-WORKDIR /workspace
-# Project code and data are supplied entirely by the runtime bind mount.
-COPY --chmod=755 docker/chandassu /usr/local/bin/chandassu
-RUN python -c "from transformers import AutoModelForSequenceClassification, AutoTokenizer, T5EncoderModel; import jupyterlab, sklearn, regex"
+FROM cpu-base AS cpu
+RUN useradd --uid 1000 --create-home app && mkdir -p /app/runs /app/models && chown app:app /app/runs /app/models
+USER app
+EXPOSE 8765
+CMD ["python", "inference.py", "--host", "0.0.0.0", "--model_dir", "/app/models/cnn"]
 
-# Match the GX10 account so notebooks/checkpoints on the bind mount stay owned by it.
-ARG USER_UID=1000
-ARG USER_GID=1000
-RUN mkdir -p /home/jupyter/.cache/huggingface /home/jupyter/.local/share/jupyter \
-    && chown -R ${USER_UID}:${USER_GID} /home/jupyter /workspace
-USER ${USER_UID}:${USER_GID}
-RUN python -m ipykernel install --user --name chandassu --display-name "Chandassu (GX10 CUDA)"
+FROM nvidia/cuda:12.8.1-cudnn-runtime-ubuntu24.04 AS cuda
+COPY --from=uv /uv /uvx /usr/local/bin/
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && rm -rf /var/lib/apt/lists/*
+ENV UV_LINK_MODE=copy UV_PYTHON_INSTALL_DIR=/opt/python PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN uv python install 3.12.10
+WORKDIR /app
+COPY pyproject.toml uv.lock README.md LICENSE NOTICE ./
+COPY src ./src
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cuda --no-dev --python 3.12.10
+COPY train.py inference.py ./
+COPY scripts ./scripts
+COPY configs ./configs
+COPY data/v1 ./data/v1
+RUN useradd --uid 1000 --create-home app && mkdir -p /app/runs /app/models && chown app:app /app/runs /app/models
+ENV PATH="/app/.venv/bin:$PATH"
+USER app
+EXPOSE 8765
+CMD ["python", "train.py", "--model_type=cnn", "--device=cuda", "--precision=bf16"]
 
-EXPOSE 8888
-CMD ["python", "-m", "jupyterlab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--ServerApp.root_dir=/workspace"]
+FROM cpu AS release

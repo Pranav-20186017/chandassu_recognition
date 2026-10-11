@@ -2,6 +2,7 @@
 
 import torch
 from torch import nn
+
 from ..data import normalize_text
 
 
@@ -10,9 +11,7 @@ class TeluguMetreCNN(nn.Module):
         super().__init__()
         self.embedding = nn.Embedding(vocabulary_size, width, padding_idx=0)
         self.dropout = nn.Dropout(dropout)
-        self.convolutions = nn.ModuleList(
-            [nn.Conv1d(width, width, k, padding=k // 2) for k in kernel_sizes]
-        )
+        self.convolutions = nn.ModuleList([nn.Conv1d(width, width, k, padding=k // 2) for k in kernel_sizes])
         self.classifier = nn.Linear(width * len(kernel_sizes), 4)
 
     def forward(self, ids):
@@ -23,9 +22,7 @@ class TeluguMetreCNN(nn.Module):
         features = self.dropout(embedded).transpose(1, 2)
         pooled = torch.cat(
             [
-                torch.relu(conv(features))
-                .masked_fill(~valid.unsqueeze(1), float("-inf"))
-                .amax(2)
+                torch.relu(conv(features)).masked_fill(~valid.unsqueeze(1), float("-inf")).amax(2)
                 for conv in self.convolutions
             ],
             dim=1,
@@ -55,8 +52,6 @@ class ByteMetreEncoder(nn.Module):
         mask = ids.ne(0)
         if not mask.any(1).all():
             raise ValueError("Empty line")
-        encoded = self.encoder(
-            input_ids=ids, attention_mask=mask.long(), return_dict=True
-        ).last_hidden_state
+        encoded = self.encoder(input_ids=ids, attention_mask=mask.long(), return_dict=True).last_hidden_state
         pooled = (encoded * mask.unsqueeze(-1)).sum(1) / mask.sum(1, keepdim=True)
         return self.classifier(self.dropout(pooled))

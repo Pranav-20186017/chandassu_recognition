@@ -1,0 +1,144 @@
+{
+  "candidates": [
+    {
+      "candidate": 0,
+      "folder": "runs/cnn-byt5-runpod-v2/final_models/byt5/search/candidate-0",
+      "rate": 1e-05,
+      "selected": {
+        "arm": "byt5",
+        "best": {
+          "epoch": 20,
+          "learning_rate": 1e-05,
+          "maximum_gradient_norm": 19.05916976928711,
+          "mean_gradient_norm": 0.4019399782227279,
+          "seconds": 88.7139745913446,
+          "selection_evaluation_seconds": 5.699432119727135,
+          "train_eval_loss": 0.012134553815211202,
+          "train_evaluation_seconds": 19.66556273959577,
+          "train_poem_f1": 0.99874760120644,
+          "train_predicted_class_counts": [
+            1940,
+            2344,
+            1469,
+            764
+          ],
+          "validation_eval_loss": 0.01884732924977923,
+          "validation_line_f1": 0.9974648600624629,
+          "validation_poem_f1": 0.9985956932474291,
+          "validation_predicted_class_counts": [
+            583,
+            650,
+            423,
+            203
+          ],
+          "weighted_train_objective": 0.017309182068238678
+        },
+        "checkpoint_sha256": "2e9adf77cc24da67ba72da40fe8f52f5535aa9de96787b19662291db40de1300",
+        "epochs_run": 28,
+        "fit_sha256": "68fad3d2e5cf63103f32a93c9e2504dbcf0799518a8ef57cf69c6074954c64af",
+        "parameter_count": 217663364,
+        "run_sha256": "24d2622fa01a8612c1a47a887c06f2a7b9039bd2ccbedf0fce9a661fd2853001",
+        "seed": 17,
+        "selected_epoch": 20,
+        "selection_resource": "Inner validation poem Macro F1; no outer or historical data",
+        "selection_sha256": "38b04125e41a692d63bdbc24e14bbd9033e25e640046d50d389f4405352a0cda",
+        "stopped_early": true,
+        "training_seconds": 2485.447534367442
+      }
+    },
+    {
+      "candidate": 1,
+      "folder": "runs/cnn-byt5-runpod-v2/final_models/byt5/search/candidate-1",
+      "rate": 3e-05,
+      "selected": {
+        "arm": "byt5",
+        "best": {
+          "epoch": 17,
+          "learning_rate": 3e-05,
+          "maximum_gradient_norm": 34.33422088623047,
+          "mean_gradient_norm": 0.28843310201202754,
+          "seconds": 88.61772768758237,
+          "selection_evaluation_seconds": 5.705521719530225,
+          "train_eval_loss": 0.011389396722362048,
+          "train_evaluation_seconds": 19.68995239958167,
+          "train_poem_f1": 0.99874760120644,
+          "train_predicted_class_counts": [
+            1940,
+            2344,
+            1469,
+            764
+          ],
+          "validation_eval_loss": 0.017191771608057155,
+          "validation_line_f1": 0.9975701368376638,
+          "validation_poem_f1": 0.9985956932474291,
+          "validation_predicted_class_counts": [
+            583,
+            650,
+            423,
+            203
+          ],
+          "weighted_train_objective": 0.015478560541035661
+        },
+        "checkpoint_sha256": "db888cd436e39e4ac062f1833dfd8548046fabacf31c1e6df528466b6f6dedba",
+        "epochs_run": 25,
+        "fit_sha256": "9041782221aebae1acc55678e1f531c6eb616c5bf5fc321e7cde3e180241886b",
+        "parameter_count": 217663364,
+        "run_sha256": "c325c6efcbc22495675745130103ca15529905c97fe08fe2631f52ed85a71aa8",
+        "seed": 17,
+        "selected_epoch": 17,
+        "selection_resource": "Inner validation poem Macro F1; no outer or historical data",
+        "selection_sha256": "38b04125e41a692d63bdbc24e14bbd9033e25e640046d50d389f4405352a0cda",
+        "stopped_early": true,
+        "training_seconds": 2219.8416044246405
+      }
+    },
+    {
+      "candidate": 2,
+      "folder": "runs/cnn-byt5-runpod-v2/final_models/byt5/search/candidate-2",
+      "rate": 0.0001,
+      "selected": {
+        "arm": "byt5",
+        "best": {
+          "epoch": 24,
+          "learning_rate": 5e-05,
+          "maximum_gradient_norm": 9.930990219116211,
+          "mean_gradient_norm": 0.2776226769612335,
+          "seconds": 88.6955768764019,
+          "selection_evaluation_seconds": 5.691921055316925,
+          "train_eval_loss": 0.01151859288521218,
+          "train_evaluation_seconds": 19.642280239611864,
+          "train_poem_f1": 0.99874760120644,
+          "train_predicted_class_counts": [
+            1940,
+            2344,
+            1469,
+            764
+          ],
+          "validation_eval_loss": 0.01890545757222933,
+          "validation_line_f1": 0.9970554838590743,
+          "validation_poem_f1": 0.9985956932474291,
+          "validation_predicted_class_counts": [
+            583,
+            650,
+            423,
+            203
+          ],
+          "weighted_train_objective": 0.015460273173891858
+        },
+        "checkpoint_sha256": "f74396e2850d28a09fca95007f707c53c6833b7f1a15bc612cfcb67dd14b23ff",
+        "epochs_run": 32,
+        "fit_sha256": "ce7ea652508a65ef39d1d67d72387c05ec9bf3f9b8bbcacbba44fe8632b67335",
+        "parameter_count": 217663364,
+        "run_sha256": "4945c38e6d294bded5e29be4fe823850acde9192f21c3e804f2fe4cef7b77256",
+        "seed": 17,
+        "selected_epoch": 24,
+        "selection_resource": "Inner validation poem Macro F1; no outer or historical data",
+        "selection_sha256": "38b04125e41a692d63bdbc24e14bbd9033e25e640046d50d389f4405352a0cda",
+        "stopped_early": true,
+        "training_seconds": 2834.7064705062658
+      }
+    }
+  ],
+  "selection_resource": "Inner selection work Macro F1, line CE tie-break; outer and calibration excluded",
+  "winner": 1
+}
