@@ -4,8 +4,9 @@ Chandassu Recognition identifies four Telugu poetic meters:
 **ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం**.
 
 The project provides a character CNN and a ByT5 encoder classifier.
-The published v1 models were trained on an **NVIDIA H100 NVL**.
-The expanded CNN corpus is ready for GX10 training; ByT5 remains unchanged.
+The current CNN was trained on **NVIDIA GB10 (GX10)** using the combined v2 corpus.
+ByT5 remains the original **NVIDIA H100 NVL** model trained on v1.
+The updated CNN is installed locally; Hugging Face publication is pending. The Hub currently retains its v1 CNN.
 Use the CNN when you need a smaller model.
 You can train several models with different seeds and hyperparameters.
 You can then use those models together as an ensemble.
@@ -174,7 +175,7 @@ the combined score and each cohort separately.
 
 The completed GX10 trial already used this exact fitting/validation/calibration set.
 Retraining is a fresh run on the same examples; growth is relative to the v1 baseline.
-The published CNN/ByT5 results below remain v1 results until the new CNN is reviewed.
+The selected v2 CNN is seed 73, epoch 58. ByT5 and the original H100 evidence remain unchanged.
 See [data/v2/WORKS.md](data/v2/WORKS.md) for the new work assignments.
 
 All four lines of a poem stay in the same dataset.
@@ -186,28 +187,43 @@ Some authors occur in more than one dataset.
 It includes authors, source links, poem counts, and additional data excluded from the four-class dataset.
 Poems from other classes and poems without a known class are excluded from model training.
 
-### Expanded trial compared with the released baseline
+### Reviewed GX10 CNN release
 
-CPU inference evaluated both native CNN packages on exactly the same poems.
-Validation remains checkpoint-selected; the test cohorts were already inspected on earlier models.
+All three seeds use initial LR 0.0001, 60 completed epochs and the same frozen v2
+partitions. Each fits its temperature on the 908 separate calibration poems.
 
-| Poem Macro F1 | Released v1 CNN | Returned GX10 expanded trial |
-|---|---:|---:|
-| Validation (1,859 poems) | 0.998596 | 0.998596 |
-| Original test (2,234 poems) | 1.000000 | 1.000000 |
-| New-work test (719 poems) | 0.996042 | 0.996042 |
-| Combined test (2,953 poems) | 0.999084 | 0.999084 |
+| Seed | Selected epoch | Validation poem Macro F1 | Validation line CE before temperature | Temperature |
+|---|---:|---:|---:|---:|
+| 17 | 54 | 0.998596 | 0.031031 | 1.339218 |
+| 42 | 60 | 0.998596 | 0.031057 | 1.396669 |
+| 73 (released) | 58 | 0.998596 | 0.028452 | 1.401755 |
 
-Both models make the same three validation errors and the same three test errors.
-This trial shows no poem-level improvement over the released baseline. New-work line
-Macro F1 improves from 0.987509 to 0.988885; combined-test line Macro F1 decreases from
-0.992608 to 0.992291. The larger corpus does not establish an overall accuracy gain. Hardware/runtime
-and vocabulary differ, so this is an artifact comparison rather than a controlled causal study.
-The reviewed trial is not the published CNN; the fresh combined run is still pending.
-Its fit, validation and calibration assignments equal this trial's assignments.
-Baseline native weights SHA-256: `6d8d642f8b83343e6e98c90365b1449acf0fcedf430f4b4e727a01979aa4e95e`.
-Trial native weights SHA-256: `e2f0d7a084fe16dfda6dd95a6edd845fff99d1d105aef89056ce5d66b5ffffa0`.
-The detailed local comparison is preserved in ignored `runs/review-gx10-v2/baseline-comparison.json`.
+Seed 73 wins the validation F1 tie through lower CE, before test evaluation.
+Its checkpoints and export weights, code/runtime identity, split fingerprints,
+calibration assignments, and selection rule have been verified. Mac CPU inference
+reproduces all test confusion matrices and F1 scores. Local `models/cnn` points to
+this seed; all three packages remain in `models/cnn-seed-17`, `models/cnn-seed-42`,
+and `models/cnn-seed-73` for backup or optional local ensemble inference.
+
+| Seed 73 benchmark | Poems | Correct | Poem Macro F1 | Line Macro F1 |
+|---|---:|---:|---:|---:|
+| Original v1 test | 2,234 | 2,234 | 1.000000 | 0.993992 |
+| Frozen new-work test | 719 | 716 | 0.996042 | 0.991346 |
+| Combined test | 2,953 | 2,950 | 0.999084 | 0.993420 |
+
+Every replica and the equal-probability ensemble make the same three test poem errors.
+Matched CPU inference with the previously released v1 seed-17 CNN produces the same
+poem predictions. This update shows no poem-level accuracy gain. Combined-test line
+Macro F1 changes from 0.992608 (old CNN) to 0.993420 (seed 73); the ensemble reaches
+0.993592. Changes in hardware/runtime, vocabulary, seed and data prevent attributing
+this difference solely to corpus growth. Validation remains checkpoint-selected;
+both test cohorts were inspected on earlier models and are a fixed benchmark.
+
+The complete returned review bundle and verification report are preserved locally
+under ignored `runs/cnn-v2-replicates.tar.gz` and `runs/review-gx10-cnn-replicates/`.
+The staged Hub CNN package carries the selected model's selection/test/verification reports.
+Publishing that package and the prepared model card to the existing Hub repository awaits approval.
+Original v1 evidence stays in results/v1; ByT5 is unchanged.
 
 ## Model architectures
 
@@ -215,8 +231,9 @@ The detailed local comparison is preserved in ignored `runs/review-gx10-v2/basel
 
 ![Character CNN architecture](docs/images/cnn-architecture.svg)
 
-The published v1 CNN has **68,420 parameters** with the **92-character vocabulary** built from its training poems.
-The embedding table adds padding and unknown-character tokens, for 94 tokens in total.
+The current CNN has **68,484 parameters** with the **93-character vocabulary** built from its fitting poems.
+The embedding table adds padding and unknown-character tokens, for 95 tokens in total.
+The original H100 v1 CNN had 68,420 parameters and a 92-character vocabulary.
 Three convolution branches process each line with different kernel sizes.
 Each branch supplies 64 features to the classification layer.
 
@@ -244,7 +261,8 @@ The configuration specifies revision `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`.
 | Early stopping: epochs without improvement | 12 | 8 |
 | Input limit per line | 256 characters | 1,024 byte tokens, including the end token |
 | Gradient checkpointing | Off | Off |
-| Selected epoch for seed 17 | 59 | 17 |
+| Released seed | 73 | 17 |
+| Selected epoch | 58 | 17 |
 
 Both models use the following settings:
 
@@ -269,7 +287,7 @@ Validation poem Macro F1 determines the best checkpoint.
 For an F1 tie, lower validation line loss determines the checkpoint.
 All training settings are available as command-line options.
 
-## Results
+## Original H100 results (v1)
 
 [results/v1](results/v1) contains the final results for all three folds and all six final models.
 It includes training histories, class scores, work scores, tables, and figures.
@@ -382,14 +400,15 @@ python inference.py --model_dir=models/hf/byt5 --strategy=single --port=8765
 
 Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
 
-### Export a local checkpoint
+### Export an original H100 checkpoint
 
+New runs already provide native `model/` packages. The following adapter reads the original H100 bundle.
 Replace `/path/to/stored/models` with the directory that contains your saved training bundle.
 Export the required model:
 
 ```bash
 python scripts/export_model.py --bundle /path/to/stored/models \
-  --model_type=cnn --seed=17 --output_dir=models/cnn
+  --model_type=cnn --seed=17 --output_dir=models/cnn-v1
 
 python scripts/export_model.py --bundle /path/to/stored/models \
   --model_type=byt5 --seed=17 --output_dir=models/byt5
@@ -416,7 +435,8 @@ python inference.py --model_dir=/path/to/model/package --strategy=single --port=
 ```
 
 Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
-Use `models/cnn` or `models/byt5` as the model directory for the exports above.
+Use `models/cnn-v1` or `models/byt5` as the model directory for these original H100 exports.
+The current GX10 release uses `models/cnn` (seed 73).
 
 ### Load an ensemble
 
@@ -558,8 +578,10 @@ an isolated environment. USER/LOGNAME and a writable cache address the previous 
 The new image has not been built locally because the local Docker daemon is stopped;
 the original GPU base was verified by the completed trial. Runtime versions are recorded.
 
-After the returned models are reviewed, use the package listed in `selection.json`
-for a CNN-only Hugging Face export and model card update. ByT5 stays unchanged.
+The returned three-seed run has been reviewed: seed 73 is the selected CNN package
+for the prepared CNN-only Hub release and model card update. Hub publication is pending;
+ByT5 stays unchanged. Future reruns
+should verify the package listed in their own selection.json before publishing.
 For local ensemble inference after extracting the archive on your Mac:
 
 ```bash

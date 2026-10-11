@@ -17,12 +17,16 @@ tags:
 
 # Chandassu Recognition
 
+> Prepared CNN v2 release card. Seed 73 is verified and installed locally; Hub publication is pending.
+> The existing Hub repository currently retains its v1 CNN.
+
 **Author: Pranav Surampudi**
 
 Chandassu Recognition identifies four Telugu poetic meters:
 **ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం**.
 
-The final models were trained on an **NVIDIA H100 NVL**.
+The current CNN was trained on **NVIDIA GB10 (GX10)** using the expanded v2 corpus.
+The ByT5 package remains the original **NVIDIA H100 NVL** model on v1 data.
 This repository provides a character CNN and a ByT5 encoder classifier.
 Use the CNN when you need a smaller model.
 
@@ -30,7 +34,7 @@ Use the CNN when you need a smaller model.
 
 | Model | Directory | Parameters | Seed | Selected epoch |
 |---|---|---:|---:|---:|
-| Character CNN | [cnn](https://huggingface.co/sprx7767/chandassu-recognition/tree/main/cnn) | 68,420 | 17 | 59 |
+| Character CNN | [cnn](https://huggingface.co/sprx7767/chandassu-recognition/tree/main/cnn) | 68,484 | 73 | 58 |
 | ByT5 encoder | [byt5](https://huggingface.co/sprx7767/chandassu-recognition/tree/main/byt5) | 217,663,364 | 17 | 17 |
 
 Each directory contains SafeTensors weights, configuration, input encoding, calibration settings, and model metadata.
@@ -41,7 +45,7 @@ You can also use the project loader and web interface.
 
 ## Architectures
 
-The CNN encodes 92 characters, plus padding and unknown tokens, with 64-dimensional embeddings.
+The CNN encodes 93 characters, plus padding and unknown tokens, with 64-dimensional embeddings.
 Three convolution branches use kernel sizes 3, 5, and 7.
 Each branch applies ReLU and masked max pooling to produce 64 features.
 A linear layer maps the combined 192 features to four class logits.
@@ -61,26 +65,38 @@ The class with the highest probability is the poem prediction.
 ## Data and sources
 
 The poems come from [AndhraBharati](https://andhrabharati.com/) and [Telugu Wikisource](https://te.wikisource.org/).
-The four-class dataset contains **11,518 poems** and **46,072 lines** from **36 distinct works**.
+The current CNN uses **13,295 complete poems**, **53,180 lines**, and **70 retained works**
+from v2, which already includes v1. ByT5 continues to use v1: 11,518 poems, 46,072 lines,
+and 36 retained works. The CNN update does not retrain or replace ByT5.
 
-| Use | Poems | Lines |
+| Use | CNN v2 poems / lines | ByT5 v1 poems / lines |
 |---|---:|---:|
-| Weight training | 6,517 | 26,068 |
-| Temperature calibration | 908 | 3,632 |
-| Validation | 1,859 | 7,436 |
-| Historical test | 2,234 | 8,936 |
-| **Total** | **11,518** | **46,072** |
+| Weight training | 7,575 / 30,300 | 6,517 / 26,068 |
+| Temperature calibration | 908 / 3,632 | 908 / 3,632 |
+| Validation | 1,859 / 7,436 | 1,859 / 7,436 |
+| Holdout test | 2,953 / 11,812 | 2,234 / 8,936 |
+| Total | 13,295 / 53,180 | 11,518 / 46,072 |
 
-Validation poem Macro F1 determines the best checkpoint.
-Calibration adjusts probabilities after checkpoint selection.
-Historical test data are excluded from training, checkpoint selection, and calibration.
-All four lines of a poem stay together.
-Works, related editions, and works linked by duplicate lines stay in the same dataset.
-Some authors occur in more than one dataset.
+All original v1 split assignments are preserved. Of 1,777 new poems from 34 works,
+1,058 poems from 27 works join fitting and 719 poems from seven works remain test.
+The new-work test allocation was frozen before training. One CNN test file combines
+the original 2,234 test poems and the 719 new-work test poems. Validation is unchanged.
+The 908 calibration poems are inside canonical train but never update model weights.
 
-The [work catalogue](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v1/WORKS.md) describes the larger collection of 46 works.
-It includes authors, source links, counts, and additional data excluded from the four-class dataset.
-Poems from other classes and poems without a known class are excluded from model training.
+Validation poem Macro F1 selects each checkpoint. Selected-checkpoint validation F1,
+then unweighted validation line cross-entropy, selects the released single CNN across
+seeds. Temperature is fitted separately for each model after checkpoint selection.
+Test data are excluded from fitting, vocabulary construction, selection, and calibration.
+All four ordered lines, work/edition families, and duplicate-linked works stay together.
+Authors may overlap. Source annotations and rule provenance are retained; these are
+not independently verified expert gold labels. Both CNN test cohorts were evaluated
+on earlier models: this is a fixed benchmark, not a new blind test or unseen-author study.
+
+The [v2 work catalogue](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v2/WORKS.md)
+records the new works and their fitting/test assignments. The complete machine-readable
+catalogue includes 80 collected works, of which 70 retain supervised four-class poems.
+The [v1 catalogue](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v1/WORKS.md)
+retains the original collection, including non-target and excluded material.
 
 ## Training hyperparameters
 
@@ -99,27 +115,60 @@ Poems from other classes and poems without a known class are excluded from model
 Both models use AdamW, weight decay 0.01, dropout 0.2, and gradient clipping 1.0.
 ReduceLROnPlateau uses validation line cross-entropy loss without class weights.
 The scheduler has patience 4, multiplier 0.5, and minimum learning rate 0.000001.
-The experiment used seeds 17, 42, and 73.
-This repository contains the final seed-17 package for each model type.
+The H100 study selected initial CNN LR 0.0001; the expanded GX10 run reuses it for
+seeds 17, 42, and 73 without another rate search or nested-fold study. All three CNNs
+share the same frozen partitions and architecture. They start from fresh weights.
+This repository contains the validation-selected CNN seed 73 and unchanged ByT5 seed 17.
 
-The exported calibration temperatures are **1.34592281013039** for CNN and **1.1801772437687996** for ByT5.
+The exported calibration temperatures are **1.401754510250526** for CNN and **1.1801772437687996** for ByT5.
+CNN runtime: Python 3.12.3, PyTorch 2.10.0a0+b558c986e8.nv25.11, CUDA 13.0, NVIDIA GB10, BF16.
+Its training checkout was clean at `f7939ccac30d14bab929ed7d9c91aa202c5a9c80`.
 
-## Results
+## Current CNN results
 
-| Measure | CNN | ByT5 |
+| CNN seed | Selected epoch | Validation poem Macro F1 | Validation line CE before temperature | Temperature |
+|---|---:|---:|---:|---:|
+| 17 | 54 | 0.998596 | 0.031031 | 1.339218 |
+| 42 | 60 | 0.998596 | 0.031057 | 1.396669 |
+| 73 (released) | 58 | 0.998596 | 0.028452 | 1.401755 |
+
+Seed 73 wins the validation F1 tie through lower validation CE. Test results never
+select the seed. Every seed completed 60 epochs, followed by separate temperature
+calibration on the 908 calibration poems. Validation scores are checkpoint-selected.
+
+| Released CNN seed 73 benchmark | Poems | Correct | Poem Macro F1 | Line Macro F1 |
+|---|---:|---:|---:|---:|
+| Original v1 test | 2,234 | 2,234 | 1.000000 | 0.993992 |
+| Frozen new-work test | 719 | 716 | 0.996042 | 0.991346 |
+| Combined test | 2,953 | 2,950 | 0.999084 | 0.993420 |
+
+All three replicas and their predetermined equal-probability ensemble have the same
+combined-test poem score and the same three errors. Matched CPU inference with the
+previously released v1 CNN seed 17 produces the same poem predictions on these 2,953
+poems. There is **no measured poem-level gain** from this update. Combined-test line
+Macro F1 changes from 0.992608 (old CNN) to 0.993420 (new CNN); hardware/runtime,
+vocabulary, seed, and data differ, so this does not isolate the effect of corpus growth.
+The local three-seed ensemble line Macro F1 is 0.993592; it offers no poem-level gain.
+Ensemble membership and equal weights were fixed before evaluation.
+
+The returned checkpoints and native SafeTensors were compared tensor-for-tensor;
+file manifests, code identity, all split fingerprints, calibration assignments and
+checkpoint selection were verified. Mac CPU inference reproduces the test confusion
+matrices and F1 scores. The exported Transformers package preserves the selected weights.
+See the CNN directory's selection, test and verification reports.
+
+## Original H100 study (v1), retained for comparison
+
+| Original v1 measure | Original CNN | Unchanged ByT5 |
 |---|---:|---:|
 | Cross-validation poem Macro F1, mean across three seeds | 0.997130 | 0.997137 |
 | Correct historical test poems, seed 17 | 2,234 / 2,234 | 2,233 / 2,234 |
 | Historical test poem Macro F1, seed 17 | 1.000000 | 0.999619 |
 
-The cross-validation row reports scores for poems with source-supplied meter labels.
-The historical test poems had been examined during earlier project work.
-These scores describe performance on known test data.
-They do not establish performance on a new, independent test set.
-The labels combine source annotations and rule-based checks.
-Independent experts have not verified every label.
-
-[Complete results](https://github.com/Pranav-20186017/chandassu_recognition/tree/main/results/v1)
+These original study scores do not describe a repeated cross-validation experiment
+on v2. The historical test had been examined during earlier project work. Labels
+combine source annotations and rule-based checks; experts have not verified every label.
+[Original study evidence](https://github.com/Pranav-20186017/chandassu_recognition/tree/main/results/v1)
 
 ## Run inference
 
