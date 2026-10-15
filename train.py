@@ -51,23 +51,30 @@ def train_replicates(config, corpus, parts, output):
     members = []
     for seed in config.seeds:
         folder = output / f"seed-{seed}"
-        child = replace(config, mode="train", seed=seed, output_dir=str(folder),
-                        resume=config.resume and (folder / "run.json").exists())
+        child = replace(
+            config,
+            mode="train",
+            seed=seed,
+            output_dir=str(folder),
+            resume=config.resume and (folder / "run.json").exists(),
+        )
         print(f"CNN replica seed={seed}; output={folder}", flush=True)
         result = train_fit(child, parts, folder)
         history = json.loads((folder / "history.json").read_text())
         selected = next(row for row in history if row["epoch"] == result["selected_epoch"])
-        members.append({
-            "seed": seed,
-            "model_dir": f"seed-{seed}/model",
-            "learning_rate": config.learning_rate,
-            "selected_epoch": result["selected_epoch"],
-            "validation_poem_macro_f1": selected["validation_poem_f1"],
-            "validation_line_ce": selected["validation_eval_loss"],
-            "calibrated_validation_metrics": result["selection_metrics"],
-            "model_manifest_sha256": sha256(folder / "model/manifest.json"),
-            "checkpoint_sha256": result["checkpoint_sha256"],
-        })
+        members.append(
+            {
+                "seed": seed,
+                "model_dir": f"seed-{seed}/model",
+                "learning_rate": config.learning_rate,
+                "selected_epoch": result["selected_epoch"],
+                "validation_poem_macro_f1": selected["validation_poem_f1"],
+                "validation_line_ce": selected["validation_eval_loss"],
+                "calibrated_validation_metrics": result["selection_metrics"],
+                "model_manifest_sha256": sha256(folder / "model/manifest.json"),
+                "checkpoint_sha256": result["checkpoint_sha256"],
+            }
+        )
     ranked = sorted(members, key=lambda m: (-m["validation_poem_macro_f1"], m["validation_line_ce"], m["seed"]))
     selection = {
         "selection_resource": plan["selection"],
@@ -84,10 +91,26 @@ def train_replicates(config, corpus, parts, output):
     atomic_json(selection_path, selection)
     print(f"Validation-selected single CNN: seed={ranked[0]['seed']}; test evaluation starts now", flush=True)
     for member in members:
-        evaluate(["--model_dir", str(output / member["model_dir"]), "--data_dir", str(corpus.folder),
-                  "--output", str(output / f"seed-{member['seed']}/test.json")])
-    evaluate(["--model_dirs", *[str(output / member["model_dir"]) for member in members],
-              "--data_dir", str(corpus.folder), "--output", str(output / "ensemble-test.json")])
+        evaluate(
+            [
+                "--model_dir",
+                str(output / member["model_dir"]),
+                "--data_dir",
+                str(corpus.folder),
+                "--output",
+                str(output / f"seed-{member['seed']}/test.json"),
+            ]
+        )
+    evaluate(
+        [
+            "--model_dirs",
+            *[str(output / member["model_dir"]) for member in members],
+            "--data_dir",
+            str(corpus.folder),
+            "--output",
+            str(output / "ensemble-test.json"),
+        ]
+    )
     # One review bundle preserves every checkpoint, model, report and the exact prepared corpus.
     bundle = output.parent / f"{output.name}.tar.gz"
     descriptor, temporary = tempfile.mkstemp(prefix=f".{output.name}.", suffix=".tar.gz", dir=output.parent)
@@ -112,8 +135,12 @@ def main(argv=None):
         parts = corpus.final_parts(config.split_manifest, config.calibration_fraction, config.split_seed)
         test = corpus.poems("test")
         assert_isolated({**parts, "test": test})
-        print(json.dumps({role: summary(rows) for role, rows in {**parts, "test": test}.items()},
-                         ensure_ascii=False, indent=2), flush=True)
+        print(
+            json.dumps(
+                {role: summary(rows) for role, rows in {**parts, "test": test}.items()}, ensure_ascii=False, indent=2
+            ),
+            flush=True,
+        )
         if config.mode == "replicates":
             train_replicates(config, corpus, parts, output)
         else:

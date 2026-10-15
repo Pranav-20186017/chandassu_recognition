@@ -63,6 +63,7 @@ def test_expanded_corpus_preserves_baseline_roles_and_frozen_tests():
     old, expanded = Corpus("data/v1"), Corpus("data/v2")
     original = old.final_parts("splits/final_h100.json", 0.15, 142)
     parts = expanded.final_parts("splits/train_expansion.json", 0.15, 142)
+
     def ids(rows):
         return {p.poem_id for p in rows}
 
@@ -87,7 +88,10 @@ def test_expanded_corpus_preserves_baseline_roles_and_frozen_tests():
         for poem in old.poems(role):
             retained = lookup[poem.poem_id]
             assert (retained.lines, retained.label, retained.source, retained.author) == (
-                poem.lines, poem.label, poem.source, poem.author
+                poem.lines,
+                poem.label,
+                poem.source,
+                poem.author,
             )
     cohorts = expanded.manifest["test_cohorts"]
     assert set(cohorts["v1_test"]["ids"]) == ids(old.poems("test"))
@@ -142,7 +146,7 @@ def test_evaluation_reports_both_fixed_test_cohorts(tmp_path, monkeypatch):
             assert len(lines) == 4 * len(test)
             result = np.zeros((len(lines), 4))
             for i, poem in enumerate(test):
-                result[4 * i:4 * i + 4, LABELS.index(poem.label)] = 10
+                result[4 * i : 4 * i + 4, LABELS.index(poem.label)] = 10
             return result
 
     monkeypatch.setattr(evaluate, "Predictor", Model)
@@ -167,12 +171,20 @@ def test_fixed_cnn_replicates_select_before_test_resume_and_package_all(tmp_path
     data.mkdir()
     parts = {"fit": poems("fit", 2), "selection": poems("selection"), "calibration": poems("calibration")}
     test = poems("test")
-    for role, rows in {"train": parts["fit"] + parts["calibration"],
-                       "validation": parts["selection"], "test": test}.items():
+    for role, rows in {
+        "train": parts["fit"] + parts["calibration"],
+        "validation": parts["selection"],
+        "test": test,
+    }.items():
         (data / f"{role}.jsonl").write_text("".join(json.dumps(poem_dict(p)) + "\n" for p in rows))
-    atomic_json(data / "manifest.json", {"schema_version": 2, "labels": list(LABELS),
-                                        "files": {name: sha256(data / name) for name in (
-                                            "train.jsonl", "validation.jsonl", "test.jsonl")}})
+    atomic_json(
+        data / "manifest.json",
+        {
+            "schema_version": 2,
+            "labels": list(LABELS),
+            "files": {name: sha256(data / name) for name in ("train.jsonl", "validation.jsonl", "test.jsonl")},
+        },
+    )
     corpus = Corpus(data)
     output = tmp_path / "replicates"
     settings = replace(config("cnn"), mode="replicates", split_manifest="fixed.json", data_dir=str(data))
@@ -197,8 +209,9 @@ def test_fixed_cnn_replicates_select_before_test_resume_and_package_all(tmp_path
     monkeypatch.setattr(evaluate, "main", checked_evaluate)
     selection = train.train_replicates(settings, corpus, parts, output)
     assert fitted == [17, 42, 73]
-    assert selection["best_single"] == min(selection["members"], key=lambda m: (
-        -m["validation_poem_macro_f1"], m["validation_line_ce"], m["seed"]))
+    assert selection["best_single"] == min(
+        selection["members"], key=lambda m: (-m["validation_poem_macro_f1"], m["validation_line_ce"], m["seed"])
+    )
     assert selection["huggingface_candidate"] == selection["best_single"]["model_dir"]
     folders = [output / f"seed-{seed}/model" for seed in (17, 42, 73)]
     before = [sha256(folder / "model.safetensors") for folder in folders]

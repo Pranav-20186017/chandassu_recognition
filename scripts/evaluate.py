@@ -29,8 +29,12 @@ def main(argv=None):
     predictors = [Predictor(folder) for folder in (args.model_dirs or [args.model_dir])]
     if args.model_dirs:
         seeds = [p.metadata.get("seed") for p in predictors]
-        if (len(predictors) < 2 or any(p.config["model_type"] != "cnn" for p in predictors)
-                or None in seeds or len(set(seeds)) != len(seeds)):
+        if (
+            len(predictors) < 2
+            or any(p.config["model_type"] != "cnn" for p in predictors)
+            or None in seeds
+            or len(set(seeds)) != len(seeds)
+        ):
             raise ValueError("Ensemble requires at least two CNN packages with distinct seeds")
     evaluation_ids = {p.poem_id for p in poems}
     for predictor in predictors:
@@ -44,21 +48,22 @@ def main(argv=None):
         temperature = predictors[0].config["temperature"]
         model_info = predictors[0].info()
     else:
-        probabilities = np.mean([
-            softmax(p.logits(lines, args.batch_size), p.config["temperature"]) for p in predictors
-        ], axis=0)
+        probabilities = np.mean(
+            [softmax(p.logits(lines, args.batch_size), p.config["temperature"]) for p in predictors], axis=0
+        )
         logits, temperature = np.log(np.maximum(probabilities, 1e-300)), 1.0
-        model_info = {"strategy": "ensemble", "mixture": "Equal calibrated line probabilities",
-                      "members": [p.info() for p in predictors]}
+        model_info = {
+            "strategy": "ensemble",
+            "mixture": "Equal calibrated line probabilities",
+            "members": [p.info() for p in predictors],
+        }
     targets = [LABEL_TO_ID[p.label] for p in poems for _ in p.lines]
     grouped_logits = logits.reshape(-1, 4, 4)
     work_metrics = {}
     for work in sorted({p.source for p in poems}):
         indices = [i for i, poem in enumerate(poems) if poem.source == work]
         work_targets = [LABEL_TO_ID[poems[i].label] for i in indices for _ in range(4)]
-        work_metrics[work] = line_poem_metrics(
-            grouped_logits[indices].reshape(-1, 4), work_targets, temperature
-        )
+        work_metrics[work] = line_poem_metrics(grouped_logits[indices].reshape(-1, 4), work_targets, temperature)
     cohort_metrics = {}
     cohorts = corpus.manifest.get("test_cohorts", {}) if not args.input else {}
     if cohorts:
@@ -69,9 +74,7 @@ def main(argv=None):
             ids = set(cohort["ids"])
             indices = [i for i, poem in enumerate(poems) if poem.poem_id in ids]
             ys = [LABEL_TO_ID[poems[i].label] for i in indices for _ in range(4)]
-            cohort_metrics[name] = line_poem_metrics(
-                grouped_logits[indices].reshape(-1, 4), ys, temperature
-            )
+            cohort_metrics[name] = line_poem_metrics(grouped_logits[indices].reshape(-1, 4), ys, temperature)
     metrics = line_poem_metrics(logits, targets, temperature)
     atomic_json(
         Path(args.output),
@@ -85,8 +88,9 @@ def main(argv=None):
     )
     print(f"Test poem Macro F1={metrics['poem']['macro_f1']:.6f}; report={args.output}", flush=True)
     for name, metric in cohort_metrics.items():
-        print(f"  {name}: {metric['poem']['observations']:,} poems; "
-              f"Macro F1={metric['poem']['macro_f1']:.6f}", flush=True)
+        print(
+            f"  {name}: {metric['poem']['observations']:,} poems; Macro F1={metric['poem']['macro_f1']:.6f}", flush=True
+        )
 
 
 if __name__ == "__main__":
