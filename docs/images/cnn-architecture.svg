@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1316" viewBox="0 0 1000 1316" role="img" aria-labelledby="title desc">
-<title id="title">Character CNN</title>
-<desc id="desc">Each of the four poem lines is normalized and mapped to character IDs (93 characters plus PAD and UNK). A 95 by 64 embedding with dropout feeds three parallel Conv1D branches with kernel sizes 3, 5 and 7, each with 64 channels, ReLU and masked max pooling over positions. The three 64-feature outputs are concatenated to 192 features. Dropout and a linear layer give four logits per line, a temperature-scaled softmax gives line probabilities, and their mean gives the poem prediction. 68,484 parameters in total.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1524" viewBox="0 0 1000 1524" role="img" aria-labelledby="title desc">
+<title id="title">Character CNN · eight classes</title>
+<desc id="desc">Each poem is four ordered padas (Seesamu uses its body only). Each pada is normalized and mapped to character IDs (102 characters plus PAD and UNK). A shared 104 by 64 embedding with dropout feeds three parallel Conv1D branches with kernel sizes 3, 5 and 7, each with 64 channels and ReLU, followed by masked max and masked mean pooling over positions, giving 384 features per pada. The four pada vectors are concatenated in source order into 1,536 features. Dropout, a 1,536 to 128 linear layer with ReLU, dropout and a 128 to 8 linear layer give eight logits per poem, and an uncalibrated softmax gives the prediction over ఉత్పలమాల, చంపకమాల, మత్తేభము, శార్దూలం, ఆటవెలది, తేటగీతి, కందము and సీసము. 266,056 parameters in total.</desc>
 <style>
 .sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Helvetica,Arial,sans-serif}
 .mono{font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace}
@@ -37,6 +37,7 @@
 .m0{fill:#4f46e5}.m1{fill:#0d9488}.m2{fill:#d97706}.m3{fill:#db2777}
 .op{fill:#ffffff;stroke:#9aa3b2;stroke-width:1.4}
 .win{fill:#eef0ff;stroke:none}
+.bar{fill:#c4cad6}
 @media (prefers-color-scheme: dark){
 .bg{fill:#0d1117;stroke:#30363d}
 .ink{fill:#e6edf3}.muted{fill:#9ba7b4}.faint{fill:#7d8590}.accent{fill:#8b8ff7}
@@ -56,127 +57,126 @@
 .m0{fill:#818cf8}.m1{fill:#2dd4bf}.m2{fill:#fbbf24}.m3{fill:#f472b6}
 .op{fill:#0d1117;stroke:#5d6673}
 .win{fill:#171b36}
+.bar{fill:#3a424d}
 }
 </style>
-<rect x="0.5" y="0.5" width="999" height="1315" rx="20" class="bg"/>
+<rect x="0.5" y="0.5" width="999" height="1523" rx="20" class="bg"/>
 <text x="40" y="58" text-anchor="start" class="sans eyebrow accent" xml:space="preserve">ARCHITECTURE</text>
-<text x="40" y="96" text-anchor="start" class="sans h1 ink" xml:space="preserve">Character CNN</text>
-<text x="40" y="126" text-anchor="start" class="sans sub muted" xml:space="preserve">One shared line encoder scores each of the four lines; the poem label is the mean of the line distributions.</text>
-<rect x="40" y="146" width="153.5" height="28" rx="14" class="pill"/>
-<text x="116.75" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">68,484 parameters</text>
-<rect x="203.5" y="146" width="198.5" height="28" rx="14" class="pill"/>
-<text x="302.75" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">93-character vocabulary</text>
-<rect x="412" y="146" width="213.5" height="28" rx="14" class="pill"/>
-<text x="518.75" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">≤ 256 characters per line</text>
-<rect x="635.5" y="146" width="138.5" height="28" rx="14" class="pill"/>
-<text x="704.75" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">3 kernel widths</text>
+<text x="40" y="96" text-anchor="start" class="sans h1 ink" xml:space="preserve">Character CNN · eight classes</text>
+<text x="40" y="126" text-anchor="start" class="sans sub muted" xml:space="preserve">One shared encoder reads each of the four padas; their vectors are joined in order and classified once per poem.</text>
+<rect x="40" y="146" width="160.5" height="28" rx="14" class="pill"/>
+<text x="120.25" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">266,056 parameters</text>
+<rect x="210.5" y="146" width="88" height="28" rx="14" class="pill"/>
+<text x="254.5" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">8 labels</text>
+<rect x="308.5" y="146" width="204" height="28" rx="14" class="pill"/>
+<text x="410.5" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">102-character vocabulary</text>
+<rect x="522.5" y="146" width="211.25" height="28" rx="14" class="pill"/>
+<text x="628.125" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">≤ 512 characters per pada</text>
+<rect x="743.75" y="146" width="138.75" height="28" rx="14" class="pill"/>
+<text x="813.125" y="164.5" text-anchor="middle" class="sans pilltxt" xml:space="preserve">3 kernel widths</text>
 <line x1="40" y1="202" x2="960" y2="202" class="rule"/>
 <text x="40" y="246" text-anchor="start" class="mono num accent" xml:space="preserve">01</text>
 <text x="68" y="246" text-anchor="start" class="sans stage ink" xml:space="preserve">INPUT</text>
-<text x="40" y="268" text-anchor="start" class="sans cap muted" xml:space="preserve">Four lines, one</text>
-<text x="40" y="285" text-anchor="start" class="sans cap muted" xml:space="preserve">meter label</text>
+<text x="40" y="268" text-anchor="start" class="sans cap muted" xml:space="preserve">Four full padas</text>
+<text x="40" y="285" text-anchor="start" class="sans cap muted" xml:space="preserve">in source order</text>
 <rect x="220" y="230" width="740" height="108" rx="10" class="io"/>
-<text x="240" y="257" text-anchor="start" class="mono small faint" xml:space="preserve">Line 1</text>
-<rect x="304" y="248" width="26" height="10" rx="5" class="glyph"/>
-<rect x="336" y="248" width="18" height="10" rx="5" class="glyph"/>
-<rect x="360" y="248" width="30" height="10" rx="5" class="glyph"/>
-<rect x="396" y="248" width="22" height="10" rx="5" class="glyph"/>
-<rect x="424" y="248" width="14" height="10" rx="5" class="glyph"/>
-<rect x="444" y="248" width="28" height="10" rx="5" class="glyph"/>
-<rect x="478" y="248" width="20" height="10" rx="5" class="glyph"/>
-<rect x="504" y="248" width="24" height="10" rx="5" class="glyph"/>
-<rect x="534" y="248" width="16" height="10" rx="5" class="glyph"/>
-<rect x="556" y="248" width="30" height="10" rx="5" class="glyph"/>
-<rect x="592" y="248" width="22" height="10" rx="5" class="glyph"/>
-<rect x="620" y="248" width="18" height="10" rx="5" class="glyph"/>
-<rect x="644" y="248" width="26" height="10" rx="5" class="glyph"/>
-<rect x="676" y="248" width="20" height="10" rx="5" class="glyph"/>
-<rect x="702" y="248" width="28" height="10" rx="5" class="glyph"/>
-<text x="240" y="277" text-anchor="start" class="mono small faint" xml:space="preserve">Line 2</text>
-<rect x="304" y="268" width="22" height="10" rx="5" class="glyph"/>
-<rect x="332" y="268" width="28" height="10" rx="5" class="glyph"/>
-<rect x="366" y="268" width="16" height="10" rx="5" class="glyph"/>
-<rect x="388" y="268" width="24" height="10" rx="5" class="glyph"/>
-<rect x="418" y="268" width="30" height="10" rx="5" class="glyph"/>
-<rect x="454" y="268" width="18" height="10" rx="5" class="glyph"/>
-<rect x="478" y="268" width="22" height="10" rx="5" class="glyph"/>
-<rect x="506" y="268" width="26" height="10" rx="5" class="glyph"/>
-<rect x="538" y="268" width="20" height="10" rx="5" class="glyph"/>
-<rect x="564" y="268" width="16" height="10" rx="5" class="glyph"/>
-<rect x="586" y="268" width="28" height="10" rx="5" class="glyph"/>
-<rect x="620" y="268" width="24" height="10" rx="5" class="glyph"/>
-<rect x="650" y="268" width="18" height="10" rx="5" class="glyph"/>
-<rect x="674" y="268" width="30" height="10" rx="5" class="glyph"/>
-<rect x="710" y="268" width="20" height="10" rx="5" class="glyph"/>
-<text x="240" y="297" text-anchor="start" class="mono small faint" xml:space="preserve">Line 3</text>
-<rect x="304" y="288" width="30" height="10" rx="5" class="glyph"/>
-<rect x="340" y="288" width="16" height="10" rx="5" class="glyph"/>
-<rect x="362" y="288" width="24" height="10" rx="5" class="glyph"/>
-<rect x="392" y="288" width="20" height="10" rx="5" class="glyph"/>
-<rect x="418" y="288" width="28" height="10" rx="5" class="glyph"/>
-<rect x="452" y="288" width="22" height="10" rx="5" class="glyph"/>
-<rect x="480" y="288" width="18" height="10" rx="5" class="glyph"/>
-<rect x="504" y="288" width="26" height="10" rx="5" class="glyph"/>
-<rect x="536" y="288" width="30" height="10" rx="5" class="glyph"/>
-<rect x="572" y="288" width="20" height="10" rx="5" class="glyph"/>
-<rect x="598" y="288" width="16" height="10" rx="5" class="glyph"/>
-<rect x="620" y="288" width="24" height="10" rx="5" class="glyph"/>
-<rect x="650" y="288" width="28" height="10" rx="5" class="glyph"/>
-<rect x="684" y="288" width="22" height="10" rx="5" class="glyph"/>
-<rect x="712" y="288" width="16" height="10" rx="5" class="glyph"/>
-<text x="240" y="317" text-anchor="start" class="mono small faint" xml:space="preserve">Line 4</text>
-<rect x="304" y="308" width="18" height="10" rx="5" class="glyph"/>
-<rect x="328" y="308" width="26" height="10" rx="5" class="glyph"/>
-<rect x="360" y="308" width="22" height="10" rx="5" class="glyph"/>
-<rect x="388" y="308" width="30" height="10" rx="5" class="glyph"/>
-<rect x="424" y="308" width="16" height="10" rx="5" class="glyph"/>
-<rect x="446" y="308" width="24" height="10" rx="5" class="glyph"/>
-<rect x="476" y="308" width="28" height="10" rx="5" class="glyph"/>
-<rect x="510" y="308" width="20" height="10" rx="5" class="glyph"/>
-<rect x="536" y="308" width="22" height="10" rx="5" class="glyph"/>
-<rect x="564" y="308" width="26" height="10" rx="5" class="glyph"/>
-<rect x="596" y="308" width="18" height="10" rx="5" class="glyph"/>
-<rect x="620" y="308" width="30" height="10" rx="5" class="glyph"/>
-<rect x="656" y="308" width="16" height="10" rx="5" class="glyph"/>
-<rect x="678" y="308" width="24" height="10" rx="5" class="glyph"/>
-<rect x="708" y="308" width="26" height="10" rx="5" class="glyph"/>
+<text x="240" y="261" text-anchor="start" class="mono small faint" xml:space="preserve">Pada 1</text>
+<rect x="304" y="252" width="22" height="10" rx="5" class="glyph"/>
+<rect x="332" y="252" width="26" height="10" rx="5" class="glyph"/>
+<rect x="364" y="252" width="28" height="10" rx="5" class="glyph"/>
+<rect x="398" y="252" width="20" height="10" rx="5" class="glyph"/>
+<rect x="424" y="252" width="22" height="10" rx="5" class="glyph"/>
+<rect x="452" y="252" width="16" height="10" rx="5" class="glyph"/>
+<rect x="474" y="252" width="18" height="10" rx="5" class="glyph"/>
+<rect x="498" y="252" width="20" height="10" rx="5" class="glyph"/>
+<rect x="524" y="252" width="22" height="10" rx="5" class="glyph"/>
+<rect x="552" y="252" width="22" height="10" rx="5" class="glyph"/>
+<rect x="580" y="252" width="28" height="10" rx="5" class="glyph"/>
+<rect x="614" y="252" width="16" height="10" rx="5" class="glyph"/>
+<rect x="636" y="252" width="30" height="10" rx="5" class="glyph"/>
+<rect x="672" y="252" width="30" height="10" rx="5" class="glyph"/>
+<text x="240" y="281" text-anchor="start" class="mono small faint" xml:space="preserve">Pada 2</text>
+<rect x="304" y="272" width="28" height="10" rx="5" class="glyph"/>
+<rect x="338" y="272" width="30" height="10" rx="5" class="glyph"/>
+<rect x="374" y="272" width="22" height="10" rx="5" class="glyph"/>
+<rect x="402" y="272" width="28" height="10" rx="5" class="glyph"/>
+<rect x="436" y="272" width="18" height="10" rx="5" class="glyph"/>
+<rect x="460" y="272" width="30" height="10" rx="5" class="glyph"/>
+<rect x="496" y="272" width="22" height="10" rx="5" class="glyph"/>
+<rect x="524" y="272" width="16" height="10" rx="5" class="glyph"/>
+<rect x="546" y="272" width="24" height="10" rx="5" class="glyph"/>
+<rect x="576" y="272" width="28" height="10" rx="5" class="glyph"/>
+<rect x="610" y="272" width="30" height="10" rx="5" class="glyph"/>
+<rect x="646" y="272" width="28" height="10" rx="5" class="glyph"/>
+<rect x="680" y="272" width="18" height="10" rx="5" class="glyph"/>
+<rect x="704" y="272" width="24" height="10" rx="5" class="glyph"/>
+<text x="240" y="301" text-anchor="start" class="mono small faint" xml:space="preserve">Pada 3</text>
+<rect x="304" y="292" width="18" height="10" rx="5" class="glyph"/>
+<rect x="328" y="292" width="28" height="10" rx="5" class="glyph"/>
+<rect x="362" y="292" width="28" height="10" rx="5" class="glyph"/>
+<rect x="396" y="292" width="18" height="10" rx="5" class="glyph"/>
+<rect x="420" y="292" width="16" height="10" rx="5" class="glyph"/>
+<rect x="442" y="292" width="26" height="10" rx="5" class="glyph"/>
+<rect x="474" y="292" width="22" height="10" rx="5" class="glyph"/>
+<rect x="502" y="292" width="18" height="10" rx="5" class="glyph"/>
+<rect x="526" y="292" width="30" height="10" rx="5" class="glyph"/>
+<rect x="562" y="292" width="22" height="10" rx="5" class="glyph"/>
+<rect x="590" y="292" width="20" height="10" rx="5" class="glyph"/>
+<rect x="616" y="292" width="18" height="10" rx="5" class="glyph"/>
+<rect x="640" y="292" width="16" height="10" rx="5" class="glyph"/>
+<rect x="662" y="292" width="30" height="10" rx="5" class="glyph"/>
+<rect x="698" y="292" width="22" height="10" rx="5" class="glyph"/>
+<text x="240" y="321" text-anchor="start" class="mono small faint" xml:space="preserve">Pada 4</text>
+<rect x="304" y="312" width="30" height="10" rx="5" class="glyph"/>
+<rect x="340" y="312" width="30" height="10" rx="5" class="glyph"/>
+<rect x="376" y="312" width="24" height="10" rx="5" class="glyph"/>
+<rect x="406" y="312" width="26" height="10" rx="5" class="glyph"/>
+<rect x="438" y="312" width="28" height="10" rx="5" class="glyph"/>
+<rect x="472" y="312" width="20" height="10" rx="5" class="glyph"/>
+<rect x="498" y="312" width="20" height="10" rx="5" class="glyph"/>
+<rect x="524" y="312" width="18" height="10" rx="5" class="glyph"/>
+<rect x="548" y="312" width="26" height="10" rx="5" class="glyph"/>
+<rect x="580" y="312" width="26" height="10" rx="5" class="glyph"/>
+<rect x="612" y="312" width="30" height="10" rx="5" class="glyph"/>
+<rect x="648" y="312" width="22" height="10" rx="5" class="glyph"/>
+<rect x="676" y="312" width="24" height="10" rx="5" class="glyph"/>
+<rect x="706" y="312" width="20" height="10" rx="5" class="glyph"/>
 <text x="940" y="278" text-anchor="end" class="sans d muted" xml:space="preserve">one poem</text>
 <text x="940" y="298" text-anchor="end" class="sans d muted" xml:space="preserve">one label</text>
+<text x="940" y="324" text-anchor="end" class="sans small faint" xml:space="preserve">Seesamu: body only</text>
 <path d="M 590 338 V 372" class="edge"/>
 <path d="M 585 367 L 590 374 L 595 367 z" class="head"/>
-<text x="604" y="360" text-anchor="start" class="sans small muted" xml:space="preserve">each line processed independently · shared weights</text>
+<text x="604" y="360" text-anchor="start" class="sans small muted" xml:space="preserve">every pada passes through the same encoder · shared weights</text>
 <text x="40" y="390" text-anchor="start" class="mono num accent" xml:space="preserve">02</text>
 <text x="68" y="390" text-anchor="start" class="sans stage ink" xml:space="preserve">TOKENIZE</text>
 <text x="40" y="412" text-anchor="start" class="sans cap muted" xml:space="preserve">Normalize, map each</text>
 <text x="40" y="429" text-anchor="start" class="sans cap muted" xml:space="preserve">character to an ID</text>
 <rect x="220" y="374" width="740" height="76" rx="10" class="fixed"/>
 <text x="240" y="406" text-anchor="start" class="sans t ink" xml:space="preserve">Normalize  →  character IDs</text>
-<text x="240" y="427" text-anchor="start" class="sans d muted" xml:space="preserve">Unicode NFC · whitespace normalized · never truncated</text>
-<rect x="658" y="387" width="36" height="26" rx="6" class="chip"/>
-<text x="676" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">57</text>
-<rect x="699" y="387" width="36" height="26" rx="6" class="chip"/>
-<text x="717" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">12</text>
-<rect x="740" y="387" width="36" height="26" rx="6" class="chip"/>
-<text x="758" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">81</text>
-<rect x="781" y="387" width="36" height="26" rx="6" class="chip"/>
-<text x="799" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">33</text>
-<text x="840" y="404.5" text-anchor="middle" class="mono tag faint" xml:space="preserve">…</text>
-<rect x="863" y="387" width="36" height="26" rx="6" class="chippad"/>
-<text x="881" y="404.5" text-anchor="middle" class="mono tag faint" xml:space="preserve">0</text>
+<text x="240" y="427" text-anchor="start" class="sans d muted" xml:space="preserve">Unicode NFC · whitespace normalized · overflow raises, never truncates</text>
+<rect x="700" y="387" width="36" height="26" rx="6" class="chip"/>
+<text x="718" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">66</text>
+<rect x="741" y="387" width="36" height="26" rx="6" class="chip"/>
+<text x="759" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">71</text>
+<rect x="782" y="387" width="36" height="26" rx="6" class="chip"/>
+<text x="800" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">82</text>
+<rect x="823" y="387" width="36" height="26" rx="6" class="chip"/>
+<text x="841" y="404.5" text-anchor="middle" class="mono tag ink" xml:space="preserve">46</text>
+<text x="873" y="404.5" text-anchor="middle" class="mono tag faint" xml:space="preserve">…</text>
 <rect x="904" y="387" width="36" height="26" rx="6" class="chippad"/>
 <text x="922" y="404.5" text-anchor="middle" class="mono tag faint" xml:space="preserve">0</text>
 <text x="940" y="434" text-anchor="end" class="mono small faint" xml:space="preserve">PAD = 0 · UNK = 1</text>
 <path d="M 590 450 V 484" class="edge"/>
 <path d="M 585 479 L 590 486 L 595 479 z" class="head"/>
-<text x="604" y="472" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × L  (L ≤ 256)</text>
+<text x="604" y="472" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × L  (L ≤ 512)</text>
 <text x="40" y="502" text-anchor="start" class="mono num accent" xml:space="preserve">03</text>
 <text x="68" y="502" text-anchor="start" class="sans stage ink" xml:space="preserve">EMBED</text>
-<text x="40" y="524" text-anchor="start" class="sans cap muted" xml:space="preserve">Learned vector for</text>
-<text x="40" y="541" text-anchor="start" class="sans cap muted" xml:space="preserve">each character</text>
+<text x="40" y="524" text-anchor="start" class="sans cap muted" xml:space="preserve">Vocabulary fitted</text>
+<text x="40" y="541" text-anchor="start" class="sans cap muted" xml:space="preserve">on fit poems only</text>
 <rect x="220" y="486" width="740" height="64" rx="10" class="learn"/>
 <text x="240" y="514" text-anchor="start" class="sans t ink" xml:space="preserve">Character embedding</text>
-<text x="240" y="535" text-anchor="start" class="sans d muted" xml:space="preserve">95 × 64 table (93 characters + PAD + UNK) · dropout 0.2</text>
-<text x="940" y="522" text-anchor="end" class="mono tag faint" xml:space="preserve">6,080</text>
+<text x="240" y="535" text-anchor="start" class="sans d muted" xml:space="preserve">104 × 64 table (102 characters + PAD + UNK) · padding zeroed · dropout 0.2</text>
+<text x="940" y="522" text-anchor="end" class="mono tag faint" xml:space="preserve">6,656</text>
 <path d="M 590 550 V 580" class="edge"/>
 <text x="604" y="570" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × L × 64</text>
 <path d="M 336 580 H 844" class="edge"/>
@@ -191,8 +191,8 @@
 <text x="40" y="644" text-anchor="start" class="sans cap muted" xml:space="preserve">Three receptive</text>
 <text x="40" y="661" text-anchor="start" class="sans cap muted" xml:space="preserve">fields in parallel;</text>
 <text x="40" y="678" text-anchor="start" class="sans cap muted" xml:space="preserve">padding excluded</text>
-<text x="40" y="695" text-anchor="start" class="sans cap muted" xml:space="preserve">from the max</text>
-<rect x="220" y="606" width="232" height="150" rx="10" class="learn"/>
+<text x="40" y="695" text-anchor="start" class="sans cap muted" xml:space="preserve">from both pools</text>
+<rect x="220" y="606" width="232" height="166" rx="10" class="learn"/>
 <text x="238" y="636" text-anchor="start" class="sans t ink" xml:space="preserve">Conv1D · k = 3</text>
 <text x="434" y="636" text-anchor="end" class="mono tag faint" xml:space="preserve">12,352</text>
 <rect x="238" y="650" width="13" height="13" rx="3" class="cell"/>
@@ -208,8 +208,9 @@
 <rect x="398" y="650" width="13" height="13" rx="3" class="cell"/>
 <text x="238" y="692" text-anchor="start" class="sans d muted" xml:space="preserve">64 → 64 channels · ReLU</text>
 <text x="238" y="712" text-anchor="start" class="sans d muted" xml:space="preserve">Masked max over L</text>
-<text x="238" y="740" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 features</text>
-<rect x="474" y="606" width="232" height="150" rx="10" class="learn"/>
+<text x="238" y="732" text-anchor="start" class="sans d muted" xml:space="preserve">Masked mean over L</text>
+<text x="238" y="758" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 + 64 features</text>
+<rect x="474" y="606" width="232" height="166" rx="10" class="learn"/>
 <text x="492" y="636" text-anchor="start" class="sans t ink" xml:space="preserve">Conv1D · k = 5</text>
 <text x="688" y="636" text-anchor="end" class="mono tag faint" xml:space="preserve">20,544</text>
 <rect x="492" y="650" width="13" height="13" rx="3" class="cell"/>
@@ -225,8 +226,9 @@
 <rect x="652" y="650" width="13" height="13" rx="3" class="cell"/>
 <text x="492" y="692" text-anchor="start" class="sans d muted" xml:space="preserve">64 → 64 channels · ReLU</text>
 <text x="492" y="712" text-anchor="start" class="sans d muted" xml:space="preserve">Masked max over L</text>
-<text x="492" y="740" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 features</text>
-<rect x="728" y="606" width="232" height="150" rx="10" class="learn"/>
+<text x="492" y="732" text-anchor="start" class="sans d muted" xml:space="preserve">Masked mean over L</text>
+<text x="492" y="758" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 + 64 features</text>
+<rect x="728" y="606" width="232" height="166" rx="10" class="learn"/>
 <text x="746" y="636" text-anchor="start" class="sans t ink" xml:space="preserve">Conv1D · k = 7</text>
 <text x="942" y="636" text-anchor="end" class="mono tag faint" xml:space="preserve">28,736</text>
 <rect x="746" y="650" width="13" height="13" rx="3" class="cell"/>
@@ -242,100 +244,111 @@
 <rect x="906" y="650" width="13" height="13" rx="3" class="cell"/>
 <text x="746" y="692" text-anchor="start" class="sans d muted" xml:space="preserve">64 → 64 channels · ReLU</text>
 <text x="746" y="712" text-anchor="start" class="sans d muted" xml:space="preserve">Masked max over L</text>
-<text x="746" y="740" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 features</text>
-<path d="M 336 756 V 780" class="edge"/>
-<path d="M 590 756 V 780" class="edge"/>
-<path d="M 844 756 V 780" class="edge"/>
-<path d="M 336 780 H 844" class="edge"/>
-<path d="M 590 780 V 792" class="edge"/>
-<path d="M 585 787 L 590 794 L 595 787 z" class="head"/>
-<rect x="440" y="794" width="300" height="32" rx="16" class="fixed"/>
-<text x="590" y="815" text-anchor="middle" class="mono tag ink" xml:space="preserve">concatenate · 64 + 64 + 64 = 192</text>
-<path d="M 590 826 V 860" class="edge"/>
-<path d="M 585 855 L 590 862 L 595 855 z" class="head"/>
-<text x="604" y="848" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × 192</text>
-<text x="40" y="878" text-anchor="start" class="mono num accent" xml:space="preserve">05</text>
-<text x="68" y="878" text-anchor="start" class="sans stage ink" xml:space="preserve">CLASSIFY</text>
-<text x="40" y="900" text-anchor="start" class="sans cap muted" xml:space="preserve">Logits per line,</text>
-<text x="40" y="917" text-anchor="start" class="sans cap muted" xml:space="preserve">then calibration</text>
-<rect x="220" y="862" width="740" height="64" rx="10" class="learn"/>
-<text x="240" y="890" text-anchor="start" class="sans t ink" xml:space="preserve">Dropout 0.2  →  Linear 192 → 4</text>
-<text x="240" y="911" text-anchor="start" class="sans d muted" xml:space="preserve">Four logits per line</text>
-<text x="940" y="898" text-anchor="end" class="mono tag faint" xml:space="preserve">772</text>
-<path d="M 590 926 V 960" class="edge"/>
-<path d="M 585 955 L 590 962 L 595 955 z" class="head"/>
-<text x="604" y="948" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × 4 logits</text>
-<rect x="220" y="962" width="740" height="64" rx="10" class="cal"/>
-<text x="240" y="990" text-anchor="start" class="sans t ink" xml:space="preserve">Temperature-scaled softmax  ·  softmax(z / T)</text>
-<text x="240" y="1011" text-anchor="start" class="sans d muted" xml:space="preserve">T fitted on a held-out calibration split after checkpoint selection</text>
-<text x="940" y="998" text-anchor="end" class="mono tag faint" xml:space="preserve">1 scalar</text>
-<path d="M 590 1026 V 1060" class="edge"/>
-<path d="M 585 1055 L 590 1062 L 595 1055 z" class="head"/>
-<text x="604" y="1048" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × 4 probabilities</text>
-<text x="40" y="1078" text-anchor="start" class="mono num accent" xml:space="preserve">06</text>
-<text x="68" y="1078" text-anchor="start" class="sans stage ink" xml:space="preserve">AGGREGATE</text>
-<text x="40" y="1100" text-anchor="start" class="sans cap muted" xml:space="preserve">Average the four</text>
-<text x="40" y="1117" text-anchor="start" class="sans cap muted" xml:space="preserve">lines, take the</text>
-<text x="40" y="1134" text-anchor="start" class="sans cap muted" xml:space="preserve">top class</text>
-<rect x="220" y="1062" width="740" height="184" rx="10" class="io"/>
-<text x="282" y="1090" text-anchor="middle" class="mono small faint" xml:space="preserve">Line 1</text>
-<line x1="246" y1="1198" x2="318" y2="1198" class="axis"/>
-<rect x="249" y="1134.64" width="13" height="63.36" rx="2" class="m0"/>
-<rect x="266" y="1187.44" width="13" height="10.56" rx="2" class="m1"/>
-<rect x="283" y="1192.72" width="13" height="5.28" rx="2" class="m2"/>
-<rect x="300" y="1189.2" width="13" height="8.8" rx="2" class="m3"/>
-<text x="378" y="1090" text-anchor="middle" class="mono small faint" xml:space="preserve">Line 2</text>
-<line x1="342" y1="1198" x2="414" y2="1198" class="axis"/>
-<rect x="345" y="1141.68" width="13" height="56.32" rx="2" class="m0"/>
-<rect x="362" y="1180.4" width="13" height="17.6" rx="2" class="m1"/>
-<rect x="379" y="1193.6" width="13" height="4.4" rx="2" class="m2"/>
-<rect x="396" y="1188.32" width="13" height="9.68" rx="2" class="m3"/>
-<text x="474" y="1090" text-anchor="middle" class="mono small faint" xml:space="preserve">Line 3</text>
-<line x1="438" y1="1198" x2="510" y2="1198" class="axis"/>
-<rect x="441" y="1126.72" width="13" height="71.28" rx="2" class="m0"/>
-<rect x="458" y="1190.96" width="13" height="7.04" rx="2" class="m1"/>
-<rect x="475" y="1194.48" width="13" height="3.52" rx="2" class="m2"/>
-<rect x="492" y="1191.84" width="13" height="6.16" rx="2" class="m3"/>
-<text x="570" y="1090" text-anchor="middle" class="mono small faint" xml:space="preserve">Line 4</text>
-<line x1="534" y1="1198" x2="606" y2="1198" class="axis"/>
-<rect x="537" y="1149.6" width="13" height="48.4" rx="2" class="m0"/>
-<rect x="554" y="1173.36" width="13" height="24.64" rx="2" class="m1"/>
-<rect x="571" y="1191.84" width="13" height="6.16" rx="2" class="m2"/>
-<rect x="588" y="1189.2" width="13" height="8.8" rx="2" class="m3"/>
-<text x="432" y="1228" text-anchor="middle" class="sans small muted" xml:space="preserve">line probabilities</text>
-<path d="M 624 1154 H 624" class="edge"/>
-<path d="M 619 1149 L 626 1154 L 619 1159 z" class="head"/>
-<circle cx="650" cy="1154" r="22" class="op"/>
-<text x="650" y="1159" text-anchor="middle" class="mono small ink" xml:space="preserve">mean</text>
-<path d="M 672 1154 H 702" class="edge"/>
-<path d="M 697 1149 L 704 1154 L 697 1159 z" class="head"/>
-<text x="716" y="1090" text-anchor="start" class="sans t ink" xml:space="preserve">Poem prediction</text>
-<rect x="706" y="1100" width="242" height="28" rx="7" class="win"/>
-<text x="716" y="1119" text-anchor="start" class="te d ink" xml:space="preserve">ఉత్పలమాల</text>
-<rect x="808" y="1109" width="86" height="10" rx="5" class="track"/>
-<rect x="808" y="1109" width="58.48" height="10" rx="5" class="m0"/>
-<text x="938" y="1119" text-anchor="end" class="mono tag ink" xml:space="preserve">0.68</text>
-<text x="716" y="1147" text-anchor="start" class="te d muted" xml:space="preserve">చంపకమాల</text>
-<rect x="808" y="1137" width="86" height="10" rx="5" class="track"/>
-<rect x="808" y="1137" width="14.62" height="10" rx="5" class="m1"/>
-<text x="938" y="1147" text-anchor="end" class="mono tag faint" xml:space="preserve">0.17</text>
-<text x="716" y="1175" text-anchor="start" class="te d muted" xml:space="preserve">మత్తేభము</text>
-<rect x="808" y="1165" width="86" height="10" rx="5" class="track"/>
-<rect x="808" y="1165" width="6" height="10" rx="5" class="m2"/>
-<text x="938" y="1175" text-anchor="end" class="mono tag faint" xml:space="preserve">0.06</text>
-<text x="716" y="1203" text-anchor="start" class="te d muted" xml:space="preserve">శార్దూలం</text>
-<rect x="808" y="1193" width="86" height="10" rx="5" class="track"/>
-<rect x="808" y="1193" width="8.17" height="10" rx="5" class="m3"/>
-<text x="938" y="1203" text-anchor="end" class="mono tag faint" xml:space="preserve">0.10</text>
-<text x="716" y="1236" text-anchor="start" class="mono small muted" xml:space="preserve">argmax →</text>
-<text x="786" y="1236" text-anchor="start" class="te small ink" xml:space="preserve">ఉత్పలమాల</text>
-<rect x="40" y="1287" width="14" height="14" rx="4" class="learn"/>
-<text x="62" y="1298" text-anchor="start" class="sans small muted" xml:space="preserve">Learned weights</text>
-<rect x="184.6" y="1287" width="14" height="14" rx="4" class="fixed"/>
-<text x="206.6" y="1298" text-anchor="start" class="sans small muted" xml:space="preserve">Fixed operation</text>
-<rect x="329.2" y="1287" width="14" height="14" rx="4" class="cal"/>
-<text x="351.2" y="1298" text-anchor="start" class="sans small muted" xml:space="preserve">Calibration</text>
-<rect x="448.04" y="1287" width="14" height="14" rx="4" class="io"/>
-<text x="470.04" y="1298" text-anchor="start" class="sans small muted" xml:space="preserve">Data</text>
-<text x="960" y="1298" text-anchor="end" class="sans small faint" xml:space="preserve">L = characters per line · step 06 values are illustrative</text>
+<text x="746" y="732" text-anchor="start" class="sans d muted" xml:space="preserve">Masked mean over L</text>
+<text x="746" y="758" text-anchor="start" class="mono tag ink" xml:space="preserve">→ 64 + 64 features</text>
+<path d="M 336 772 V 796" class="edge"/>
+<path d="M 590 772 V 796" class="edge"/>
+<path d="M 844 772 V 796" class="edge"/>
+<path d="M 336 796 H 844" class="edge"/>
+<path d="M 590 796 V 808" class="edge"/>
+<path d="M 585 803 L 590 810 L 595 803 z" class="head"/>
+<rect x="410" y="810" width="360" height="32" rx="16" class="fixed"/>
+<text x="590" y="831" text-anchor="middle" class="mono tag ink" xml:space="preserve">concatenate · 3 × (64 max + 64 mean) = 384</text>
+<path d="M 590 842 V 876" class="edge"/>
+<path d="M 585 871 L 590 878 L 595 871 z" class="head"/>
+<text x="604" y="864" text-anchor="start" class="mono shape muted" xml:space="preserve">4 × 384  (one vector per pada)</text>
+<text x="40" y="894" text-anchor="start" class="mono num accent" xml:space="preserve">05</text>
+<text x="68" y="894" text-anchor="start" class="sans stage ink" xml:space="preserve">ORDER</text>
+<text x="40" y="916" text-anchor="start" class="sans cap muted" xml:space="preserve">Join the padas</text>
+<text x="40" y="933" text-anchor="start" class="sans cap muted" xml:space="preserve">in source order</text>
+<rect x="220" y="878" width="740" height="96" rx="10" class="fixed"/>
+<text x="240" y="910" text-anchor="start" class="sans t ink" xml:space="preserve">Concatenate padas  P1 | P2 | P3 | P4</text>
+<text x="240" y="931" text-anchor="start" class="sans d muted" xml:space="preserve">Position is kept, so odd and even padas</text>
+<text x="240" y="950" text-anchor="start" class="sans d muted" xml:space="preserve">stay distinguishable (Ataveladi, Kandamu)</text>
+<rect x="600" y="900" width="80" height="26" rx="6" class="m0"/>
+<text x="640" y="917.5" text-anchor="middle" class="mono tag" fill="#ffffff" xml:space="preserve">P1</text>
+<text x="640" y="944" text-anchor="middle" class="mono small faint" xml:space="preserve">384</text>
+<rect x="684" y="900" width="80" height="26" rx="6" class="m1"/>
+<text x="724" y="917.5" text-anchor="middle" class="mono tag" fill="#ffffff" xml:space="preserve">P2</text>
+<text x="724" y="944" text-anchor="middle" class="mono small faint" xml:space="preserve">384</text>
+<rect x="768" y="900" width="80" height="26" rx="6" class="m2"/>
+<text x="808" y="917.5" text-anchor="middle" class="mono tag" fill="#ffffff" xml:space="preserve">P3</text>
+<text x="808" y="944" text-anchor="middle" class="mono small faint" xml:space="preserve">384</text>
+<rect x="852" y="900" width="80" height="26" rx="6" class="m3"/>
+<text x="892" y="917.5" text-anchor="middle" class="mono tag" fill="#ffffff" xml:space="preserve">P4</text>
+<text x="892" y="944" text-anchor="middle" class="mono small faint" xml:space="preserve">384</text>
+<text x="940" y="964" text-anchor="end" class="mono small muted" xml:space="preserve">= 1,536 features per poem</text>
+<path d="M 590 974 V 1008" class="edge"/>
+<path d="M 585 1003 L 590 1010 L 595 1003 z" class="head"/>
+<text x="604" y="996" text-anchor="start" class="mono shape muted" xml:space="preserve">1,536</text>
+<text x="40" y="1026" text-anchor="start" class="mono num accent" xml:space="preserve">06</text>
+<text x="68" y="1026" text-anchor="start" class="sans stage ink" xml:space="preserve">CLASSIFY</text>
+<text x="40" y="1048" text-anchor="start" class="sans cap muted" xml:space="preserve">Two-layer head,</text>
+<text x="40" y="1065" text-anchor="start" class="sans cap muted" xml:space="preserve">one loss per poem</text>
+<rect x="220" y="1010" width="740" height="64" rx="10" class="learn"/>
+<text x="240" y="1038" text-anchor="start" class="sans t ink" xml:space="preserve">Dropout 0.2  →  Linear 1,536 → 128  →  ReLU</text>
+<text x="240" y="1059" text-anchor="start" class="sans d muted" xml:space="preserve">Hidden layer sees all four padas at once</text>
+<text x="940" y="1046" text-anchor="end" class="mono tag faint" xml:space="preserve">196,736</text>
+<path d="M 590 1074 V 1108" class="edge"/>
+<path d="M 585 1103 L 590 1110 L 595 1103 z" class="head"/>
+<text x="604" y="1096" text-anchor="start" class="mono shape muted" xml:space="preserve">128</text>
+<rect x="220" y="1110" width="740" height="64" rx="10" class="learn"/>
+<text x="240" y="1138" text-anchor="start" class="sans t ink" xml:space="preserve">Dropout 0.2  →  Linear 128 → 8</text>
+<text x="240" y="1159" text-anchor="start" class="sans d muted" xml:space="preserve">Eight logits per poem · class-weighted cross-entropy in training</text>
+<text x="940" y="1146" text-anchor="end" class="mono tag faint" xml:space="preserve">1,032</text>
+<path d="M 590 1174 V 1208" class="edge"/>
+<path d="M 585 1203 L 590 1210 L 595 1203 z" class="head"/>
+<text x="604" y="1196" text-anchor="start" class="mono shape muted" xml:space="preserve">8 logits</text>
+<text x="40" y="1226" text-anchor="start" class="mono num accent" xml:space="preserve">07</text>
+<text x="68" y="1226" text-anchor="start" class="sans stage ink" xml:space="preserve">PREDICT</text>
+<text x="40" y="1248" text-anchor="start" class="sans cap muted" xml:space="preserve">Softmax over the</text>
+<text x="40" y="1265" text-anchor="start" class="sans cap muted" xml:space="preserve">eight labels, take</text>
+<text x="40" y="1282" text-anchor="start" class="sans cap muted" xml:space="preserve">the top class</text>
+<rect x="220" y="1210" width="740" height="260" rx="10" class="io"/>
+<text x="240" y="1242" text-anchor="start" class="sans t ink" xml:space="preserve">Poem prediction</text>
+<text x="940" y="1242" text-anchor="end" class="mono small faint" xml:space="preserve">softmax · uncalibrated</text>
+<text x="240" y="1276" text-anchor="start" class="sans small faint" xml:space="preserve">original four vruttas</text>
+<text x="240" y="1309" text-anchor="start" class="te d muted" xml:space="preserve">ఉత్పలమాల</text>
+<rect x="340" y="1299" width="160" height="10" rx="5" class="track"/>
+<rect x="340" y="1299" width="6" height="10" rx="5" class="bar"/>
+<text x="560" y="1309" text-anchor="end" class="mono tag faint" xml:space="preserve">0.01</text>
+<text x="240" y="1341" text-anchor="start" class="te d muted" xml:space="preserve">చంపకమాల</text>
+<rect x="340" y="1331" width="160" height="10" rx="5" class="track"/>
+<rect x="340" y="1331" width="6" height="10" rx="5" class="bar"/>
+<text x="560" y="1341" text-anchor="end" class="mono tag faint" xml:space="preserve">0.01</text>
+<text x="240" y="1373" text-anchor="start" class="te d muted" xml:space="preserve">మత్తేభము</text>
+<rect x="340" y="1363" width="160" height="10" rx="5" class="track"/>
+<rect x="340" y="1363" width="6" height="10" rx="5" class="bar"/>
+<text x="560" y="1373" text-anchor="end" class="mono tag faint" xml:space="preserve">0.01</text>
+<text x="240" y="1405" text-anchor="start" class="te d muted" xml:space="preserve">శార్దూలం</text>
+<rect x="340" y="1395" width="160" height="10" rx="5" class="track"/>
+<rect x="340" y="1395" width="6" height="10" rx="5" class="bar"/>
+<text x="560" y="1405" text-anchor="end" class="mono tag faint" xml:space="preserve">0.01</text>
+<text x="600" y="1276" text-anchor="start" class="sans small faint" xml:space="preserve">added in data v3</text>
+<text x="600" y="1309" text-anchor="start" class="te d muted" xml:space="preserve">ఆటవెలది</text>
+<rect x="700" y="1299" width="160" height="10" rx="5" class="track"/>
+<rect x="700" y="1299" width="14.4" height="10" rx="5" class="bar"/>
+<text x="920" y="1309" text-anchor="end" class="mono tag faint" xml:space="preserve">0.09</text>
+<text x="600" y="1341" text-anchor="start" class="te d muted" xml:space="preserve">తేటగీతి</text>
+<rect x="700" y="1331" width="160" height="10" rx="5" class="track"/>
+<rect x="700" y="1331" width="6.4" height="10" rx="5" class="bar"/>
+<text x="920" y="1341" text-anchor="end" class="mono tag faint" xml:space="preserve">0.04</text>
+<rect x="590" y="1354" width="340" height="28" rx="7" class="win"/>
+<text x="600" y="1373" text-anchor="start" class="te d ink" xml:space="preserve">కందము</text>
+<rect x="700" y="1363" width="160" height="10" rx="5" class="track"/>
+<rect x="700" y="1363" width="129.6" height="10" rx="5" class="m0"/>
+<text x="920" y="1373" text-anchor="end" class="mono tag ink" xml:space="preserve">0.81</text>
+<text x="600" y="1405" text-anchor="start" class="te d muted" xml:space="preserve">సీసము</text>
+<rect x="700" y="1395" width="160" height="10" rx="5" class="track"/>
+<rect x="700" y="1395" width="6" height="10" rx="5" class="bar"/>
+<text x="920" y="1405" text-anchor="end" class="mono tag faint" xml:space="preserve">0.02</text>
+<text x="240" y="1446" text-anchor="start" class="mono small muted" xml:space="preserve">argmax →</text>
+<text x="310" y="1446" text-anchor="start" class="te small ink" xml:space="preserve">కందము</text>
+<rect x="40" y="1495" width="14" height="14" rx="4" class="learn"/>
+<text x="62" y="1506" text-anchor="start" class="sans small muted" xml:space="preserve">Learned weights</text>
+<rect x="184.6" y="1495" width="14" height="14" rx="4" class="fixed"/>
+<text x="206.6" y="1506" text-anchor="start" class="sans small muted" xml:space="preserve">Fixed operation</text>
+<rect x="329.2" y="1495" width="14" height="14" rx="4" class="io"/>
+<text x="351.2" y="1506" text-anchor="start" class="sans small muted" xml:space="preserve">Data</text>
+<text x="960" y="1506" text-anchor="end" class="sans small faint" xml:space="preserve">L = characters per pada · step 07 values are illustrative</text>
 </svg>

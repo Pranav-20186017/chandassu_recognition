@@ -293,11 +293,13 @@ Original v1 evidence stays in results/v1; ByT5 is unchanged.
 
 ![Character CNN architecture](docs/images/cnn-architecture.svg)
 
-The current CNN has **68,484 parameters** with the **93-character vocabulary** built from its fitting poems.
-The embedding table adds padding and unknown-character tokens, for 95 tokens in total.
-The original H100 v1 CNN had 68,420 parameters and a 92-character vocabulary.
-Three convolution branches process each line with different kernel sizes.
-Each branch supplies 64 features to the classification layer.
+The eight-class CNN has **266,056 parameters** with the **102-character vocabulary** built from its fitting poems.
+The embedding table adds padding and unknown-character tokens, for 104 tokens in total.
+Three shared convolution branches process each pada with different kernel sizes.
+Each branch supplies 64 max-pooled and 64 mean-pooled features, giving 384 features per pada.
+The four pada vectors are joined in source order and a two-layer head predicts one of eight labels per poem.
+The original four-class CNN (data v2) has 68,484 parameters and a 93-character vocabulary;
+it classifies lines independently and averages their calibrated probabilities.
 
 ### ByT5 encoder
 
