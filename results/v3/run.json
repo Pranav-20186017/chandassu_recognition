@@ -1,0 +1,121 @@
+{
+  "contract": {
+    "calibration": "None: retained calibration works remain reserved and unused in this experiment",
+    "config": {
+      "batch_poems": 32,
+      "cpu_threads": 4,
+      "device": "auto",
+      "dropout": 0.2,
+      "epochs": 40,
+      "gradient_clip": 1.0,
+      "kernel_sizes": [
+        3,
+        5,
+        7
+      ],
+      "learning_rate": 0.001,
+      "lr_factor": 0.5,
+      "lr_patience": 3,
+      "max_tokens": 512,
+      "min_lr": 1e-06,
+      "minimum_epochs": 16,
+      "patience": 8,
+      "precision": "auto",
+      "seed": 17,
+      "weight_decay": 0.01,
+      "width": 64
+    },
+    "data_manifest": "e73dd42275930a8ab3dfc6db64f575e6c0dc8fad83d295af66a0711381ff5a22",
+    "implementation": {
+      "/Users/pranav/code/chandassu_recognition/src/chandassu/expanded.py": "ed8305f104a72351f19a2065f7f082770cb6f213e99082a0d45c21ee11d5fe98",
+      "/Users/pranav/code/chandassu_recognition/src/chandassu/models/encoding.py": "70a6bd8bcfc21db275df7def32b95e276d8cf5de3c6f35d532b7d16bad560425",
+      "/Users/pranav/code/chandassu_recognition/src/chandassu/training/runtime.py": "48abda5bc519ebea24b6bffb5d47fbba68bdb7617fc5ef3da3e4b847a8ff7c01",
+      "/Users/pranav/code/chandassu_recognition/train_cnn_expanded.py": "a07a1ec920f80282ca1ba0e44cc959c7dcac9e9aebc28467e1325aee19238532"
+    },
+    "initialization": "Fresh random initialization; all eight labels together",
+    "runtime": {
+      "cross_backend_bitwise_identity": false,
+      "cuda": null,
+      "device": "cpu",
+      "gpu": null,
+      "precision": "fp32",
+      "python": "3.12.10",
+      "torch": "2.8.0",
+      "versions": {
+        "numpy": "1.26.4",
+        "scikit-learn": "1.6.1",
+        "scipy": "1.15.3",
+        "transformers": "4.57.6"
+      }
+    },
+    "selection": "Validation poem Macro F1, unweighted poem CE tie-break",
+    "test_used_for_selection": false
+  },
+  "counts": {
+    "calibration": {
+      "classes": {
+        "ఆటవెలది": 75,
+        "ఉత్పలమాల": 324,
+        "కందము": 435,
+        "చంపకమాల": 276,
+        "తేటగీతి": 10,
+        "మత్తేభము": 194,
+        "శార్దూలం": 114,
+        "సీసము": 130
+      },
+      "lines": 6232,
+      "poems": 1558,
+      "works": 4
+    },
+    "fit": {
+      "classes": {
+        "ఆటవెలది": 289,
+        "ఉత్పలమాల": 2215,
+        "కందము": 2571,
+        "చంపకమాల": 2501,
+        "తేటగీతి": 943,
+        "మత్తేభము": 1789,
+        "శార్దూలం": 1070,
+        "సీసము": 680
+      },
+      "lines": 48232,
+      "poems": 12058,
+      "works": 73
+    },
+    "selection": {
+      "classes": {
+        "ఆటవెలది": 1092,
+        "ఉత్పలమాల": 585,
+        "కందము": 721,
+        "చంపకమాల": 648,
+        "తేటగీతి": 209,
+        "మత్తేభము": 423,
+        "శార్దూలం": 203,
+        "సీసము": 250
+      },
+      "lines": 16524,
+      "poems": 4131,
+      "works": 9
+    },
+    "test": {
+      "classes": {
+        "ఆటవెలది": 152,
+        "ఉత్పలమాల": 996,
+        "కందము": 1071,
+        "చంపకమాల": 759,
+        "తేటగీతి": 640,
+        "మత్తేభము": 733,
+        "శార్దూలం": 465,
+        "సీసము": 466
+      },
+      "lines": 21128,
+      "poems": 5282,
+      "works": 13
+    }
+  },
+  "git": {
+    "dirty": true,
+    "revision": "41c48bf737f322207cdf261adeb098f7ac4b1056"
+  },
+  "run_id": "4e4a52c8970f00812f0ba5aee3818b9831f560353b94288ee553bdfa21386255"
+}

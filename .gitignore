@@ -5,6 +5,7 @@ __pycache__/
 *.egg-info/
 .ipynb_checkpoints/
 *.ipynb
+!/notebook.ipynb
 .DS_Store
 /build/
 /dist/
@@ -20,6 +21,7 @@ __pycache__/
 /data/cache/
 /results/*
 !/results/v1/
+!/results/v3/
 *.pt
 *.pth
 *.ckpt

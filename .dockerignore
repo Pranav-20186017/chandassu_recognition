@@ -9,6 +9,7 @@
 !LICENSES/
 !LICENSES/**
 !train.py
+!train_cnn_expanded.py
 !inference.py
 !src/
 !src/**
@@ -23,4 +24,6 @@
 !data/v1/**
 !data/v2/
 !data/v2/**
+!data/v3/
+!data/v3/**
 **/__pycache__/

@@ -1,0 +1,11 @@
+{
+  "complete_test_confusion_matrix_preserved": true,
+  "project_required_by_hf_loader": false,
+  "root_and_subfolder_exact_logits": true,
+  "test_accuracy": 0.9789852328663385,
+  "test_macro_f1": 0.9484251702907207,
+  "test_poems": 5282,
+  "validation_used_for_selection": true,
+  "weight_sha256": "cb94cb037b13ad8ff2e4e773fa6a80a5291537c10c4a978634717fbd37f12eeb",
+  "weights_unchanged": true
+}

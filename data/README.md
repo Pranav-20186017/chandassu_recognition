@@ -1,5 +1,11 @@
 # Prepared poetry data
 
+The eight-class CNN experiment uses [v3/](v3/README.md): all v2 poems plus
+Ataveladi, Tetageeti, Kandamu and body-only Seesamu (23,029 poems total).
+See [source/rule references](SOURCES.md) and [work catalogues](WORKS.md).
+Its dedicated entry point is `train_cnn_expanded.py`; the commands below retain
+the frozen four-class workflow.
+
 `v1/manifest.json` verifies the released files. Target JSONL files contain one complete
 four-line poem per row, never separate line records. This is a lossless conversion of
 the frozen corpus's text, labels, IDs and split roles; inference applies the same
@@ -27,7 +33,7 @@ Source titles in a shared `edition_family`, and works connected by layout-equiva
 lines, must remain together. Author overlap is permitted and recorded; do not claim
 unseen-author evaluation.
 
-The current expansion is `v2/`, which already includes v1. It has 8,483 train poems
+The current four-class expansion is `v2/`, which already includes v1. It has 8,483 train poems
 (including 908 calibration), 1,859 unchanged validation poems, and 2,953 test poems.
 The fitting partition has 7,575 poems: all original fitting poems plus 1,058 new ones.
 The seven new held-out works (719 poems) were frozen before the GX10 trial and join

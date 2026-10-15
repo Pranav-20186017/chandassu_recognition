@@ -1,0 +1,22 @@
+{
+  "checkpoint_sha256": "903ff6f991ef20df7600fc5b93ff8608079c0864b38915c0f6d312b6cdfc29b5",
+  "data_manifest_sha256": "e73dd42275930a8ab3dfc6db64f575e6c0dc8fad83d295af66a0711381ff5a22",
+  "files": {
+    "README.md": "f00b37b25ef5ae485eb148315dcf07e1924e587885aee182346fbd13c75db812",
+    "config.json": "4883bd16e690ac681dffec74bb6394cbc8ed28b53919be9b1510d29c6531ecad",
+    "confusion_matrix.png": "9156031106982e7fc465c7f961bccf9dc46e69b9dbc2a9d569175cc579db0b70",
+    "history.json": "95c5c44ae84c2dbcc66cf58c408fb89554649021d6259700bb5aee56face1cbd",
+    "huggingface_export_verification.json": "369ac9183f5316cbb14095d072b97ff81b1832970af095087f84eeb368530248",
+    "learning_curves.png": "ebeaf827b351b6fdcc2ffeefd1c2fb4bf1bc3842fd73a5d84085075b86b0ffc4",
+    "partitions.json": "b4bf7ea7c03aad3525569522518ddc2c8c55f3def54dddae1772446ff384fe8a",
+    "reference-v2-cnn.json": "3fb045bc652a356af9cdfd65931fb4adf22931d959a89b542058ee0b8bc055eb",
+    "result.json": "6e8bc33a44fd6e3c2cf6f2dc76a169ea9db0c43d0075129b5aca5e0846fa7d59",
+    "run.json": "eb58a3681ac52ec295d45f2f65c64afb48591f02a74a737293a1a91632fe0d92",
+    "test.json": "0c4d82c92d7d89418484eb67ed1a5c7019051ddbc9c08210bde0fda356621c46"
+  },
+  "model_manifest_sha256": "22e47f3b86441e50bea34b1ca69f0c71caf991434b2863759310b9f88a5e27e9",
+  "plotting_version": "3.10.8",
+  "run_id": "4e4a52c8970f00812f0ba5aee3818b9831f560353b94288ee553bdfa21386255",
+  "tests": "36 passed; Ruff lint/format and Git diff checks passed; standalone and notebook loaders verified",
+  "weights": "Local runs/cnn-eight-class/model; not copied into Git reports"
+}

@@ -1,21 +1,83 @@
 # Chandassu Recognition
 
-Chandassu Recognition identifies four Telugu poetic meters:
-**ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం**.
+Chandassu Recognition identifies eight Telugu poetic metres:
+**ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం · ఆటవెలది · తేటగీతి · కందము · సీసము**.
 
-The project provides a character CNN and a ByT5 encoder classifier.
-The current CNN was trained on **NVIDIA GB10 (GX10)** using the combined v2 corpus.
-ByT5 remains the original **NVIDIA H100 NVL** model trained on v1.
-The updated CNN is installed locally; Hugging Face publication is pending. The Hub currently retains its v1 CNN.
-Use the CNN when you need a smaller model.
-You can train several models with different seeds and hyperparameters.
-You can then use those models together as an ensemble.
+The new default is a fresh eight-class character CNN trained on CPU with data v3.
+It predicts one label from four ordered full pādas; Seesamu uses its body alone.
+Test poem Macro F1 is **94.84%**, with Ataveladi the weakest class at **69.34%**.
 
-Download the final model packages from [Hugging Face](https://huggingface.co/sprx7767/chandassu-recognition).
+The model and standalone loader are published at the
+[Hugging Face repository](https://huggingface.co/sprx7767/chandassu-recognition)
+root and in `cnn-eight-class/`. The original four-class CNN (NVIDIA GB10/GX10,
+data v2) and ByT5 encoder (NVIDIA H100 NVL, data v1) remain in `cnn/` and `byt5/`.
+Those original models classify lines and average calibrated probabilities;
+the new model uses ordered poem context and reports uncalibrated scores.
+ByT5 is parked for the eight-class extension. Ensemble only compatible packages
+with the same architecture and label space.
 
-Each poem has four lines and one meter label.
-The model calculates class probabilities for each line.
-It then calculates the mean of those probabilities to identify the poem's meter.
+## Eight-class CNN experiment
+
+A separate fresh CNN adds **ఆటవెలది · తేటగీతి · కందము · సీసము** to all four
+existing vrutta labels. It uses [data/v3](data/v3/README.md), with 23,029 poems and
+frozen work partitions. Seesamu input is its four full body padas; the closing
+geeti remains attached as provenance and is excluded from model inputs.
+
+```bash
+python train_cnn_expanded.py --config configs/cnn_eight_class.json
+python train_cnn_expanded.py --config configs/cnn_eight_class.json --resume
+python train_cnn_expanded.py --predict runs/cnn-eight-class/model --input poem.json
+```
+
+The new architecture shares a character CNN across padas and predicts once from
+all four ordered vectors, using validation poem Macro F1 for checkpoint selection.
+It trains from scratch on all eight labels; ByT5 is parked. It has a dedicated
+checksummed safetensors package/loader; use the expanded prediction command above.
+The original four-class models remain available, and the local
+server supports both architectures as separate prediction strategies. See [sources and rules](data/SOURCES.md), [all works](data/v3/WORKS.md),
+and [the experiment report](docs/eight_class_experiment.md).
+
+### Serve the eight-class model with the same interface
+
+```bash
+python inference.py --model_dirs runs/cnn-eight-class/model \
+  models/cnn-seed-17 models/cnn-seed-42 models/cnn-seed-73
+```
+
+Open <http://127.0.0.1:8765>. The existing layout, colours, theme toggle and controls
+are preserved. The eight-class CNN is the default prediction option; original
+single-seed models and their four-class ensemble stay available in the dropdown.
+Only compatible original models participate in that ensemble.
+
+The eight-class CNN predicts jointly from four full ordered padas. Seesamu may
+also be pasted as eight body half-lines, optionally followed by four closing geeti
+lines; the latter are excluded from inference. It reports uncalibrated poem scores
+and no per-line predictions. Select an original four-class option for single-pada
+inference. To serve only the new model, use
+`python inference.py --model_dir runs/cnn-eight-class/model`.
+
+### Load the published eight-class model
+
+The updated [notebook](notebook.ipynb) defaults to the eight-class model and includes
+optional original-model examples. It accepts complete poems and Seesamu body input;
+its saved outputs are cleared. The standalone loader `hf_poem.py` is included in
+the Hub package for Transformers Auto interfaces without installing this project.
+
+```bash
+python scripts/load_hf_model.py --poem poem.txt --revision FULL_HF_COMMIT
+```
+
+The loading script resolves and pins one HF commit when `--revision` is omitted.
+To run the same model through the web interface directly from the Hub:
+
+```bash
+python inference.py --model_id sprx7767/chandassu-recognition --revision FULL_HF_COMMIT
+```
+
+Use `--subfolder cnn-eight-class` for the explicitly named eight-class package,
+or `--subfolder cnn` / `--subfolder byt5` for the preserved original packages.
+Only files in the selected manifest are downloaded. See the
+[model card and full Auto loading example](docs/huggingface/README.md).
 
 ## Install
 

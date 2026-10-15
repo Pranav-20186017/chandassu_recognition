@@ -1,197 +1,60 @@
 ---
-language:
-  - te
+language: [te]
 license: other
 license_name: chandassu-citation
-license_link: https://huggingface.co/sprx7767/chandassu-recognition/blob/main/cnn/LICENSE
+license_link: LICENSE
 library_name: transformers
 pipeline_tag: text-classification
-tags:
-  - telugu
-  - poetry
-  - poetic-meter
-  - cnn
-  - byt5
-  - safetensors
+tags: [telugu, poetry, poetic-meter, cnn, eight-class, safetensors]
 ---
 
-# Chandassu Recognition
-
-> Prepared CNN v2 release card. Seed 73 is verified and installed locally; Hub publication is pending.
-> The existing Hub repository currently retains its v1 CNN.
+# Chandassu Recognition — eight-class poem CNN
 
 **Author: Pranav Surampudi**
 
-Chandassu Recognition identifies four Telugu poetic meters:
-**ఉత్పలమాల · చంపకమాల · మత్తేభము · శార్దూలం**.
+The default model is the new **eight-class ordered poem CNN**, trained from scratch
+on the original four vruttas plus ఆటవెలది, తేటగీతి, కందము and సీసము.
+**Test poem Macro F1: 94.84% · accuracy: 97.90%** on 5,282 held-out poems.
+Ataveladi is the weakest class (69.34% F1); inspect the class-specific results below.
+This is a raw-text classifier with uncalibrated scores, not a formal prosody verifier.
 
-The current CNN was trained on **NVIDIA GB10 (GX10)** using the expanded v2 corpus.
-The ByT5 package remains the original **NVIDIA H100 NVL** model on v1 data.
-This repository provides a character CNN and a ByT5 encoder classifier.
-Use the CNN when you need a smaller model.
+## Packages and loader
 
-## Model packages
+| Package | Location | Output | Status |
+|---|---|---|---|
+| New eight-class CNN, seed 17 | Root, or `cnn-eight-class/` | Eight raw logits per complete poem | Current default |
+| Original four-class CNN | `cnn/` | Four raw logits per line | Preserved |
+| Original ByT5 encoder | `byt5/` | Four raw logits per line | Preserved; no retraining |
 
-| Model | Directory | Parameters | Seed | Selected epoch |
-|---|---|---:|---:|---:|
-| Character CNN | [cnn](https://huggingface.co/sprx7767/chandassu-recognition/tree/main/cnn) | 68,484 | 73 | 58 |
-| ByT5 encoder | [byt5](https://huggingface.co/sprx7767/chandassu-recognition/tree/main/byt5) | 217,663,364 | 17 | 17 |
+`hf_poem.py` supplies the self-contained new tokenizer, config and model classes.
+`hf_model.py` and all original `cnn/` and `byt5/` files remain unchanged. The
+[original four-class card](legacy-four-class/README.md) retains their detailed
+architecture, calibration, results and usage. Do not mix their label spaces in an ensemble.
 
-Each directory contains SafeTensors weights, configuration, input encoding, calibration settings, and model metadata.
-Use `AutoTokenizer` and `AutoModelForSequenceClassification` to load either model in a Python environment.
-You can also use the project loader and web interface.
+[Open the updated notebook](notebook.ipynb) or use
+[Colab's Hugging Face URL](https://colab.research.google.com/github/Pranav-20186017/chandassu_recognition/blob/main/notebook.ipynb).
+It defaults to the new model, pins one resolved revision for all loaders, and
+retains an optional original-model example. Published execution outputs are cleared.
 
-[Project code and instructions](https://github.com/Pranav-20186017/chandassu_recognition)
+## Python loading
 
-## Architectures
-
-The CNN encodes 93 characters, plus padding and unknown tokens, with 64-dimensional embeddings.
-Three convolution branches use kernel sizes 3, 5, and 7.
-Each branch applies ReLU and masked max pooling to produce 64 features.
-A linear layer maps the combined 192 features to four class logits.
-
-The ByT5 model uses the encoder from [google/byt5-small](https://huggingface.co/google/byt5-small).
-The base revision is `68377bdc18a2ffec8a0533fef03b1c513a4dd49d`.
-The encoder has 12 layers and a hidden width of 1,472.
-Masked mean pooling and a linear classification layer produce four class logits.
-
-Both models classify individual lines.
-Temperature calibration adjusts the line probabilities.
-The mean of four line probability vectors gives the poem probabilities.
-The class with the highest probability is the poem prediction.
-
-[Architecture diagrams](https://github.com/Pranav-20186017/chandassu_recognition#model-architectures)
-
-## Data and sources
-
-The poems come from [AndhraBharati](https://andhrabharati.com/) and [Telugu Wikisource](https://te.wikisource.org/).
-The current CNN uses **13,295 complete poems**, **53,180 lines**, and **70 retained works**
-from v2, which already includes v1. ByT5 continues to use v1: 11,518 poems, 46,072 lines,
-and 36 retained works. The CNN update does not retrain or replace ByT5.
-
-| Use | CNN v2 poems / lines | ByT5 v1 poems / lines |
-|---|---:|---:|
-| Weight training | 7,575 / 30,300 | 6,517 / 26,068 |
-| Temperature calibration | 908 / 3,632 | 908 / 3,632 |
-| Validation | 1,859 / 7,436 | 1,859 / 7,436 |
-| Holdout test | 2,953 / 11,812 | 2,234 / 8,936 |
-| Total | 13,295 / 53,180 | 11,518 / 46,072 |
-
-All original v1 split assignments are preserved. Of 1,777 new poems from 34 works,
-1,058 poems from 27 works join fitting and 719 poems from seven works remain test.
-The new-work test allocation was frozen before training. One CNN test file combines
-the original 2,234 test poems and the 719 new-work test poems. Validation is unchanged.
-The 908 calibration poems are inside canonical train but never update model weights.
-
-Validation poem Macro F1 selects each checkpoint. Selected-checkpoint validation F1,
-then unweighted validation line cross-entropy, selects the released single CNN across
-seeds. Temperature is fitted separately for each model after checkpoint selection.
-Test data are excluded from fitting, vocabulary construction, selection, and calibration.
-All four ordered lines, work/edition families, and duplicate-linked works stay together.
-Authors may overlap. Source annotations and rule provenance are retained; these are
-not independently verified expert gold labels. Both CNN test cohorts were evaluated
-on earlier models: this is a fixed benchmark, not a new blind test or unseen-author study.
-
-The [v2 work catalogue](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v2/WORKS.md)
-records the new works and their fitting/test assignments. The complete machine-readable
-catalogue includes 80 collected works, of which 70 retain supervised four-class poems.
-The [v1 catalogue](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v1/WORKS.md)
-retains the original collection, including non-target and excluded material.
-
-## Training hyperparameters
-
-| Hyperparameter | CNN | ByT5 |
-|---|---:|---:|
-| Initial learning rate | 0.0001 | 0.00003 |
-| Microbatch size, poems | 16 | 8 |
-| Effective batch size, poems | 16 | 16 |
-| Evaluation batch size, poems | 16 | 8 |
-| Maximum epochs | 60 | 32 |
-| Minimum epochs | 24 | 8 |
-| Early stopping: epochs without improvement | 12 | 8 |
-| Input limit per line | 256 characters | 1,024 byte tokens, including the end token |
-| Gradient checkpointing | Off | Off |
-
-Both models use AdamW, weight decay 0.01, dropout 0.2, and gradient clipping 1.0.
-ReduceLROnPlateau uses validation line cross-entropy loss without class weights.
-The scheduler has patience 4, multiplier 0.5, and minimum learning rate 0.000001.
-The H100 study selected initial CNN LR 0.0001; the expanded GX10 run reuses it for
-seeds 17, 42, and 73 without another rate search or nested-fold study. All three CNNs
-share the same frozen partitions and architecture. They start from fresh weights.
-This repository contains the validation-selected CNN seed 73 and unchanged ByT5 seed 17.
-
-The exported calibration temperatures are **1.401754510250526** for CNN and **1.1801772437687996** for ByT5.
-CNN runtime: Python 3.12.3, PyTorch 2.10.0a0+b558c986e8.nv25.11, CUDA 13.0, NVIDIA GB10, BF16.
-Its training checkout was clean at `f7939ccac30d14bab929ed7d9c91aa202c5a9c80`.
-
-## Current CNN results
-
-| CNN seed | Selected epoch | Validation poem Macro F1 | Validation line CE before temperature | Temperature |
-|---|---:|---:|---:|---:|
-| 17 | 54 | 0.998596 | 0.031031 | 1.339218 |
-| 42 | 60 | 0.998596 | 0.031057 | 1.396669 |
-| 73 (released) | 58 | 0.998596 | 0.028452 | 1.401755 |
-
-Seed 73 wins the validation F1 tie through lower validation CE. Test results never
-select the seed. Every seed completed 60 epochs, followed by separate temperature
-calibration on the 908 calibration poems. Validation scores are checkpoint-selected.
-
-| Released CNN seed 73 benchmark | Poems | Correct | Poem Macro F1 | Line Macro F1 |
-|---|---:|---:|---:|---:|
-| Original v1 test | 2,234 | 2,234 | 1.000000 | 0.993992 |
-| Frozen new-work test | 719 | 716 | 0.996042 | 0.991346 |
-| Combined test | 2,953 | 2,950 | 0.999084 | 0.993420 |
-
-All three replicas and their predetermined equal-probability ensemble have the same
-combined-test poem score and the same three errors. Matched CPU inference with the
-previously released v1 CNN seed 17 produces the same poem predictions on these 2,953
-poems. There is **no measured poem-level gain** from this update. Combined-test line
-Macro F1 changes from 0.992608 (old CNN) to 0.993420 (new CNN); hardware/runtime,
-vocabulary, seed, and data differ, so this does not isolate the effect of corpus growth.
-The local three-seed ensemble line Macro F1 is 0.993592; it offers no poem-level gain.
-Ensemble membership and equal weights were fixed before evaluation.
-
-The returned checkpoints and native SafeTensors were compared tensor-for-tensor;
-file manifests, code identity, all split fingerprints, calibration assignments and
-checkpoint selection were verified. Mac CPU inference reproduces the test confusion
-matrices and F1 scores. The exported Transformers package preserves the selected weights.
-See the CNN directory's selection, test and verification reports.
-
-## Original H100 study (v1), retained for comparison
-
-| Original v1 measure | Original CNN | Unchanged ByT5 |
-|---|---:|---:|
-| Cross-validation poem Macro F1, mean across three seeds | 0.997130 | 0.997137 |
-| Correct historical test poems, seed 17 | 2,234 / 2,234 | 2,233 / 2,234 |
-| Historical test poem Macro F1, seed 17 | 1.000000 | 0.999619 |
-
-These original study scores do not describe a repeated cross-validation experiment
-on v2. The historical test had been examined during earlier project work. Labels
-combine source annotations and rule-based checks; experts have not verified every label.
-[Original study evidence](https://github.com/Pranav-20186017/chandassu_recognition/tree/main/results/v1)
-
-## Run inference
-
-### Python
-
-Install the tested dependencies in your Python environment:
+Tested with Python 3.12, PyTorch 2.8.0, Transformers 4.57.6, SafeTensors 0.8.0 and
+huggingface-hub 0.36.2. The exported loader requires only PyTorch, Transformers and
+the standard library; no project checkout, ByT5 download or login is needed.
 
 ```bash
-pip install "torch==2.8.0" "transformers==4.57.6" "safetensors==0.8.0"
+pip install "torch==2.8.0" "transformers==4.57.6" "safetensors==0.8.0" "huggingface-hub==0.36.2"
 ```
-
-Use the Transformers Auto interfaces to load the tokenizer and classifier.
-The tokenizer applies the same text normalization and input encoding used in training.
-The model returns four raw logits for each line.
-Apply the saved calibration temperature, then average line probabilities to classify a poem.
 
 ```python
 import torch
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from huggingface_hub import HfApi
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 repo = "sprx7767/chandassu-recognition"
-options = {"subfolder": "cnn", "trust_remote_code": True}
-# Change "cnn" to "byt5" to load the ByT5 encoder classifier.
+revision = HfApi().model_info(repo, token=False).sha  # resolve once; keep this commit
+options = {"revision": revision, "trust_remote_code": True, "token": False}
+# Optional: options["subfolder"] = "cnn-eight-class"
 tokenizer = AutoTokenizer.from_pretrained(repo, **options)
 model = AutoModelForSequenceClassification.from_pretrained(repo, **options).eval()
 
@@ -199,101 +62,114 @@ poem = """శ్రీ కైవల్య పదంబుఁ జేరుటక�
 క్షైకారంభకు, భక్త పాలన కళా సంరంభకున్, దానవో
 ద్రేకస్తంభకుఁ, గేళి లోల విలసద్దృగ్జాల సంభూత నా
 నా కంజాత భవాండ కుంభకు, మహానందాంగనాడింభకున్."""
-lines = [line.strip() for line in poem.splitlines() if line.strip()]
-if len(lines) not in (1, 4):
-    raise ValueError("Supply one line or a four-line poem")
-inputs = tokenizer(lines, padding=True, return_tensors="pt")
+inputs = tokenizer(poem, padding=True, return_tensors="pt")
 with torch.inference_mode():
-    logits = model(**inputs).logits
-    line_scores = (logits.double() / model.config.calibration_temperature).softmax(dim=-1)
-    scores = line_scores.mean(dim=0)
-
-winner = scores.argmax().item()
-print(model.config.id2label[winner], f"{scores[winner].item():.2%}")
-for index, score in enumerate(scores):
-    print(model.config.id2label[index], f"{score.item():.2%}")
+    scores = model(**inputs).logits.double().softmax(-1)[0]
+print(model.config.id2label[int(scores.argmax())])
+for i in scores.argsort(descending=True).tolist():
+    print(model.config.id2label[i], f"{float(scores[i]):.2%}")
 ```
 
-`AutoModel.from_pretrained(repo, **options)` also loads this classifier.
-`trust_remote_code=True` loads the Python classes supplied in the model repository.
-For a fixed model version, add `"revision": "<full commit ID>"` to `options`.
-The example was tested with Python 3.12 and the dependency versions listed above.
-Input limits are 256 characters per line for CNN and 1,024 byte tokens, including the end token, for ByT5.
-The tokenizer rejects overlong input and does not truncate lines.
-
-Class probabilities are calibrated scores, not statistical confidence intervals.
-A standard text-classification pipeline applies its own softmax to line logits.
-Use the calculation above for calibrated poem scores.
-Clone this project when you need the web interface, ensembles, or training.
-
-### Web interface
-
-Install the project and its dependencies:
+`trust_remote_code=True` loads the inspectable `hf_poem.py` from the pinned commit.
+Use `AutoModel` or `AutoModelForSequenceClassification`; both load the same classifier.
+The [loading script](load_hf_model.py) reads a complete UTF-8 poem text file:
 
 ```bash
-git clone https://github.com/Pranav-20186017/chandassu_recognition.git
-cd chandassu_recognition
-uv sync --locked --extra cpu
-source .venv/bin/activate
+python load_hf_model.py --poem poem.txt --revision FULL_HF_COMMIT
 ```
 
-Download and serve the CNN:
+### Whole-poem input contract
+
+- Pass one complete newline-separated poem string, or a list of complete poem strings.
+- Four full ordered pādas are required for the general eight-class prediction.
+- Eight Seesamu body half-lines are paired into four full body pādas. Twelve lines
+  mean eight body half-lines plus four closing geeti lines; the closing geeti is excluded.
+- An eight-line input means body half-lines, not four full body pādas plus four geeti lines.
+- Maximum 512 characters per full pāda; overlong inputs raise rather than truncate.
+- Token tensors have shape `[batch, 4, tokens]`; logits have shape `[batch, 8]`.
+- Scores are uncalibrated. There are no independent per-line scores or line probabilities to average.
+- A standard line-level text-classification pipeline is unsupported; use the Auto interfaces above.
+
+The original four-class models still support one line or a four-line poem with their
+original tokenizers and temperature-calibrated line averaging; see the preserved card.
+
+## Architecture and training
+
+The 266,056-parameter CNN shares 64-wide character embeddings and convolution
+branches (kernels 3, 5, 7) across all four ordered pādas. Each branch uses masked
+max and mean pooling. The four vectors are concatenated in order and passed to a
+128-unit classification head. The saved weights are unchanged by export.
+No source IDs, labels, rule scores, closing geeti, or intermediate prosody features
+enter the model. The vocabulary is fitted only on optimization data.
+
+Fresh seed 17; AdamW at 0.001; weight decay 0.01; batch 32 poems; dropout 0.2;
+gradient clip 1; square-root inverse-frequency class weights from fit only.
+Up to 40 epochs, minimum 16, early-stopping patience 8. ReduceLROnPlateau monitors
+unweighted validation poem CE (patience 3, factor 0.5, floor 1e-6).
+Validation **poem Macro F1** selects checkpoints, with unweighted poem CE for ties.
+Epoch **11** was selected after **19** completed epochs; validation Macro F1 was
+**86.14%**. Training used CPU/fp32; ByT5 was parked. The 1,558 reserved calibration
+poems were unused, so scores must not be described as calibrated confidence.
+
+## Data and results
+
+Data v3 contains **23,029 complete poems from 99 works**. It includes every v2
+poem with its existing role preserved. Original target classes retain IDs 0–3;
+new classes use IDs 4–7 in the order listed below.
+
+| Class | Fit | Validation | Reserved | Test | Test F1 |
+|---|---:|---:|---:|---:|---:|
+| ఉత్పలమాల | 2,215 | 585 | 324 | 996 | 99.75% |
+| చంపకమాల | 2,501 | 648 | 276 | 759 | 99.67% |
+| మత్తేభము | 1,789 | 423 | 194 | 733 | 99.80% |
+| శార్దూలం | 1,070 | 203 | 114 | 465 | 99.78% |
+| ఆటవెలది | 289 | 1,092 | 75 | 152 | 69.34% |
+| తేటగీతి | 943 | 209 | 10 | 640 | 92.27% |
+| కందము | 2,571 | 721 | 435 | 1,071 | 99.63% |
+| సీసము body | 680 | 250 | 130 | 466 | 98.50% |
+| **Total** | **12,058** | **4,131** | **1,558** | **5,282** | **Macro F1 94.84%** |
+
+On the same 2,953 original-label v2 test poems, four-label retention Macro F1 is
+99.81% (all eight prediction classes still available), versus 99.91% for the
+installed original four-class CNN. This diagnostic comparison does not establish
+future-source equivalence, and the old classifier cannot recognize the new labels.
+
+Whole poems, works, edition families and exact-duplicate-linked works stay together.
+Seesamu closures are included in isolation checks even though they are not features.
+The exact-duplicate screen is not proof against fuzzy duplicates or paraphrases.
+Authors can overlap across roles. Vemana dominates Ataveladi validation, while its
+fit set has only 289 poems across seven works. Source annotations are not expert gold;
+the test includes the previously inspected v2 benchmark. It is not wholly blind or
+an unseen-author evaluation. No test metric selected the checkpoint, recipe or split.
+
+One pre-test trial was stopped to exclude 23 new records with identifiable source
+corruption; it is kept locally as discarded audit evidence. The reported fit uses
+the same fixed seed and recipe, with no test-informed tuning.
+
+[Complete reports and figures](https://github.com/Pranav-20186017/chandassu_recognition/tree/main/results/v3) ·
+[Dataset](https://github.com/Pranav-20186017/chandassu_recognition/tree/main/data/v3) ·
+[Sources and rules](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/SOURCES.md) ·
+[All works](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/v3/WORKS.md)
+
+## Existing web interface
+
+Clone the [project](https://github.com/Pranav-20186017/chandassu_recognition) and install
+with `uv sync --locked --extra cpu`. Download and serve the new package:
 
 ```bash
-hf download sprx7767/chandassu-recognition \
-  --include 'cnn/*' --local-dir models/hf
-
-python inference.py --model_dir=models/hf/cnn --strategy=single --port=8765
+hf download sprx7767/chandassu-recognition --include 'cnn-eight-class/*' --local-dir models/hf
+python inference.py --model_dir models/hf/cnn-eight-class
 ```
 
-For ByT5, use these commands instead:
-
-```bash
-hf download sprx7767/chandassu-recognition \
-  --include 'byt5/*' --local-dir models/hf
-
-python inference.py --model_dir=models/hf/byt5 --strategy=single --port=8765
-```
-
-Open [http://127.0.0.1:8765](http://127.0.0.1:8765).
-Paste a single line or a four-line poem.
-The interface displays the meter, class probabilities, and line predictions.
-It supports light and dark themes.
-The API endpoint is `POST /api/predict` with a JSON request containing `text`.
-
-You can also train additional models with different seeds and hyperparameters.
-Use `--model_dirs` and `--strategy=ensemble` to load them together.
-Each ensemble requires distinct seeds from one model family.
-
-## Limitations
-
-Use these models to classify the four listed meters.
-They can assign high probabilities to poems from other meters.
-A high probability does not establish that an input belongs to a supported class.
-Class probabilities and score ranges are not statistical confidence intervals.
-The models do not produce syllable divisions, Guru/Laghu patterns, or gaṇa sequences.
-Performance on new works, different spellings, and damaged text can differ from the reported results.
+Open <http://127.0.0.1:8765>. The appearance is preserved. The eight-class option
+reports joint poem scores, while original packages can be loaded alongside it as
+separate dropdown strategies. Only compatible original models participate in their
+legacy ensemble. The local API is `POST /api/predict` with a `text` field.
 
 ## License and citation
 
-Project-owned material uses the [Chandassu citation license](https://huggingface.co/sprx7767/chandassu-recognition/blob/main/cnn/LICENSE).
-Cite Chandassu Recognition when you use the covered code or dataset material.
-Earlier Apache-2.0 permissions remain in effect.
-The ByT5 base encoder retains its Apache-2.0 license.
-
-Poems, editions, transcriptions, and source annotations retain their original rights and terms.
-Source rights have not been independently verified for every edition.
-Preserve poem authors and source links when you share data.
-See the [dataset rights statement](https://github.com/Pranav-20186017/chandassu_recognition/blob/main/data/LICENSE.md).
-
-```bibtex
-@misc{pranav2026chandassu,
-  author = {Pranav Surampudi},
-  title = {Chandassu Recognition: Telugu Poetic Meter Classification},
-  year = {2026},
-  howpublished = {\url{https://github.com/Pranav-20186017/chandassu_recognition}},
-  note = {Code, dataset annotations, and trained-model results}
-}
-```
-
-[Citation metadata](https://huggingface.co/sprx7767/chandassu-recognition/blob/main/cnn/CITATION.cff)
+Project-owned code and weights follow the [Chandassu citation license](LICENSE).
+Earlier Apache-2.0 permissions remain in effect; the retained ByT5 base encoder is
+Apache-2.0. Poems, editions, transcriptions and annotations retain their source rights;
+these have not been independently cleared for every edition. Preserve authors and
+source links. See the project's dataset rights statement and [CITATION.cff](CITATION.cff).

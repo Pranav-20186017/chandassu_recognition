@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel, Field
 
-from .collection import ModelCollection
+from .expanded import load_collection
 
 
 class PredictionRequest(BaseModel):
@@ -16,7 +16,7 @@ class PredictionRequest(BaseModel):
 
 def create_app(model_dir, device="cpu", cpu_threads=4, strategy="single"):
     folders = list(model_dir) if isinstance(model_dir, (list, tuple)) else [model_dir]
-    predictor = ModelCollection(folders, device=device, cpu_threads=cpu_threads, strategy=strategy)
+    predictor = load_collection(folders, device=device, cpu_threads=cpu_threads, strategy=strategy)
     app = FastAPI(title="Chandassu inference", version="1.0.0")
     app.state.predictor = predictor
 

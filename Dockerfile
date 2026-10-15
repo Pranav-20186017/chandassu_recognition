@@ -9,16 +9,18 @@ COPY pyproject.toml uv.lock README.md LICENSE NOTICE CITATION.cff ./
 COPY LICENSES ./LICENSES
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cpu --no-dev
-COPY train.py inference.py ./
+COPY train.py train_cnn_expanded.py inference.py ./
 COPY scripts ./scripts
 COPY configs ./configs
 COPY data/v1 ./data/v1
+COPY data/v2 ./data/v2
+COPY data/v3 ./data/v3
 ENV PATH="/app/.venv/bin:$PATH"
 
 FROM cpu-base AS test
 COPY tests ./tests
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cpu
-RUN ruff check src tests scripts train.py inference.py && pytest -q
+RUN ruff check src tests scripts train.py train_cnn_expanded.py inference.py && pytest -q
 
 FROM cpu-base AS cpu
 RUN useradd --uid 1000 --create-home app && mkdir -p /app/runs /app/models && chown app:app /app/runs /app/models
@@ -36,10 +38,12 @@ COPY pyproject.toml uv.lock README.md LICENSE NOTICE CITATION.cff ./
 COPY LICENSES ./LICENSES
 COPY src ./src
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --extra cuda --no-dev --python 3.12.10
-COPY train.py inference.py ./
+COPY train.py train_cnn_expanded.py inference.py ./
 COPY scripts ./scripts
 COPY configs ./configs
 COPY data/v1 ./data/v1
+COPY data/v2 ./data/v2
+COPY data/v3 ./data/v3
 RUN useradd --uid 1000 --create-home app && mkdir -p /app/runs /app/models && chown app:app /app/runs /app/models
 ENV PATH="/app/.venv/bin:$PATH"
 USER app
@@ -68,10 +72,12 @@ import torch
 assert "nv25.11" in torch.__version__, "Retain NVIDIA's GPU-enabled PyTorch"
 PY
 COPY src ./src
-COPY train.py inference.py ./
+COPY train.py train_cnn_expanded.py inference.py ./
 COPY scripts ./scripts
 COPY configs ./configs
+COPY data/v1 ./data/v1
 COPY data/v2 ./data/v2
+COPY data/v3 ./data/v3
 ENV PATH="/opt/chandassu-env/bin:$PATH" PYTHONPATH=/app/src \
     PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     HF_HOME=/tmp/chandassu-huggingface TORCHINDUCTOR_CACHE_DIR=/tmp/chandassu-inductor

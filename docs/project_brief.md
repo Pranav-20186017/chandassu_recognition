@@ -47,3 +47,21 @@ dependencies, CPU/CUDA Docker targets, whole-poem data with a work catalogue, va
 checkpoint selection, restartable training, complete final reports, separate data rights
 status and locally preserved research archives. Model weights are distributed through
 Hugging Face rather than Git. The completed models were trained on NVIDIA H100 NVL.
+
+## Eight-class Model A CNN extension (October 2026)
+
+The separate `train_cnn_expanded.py` experiment trains a fresh raw-text CNN on all
+four established vruttas plus Ataveladi, Tetageeti, Kandamu and Seesamu. ByT5 is
+parked for this extension. Data v3 includes every v2 record with unchanged roles.
+Keep four full ordered padas per input; Seesamu's body padas are paired from eight
+explicit half-lines. Retain its closing geeti as provenance and in duplicate/work
+isolation, outside model features. Predict one label per complete ordered poem.
+
+Freeze new work/edition/duplicate group roles before training; never move existing
+fitting works to validation. Use validation poem Macro F1 for checkpoint selection
+and unweighted validation poem CE for ties. Test never drives fitting, scheduling,
+selection, class substitution or hyperparameter changes. Reserved calibration works
+are unused in this initial experiment and probabilities are uncalibrated. Preserve
+the four-class workflow and packages; use a distinct eight-class architecture ID.
+This remains Model A classification. Rule distillation/verification is future work
+until trustworthy prosody supervision and an independently validated teacher exist.
