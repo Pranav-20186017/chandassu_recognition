@@ -98,6 +98,8 @@ class BlockProject(importlib.abc.MetaPathFinder):
     def find_spec(self, fullname, path=None, target=None):
         if fullname == "chandassu" or fullname.startswith("chandassu."):
             raise ImportError("The standalone loader must not import the project")
+        if sys.argv[2] == "cnn" and fullname == "transformers.models.t5.modeling_t5":
+            raise ImportError("T5 is unavailable; loading the CNN must not require it")
 sys.meta_path.insert(0, BlockProject())
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
@@ -108,6 +110,8 @@ inputs = tokenizer("అఆ", return_tensors="pt")
 with torch.inference_mode():
     assert model(**inputs).logits.shape == (1, 4)
 assert not any(k == "chandassu" or k.startswith("chandassu.") for k in sys.modules)
+if sys.argv[2] == "cnn":
+    assert "transformers.models.t5.modeling_t5" not in sys.modules
 print(json.dumps(tokenizer.encode("అఆ")))
 """
     result = subprocess.run(

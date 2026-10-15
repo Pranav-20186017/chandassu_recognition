@@ -11,7 +11,7 @@ from pathlib import Path
 
 import torch
 from torch import nn
-from transformers import PretrainedConfig, PreTrainedModel, PreTrainedTokenizer, T5Config, T5EncoderModel
+from transformers import PretrainedConfig, PreTrainedModel, PreTrainedTokenizer
 from transformers.modeling_outputs import SequenceClassifierOutput
 
 
@@ -136,6 +136,8 @@ class ChandassuClassifier(PreTrainedModel):
             )
             self.classifier = nn.Linear(config.width * len(config.kernel_sizes), 4)
         elif config.model_type == "byt5":
+            from transformers import T5Config, T5EncoderModel
+
             self.encoder = T5EncoderModel(T5Config.from_dict(config.encoder_config))
             self.classifier = nn.Linear(self.encoder.config.d_model, 4)
         else:
